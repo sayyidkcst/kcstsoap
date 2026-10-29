@@ -1,4 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Ayurgra – Office</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg:#f2f6ef;--c:#fff;--t:#17261b;--m:#6b7d6e;--g:#2f7d3a;--g2:#1f5c29;--s:#e6f1e2;--b:#e0e9dc;--r:#c0392b;--y:#b7791f;--sh:0 2px 10px #1d3a2314;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1811;--c:#18241b;--t:#e7f0e7;--m:#9aab9c;--g:#58b866;--g2:#2f7d3a;--s:#223427;--b:#2a3a2d;--r:#ff8a80;--y:#f0b44c;--sh:none;color-scheme:dark}}
@@ -6,6 +7,7 @@
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
 aside{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--c);border-top:1px solid var(--b);padding-bottom:env(safe-area-inset-bottom,0px)}
 .brand{display:none}#nav{display:flex}#nav button{flex:1;border:0;background:none;color:var(--m);padding:9px 0 8px;font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px}#nav button i{font-style:normal;font-size:20px}#nav button.on{color:var(--g);font-weight:600}
+@media(max-width:620px){#nav button{font-size:9.5px;padding:8px 0 7px}#nav button i{font-size:17px}}
 .ct{padding-bottom:80px}.hd{background:linear-gradient(135deg,var(--g2),var(--g));color:#fff;padding:22px 18px 46px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .hd h1{margin:0;font-size:22px}.hd p{margin:2px 0 0;opacity:.85;font-size:13px}
 main{max-width:860px;margin:-30px auto 0;padding:0 14px 30px}
@@ -14,103 +16,560 @@ main{max-width:860px;margin:-30px auto 0;padding:0 14px 30px}
 .kp{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}@media(min-width:620px){.kp{grid-template-columns:repeat(4,1fr)}}
 .kp .card{margin:0;padding:13px}.k{font-size:12px;color:var(--m)}.v{font-size:21px;font-weight:700;margin-top:2px}
 input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--b);border-radius:10px;background:var(--bg);color:var(--t);margin-bottom:8px}input:focus,select:focus{outline:2px solid var(--g);outline-offset:-1px}
-.row{display:flex;gap:10px;align-items:center;justify-content:space-between}.row input{width:84px;margin:0 0 6px}.fl{display:grid;gap:0 10px}@media(min-width:620px){.fl{grid-template-columns:1fr 1fr}}
-.btn{background:var(--g);color:#fff;border:0;padding:9px 15px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer;margin:6px 6px 0 0}.btn.o{background:var(--s);color:var(--g)}.btn.d{background:transparent;color:var(--r);border:1px solid var(--b)}.hd .btn{background:#fff;color:var(--g2);margin:0}
+.fl{display:grid;gap:0 10px}@media(min-width:620px){.fl{grid-template-columns:1fr 1fr}}
+.btn{background:var(--g);color:#fff;border:0;padding:9px 15px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer;margin:6px 6px 0 0}.btn.o{background:var(--s);color:var(--g)}.btn.d{background:transparent;color:var(--r);border:1px solid var(--b)}.hd .btn{background:#fff;color:var(--g2);margin:0}.btn:disabled{opacity:.5;cursor:default}
 .chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px}.chips button{white-space:nowrap;border:1px solid var(--b);background:var(--c);color:var(--t);padding:6px 13px;border-radius:20px;font:inherit;font-size:13px}.chips button.on{background:var(--g);color:#fff;border-color:var(--g)}
+.dr{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:10px}.dr>div{flex:1;min-width:132px}.dr input{margin-bottom:0}.dr .btn{margin:0;flex:none}
+.hint{margin:0 2px 9px}
 .it{display:flex;gap:12px;align-items:flex-start}.av{flex:none;width:40px;height:40px;border-radius:50%;background:var(--s);color:var(--g);display:grid;place-items:center;font-weight:700}.f1{flex:1;min-width:0}
 .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.m{color:var(--m);font-size:13px}.amt{font-weight:700;white-space:nowrap}
 .tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;background:var(--s);white-space:nowrap}.Pending{color:var(--y)}.Approved,.Delivered,.Confirmed{color:var(--g)}.Rejected,.Cancelled{color:var(--r)}.bad{color:var(--r)}.ok{color:var(--g)}
 .act select{width:auto;margin:6px 6px 0 0;padding:8px}.empty{text-align:center;color:var(--m);padding:26px 0}
-.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--b);white-space:nowrap}th{color:var(--m);font-size:12px}td.n,th.n{text-align:right}
+.ac{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;font-size:13px;color:var(--m)}.ac .btn{margin:0;padding:6px 11px;font-size:13px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--b);white-space:nowrap}th{color:var(--m);font-size:12px}td.n,th.n{text-align:right}.tw .btn{margin:2px;padding:6px 10px;font-size:12px}
 #md{position:fixed;inset:0;z-index:8;background:#000b;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:20px 14px}#md[hidden]{display:none}.mb{background:var(--c);color:var(--t);border-radius:18px;width:100%;max-width:520px;padding:18px;margin:auto;box-shadow:0 12px 40px #0008}.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.mh h3{margin:0;font-size:18px}.mh .btn{margin:0}
 #inv{position:fixed;inset:0;background:var(--bg);overflow:auto;padding:16px;z-index:9}#inv .sheet{max-width:680px;margin:0 auto;background:#fff;color:#111;padding:24px;border-radius:12px}#inv table{margin:12px 0}#inv th,#inv td{border-color:#ddd}
-@media print{#shell,#md{display:none!important}#inv{position:static;padding:0;background:#fff}.np{display:none}}
+#tst{position:fixed;left:50%;bottom:92px;z-index:11;transform:translate(-50%,14px);opacity:0;background:var(--g2);color:#fff;padding:11px 18px;border-radius:24px;font-size:14px;font-weight:600;line-height:1.3;box-shadow:0 10px 26px #0003;pointer-events:none;max-width:86vw;text-align:center;transition:opacity .22s,transform .22s}
+#tst.on{opacity:1;transform:translate(-50%,0)}
+@media(min-width:820px){#tst{bottom:26px}}
+/* INVOICE ENTRY + SHEET */
+#md.wide .mb{max-width:780px}
+.mb{animation:pop .22s cubic-bezier(.2,.8,.3,1) both}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+.ivh{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;border-bottom:1px solid var(--b);padding-bottom:12px;margin-bottom:14px}
+.ivhcol{min-width:130px;flex:1}
+.ivno{font-size:19px;font-weight:700;color:var(--g);margin-bottom:8px;letter-spacing:.02em}
+.oit{min-width:470px}
+.oit th{font-size:11px}
+.oit td{padding:3px}
+.oit .c{text-align:center;width:30px}
+.oit input{width:100%;margin:0;padding:8px;border:1px solid var(--b);border-radius:9px;background:var(--c);color:inherit}
+.oit .ip{min-width:180px}
+.oit .iq,.oit .ipr{width:78px;text-align:right}
+.oit .ia{min-width:80px;font-weight:700;white-space:nowrap}
+.ix{border:0;background:none;color:var(--r);font-size:13px;cursor:pointer;padding:6px 5px}
+.oitot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:flex-end;margin:16px 0 6px}
+.fl2{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;min-width:210px}
+.fl2 input{margin:0}
+.tsum{background:var(--s);border-radius:13px;padding:11px 14px;min-width:250px}
+.r1{display:flex;justify-content:space-between;gap:18px;padding:2px 0;font-size:14px}
+.r1.gt{border-top:1px solid var(--b);margin-top:7px;padding-top:7px;font-size:16px}
+#inv .sheet h2{margin:0;color:#1f5c29;font-size:23px}
+#inv .ivtop{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border-bottom:2px solid #1f5c29;padding-bottom:10px;margin-bottom:14px}
+#inv .ivsub{color:#555;font-size:13px;margin-top:2px}
+#inv .ivmeta{text-align:right;font-size:13px;color:#333;line-height:1.5}
+#inv .ivmeta b{display:block;font-size:12px;letter-spacing:.14em;color:#1f5c29;margin-bottom:3px}
+#inv .ivgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;font-size:14px}
+#inv .k{color:#666;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+#inv .ivl td{border-bottom:1px solid #eee;font-size:13.5px;color:#333}
+#inv .ivgt td{border-bottom:0;padding-top:10px;font-size:16px;font-weight:700;color:#111}
+#inv .ivw{margin-top:10px;font-size:13px;color:#333;font-style:italic}
+#inv .ivn{margin-top:14px;font-size:13px;color:#333;background:#f5f7f3;padding:10px 12px;border-radius:8px;border-left:3px solid #2f7d3a}
+#inv .ivfoot{margin-top:16px;font-size:12px;color:#666;text-align:center;border-top:1px dashed #ccc;padding-top:10px}
+#inv .ivsign{display:flex;justify-content:space-between;margin-top:30px;font-size:12px;color:#666}
+/* LOGIN */
+#lg{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:20px;overflow:auto;background:radial-gradient(900px 460px at 8% -12%,#2f7d3a2e,transparent 62%),radial-gradient(760px 420px at 108% 112%,#1f5c292a,transparent 60%),var(--bg)}
+#lg[hidden]{display:none}
+.lgb{position:relative;overflow:hidden;background:var(--c);border:1px solid var(--b);border-radius:22px;padding:24px 22px 20px;width:100%;max-width:400px;box-shadow:0 20px 55px #12240f2b;animation:rise .38s cubic-bezier(.2,.8,.3,1) both}
+.lgtop{position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--g2),var(--g),#93d99d)}
+.lgmark{width:58px;height:58px;margin:8px auto 10px;border-radius:19px;background:linear-gradient(140deg,var(--g2),var(--g));display:grid;place-items:center;font-size:29px;box-shadow:0 10px 22px #1f5c2945}
+.lgb h2{margin:0;text-align:center;font-size:24px;letter-spacing:.01em}
+.lgb p{margin:3px 0 16px;text-align:center;color:var(--m);font-size:13px}
+.seg{position:relative;display:grid;grid-template-columns:1fr 1fr;background:var(--s);border-radius:13px;padding:4px;margin-bottom:16px}
+.seg button{position:relative;z-index:1;border:0;background:none;font:inherit;font-weight:600;font-size:13px;color:var(--m);padding:9px 0;border-radius:10px;cursor:pointer;transition:color .2s}
+.seg button.on{color:var(--g)}
+.knob{position:absolute;z-index:0;top:4px;left:4px;width:calc(50% - 4px);height:calc(100% - 8px);background:var(--c);border-radius:10px;box-shadow:0 2px 8px #1d3a2326;transition:transform .24s cubic-bezier(.3,.8,.3,1)}
+.lgb.up .knob{transform:translateX(100%)}
+.fld{display:flex;align-items:center;gap:9px;border:1px solid var(--b);border-radius:12px;background:var(--bg);padding:0 12px;margin-bottom:10px;transition:border-color .18s,box-shadow .18s}
+.fld:focus-within{border-color:var(--g);box-shadow:0 0 0 3px #2f7d3a26}
+.fld input{flex:1;min-width:0;width:auto;border:0;background:none;padding:12px 0;margin:0}
+.fld input:focus{outline:none}
+.fi{font-size:15px;opacity:.7}
+.eye{border:0;background:none;color:var(--m);font-size:15px;cursor:pointer;padding:6px 2px}
+#lge{min-height:20px;font-size:13px;color:var(--r);margin:2px 0 0}
+#lge .wt{color:var(--m)}
+.ei{margin-right:5px}
+.btn.lg{display:block;width:100%;margin:10px 0 0;padding:13px;border-radius:13px;font-size:15px;background:linear-gradient(135deg,var(--g2),var(--g));box-shadow:0 8px 20px #1f5c2938;transition:transform .12s,box-shadow .12s}
+.btn.lg:hover{transform:translateY(-1px);box-shadow:0 11px 24px #1f5c2948}
+.btn.lg:active{transform:translateY(0)}
+.lgfoot{display:flex;align-items:center;gap:7px;justify-content:center;margin-top:14px;font-size:12px;color:var(--m)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--m);flex:none}
+.dot.ok{background:var(--g)}.dot.no{background:var(--r)}
+@keyframes rise{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes shk{0%,100%{transform:none}20%{transform:translateX(-7px)}45%{transform:translateX(6px)}70%{transform:translateX(-4px)}90%{transform:translateX(2px)}}
+.shk{animation:shk .38s}
+@media(min-width:820px){.lgb{padding:30px 32px 24px}}
+#shell[hidden]{display:none}
+@media print{#shell,#md,#lg,#tst{display:none!important}#inv{position:static;padding:0;background:#fff}.np{display:none}}
 </style></head><body>
-<div id="shell"><aside><div class="brand">🌿 Ayurgra<small>Office panel</small></div><div id="nav"></div></aside><div class="ct"><div class="hd" id="hd"></div><main id="app"></main></div></div><div id="md" hidden></div><div id="inv" hidden></div>
+<div id="lg"><div class="lgb" id="lgb">
+ <div class="lgtop"></div><div class="lgmark">🌿</div><h2>Ayurgra</h2><p id="lgsub">Office panel · sign in to continue</p>
+ <div class="seg"><span class="knob"></span><button type="button" id="t1" class="on" onclick="mode('in')">Login</button><button type="button" id="t2" onclick="mode('up')">Create account</button></div>
+ <form onsubmit="return doSubmit(event)" autocomplete="on">
+  <div class="k">Mobile number</div>
+  <label class="fld"><span class="fi">📱</span><input id="ph" inputmode="numeric" maxlength="10" autocomplete="username" placeholder="10-digit mobile number"></label>
+  <div class="k">Password</div>
+  <label class="fld"><span class="fi">🔒</span><input id="pw" type="password" autocomplete="current-password" placeholder="Password"><button type="button" class="eye" id="eye" onclick="peye()">👁</button></label>
+  <div id="nmw" hidden>
+   <div class="k">Your name</div>
+   <label class="fld"><span class="fi">🧑</span><input id="nm" autocomplete="name" placeholder="Name shown on the panel"></label>
+   <div class="k">Confirm password</div>
+   <label class="fld"><span class="fi">🔑</span><input id="pw2" type="password" autocomplete="new-password" placeholder="Repeat the password"></label>
+  </div>
+  <div id="lge"></div>
+  <button class="btn lg" id="lgo" type="submit">Login</button>
+ </form>
+ <div class="lgfoot"><span class="dot" id="dot"></span><span id="net">checking cloud connection…</span></div>
+</div></div>
+<div id="shell" hidden><aside><div class="brand">🌿 Ayurgra<small>Office panel</small></div><div id="nav"></div></aside><div class="ct"><div class="hd" id="hd"></div><main id="app"></main></div></div>
+<div id="md" hidden></div><div id="inv" hidden></div><div id="tst" role="status" aria-live="polite"></div>
 <script>
+const SUP_URL='https://yrvpfbsbbpfpkpnhzxyi.supabase.co';
+const SUP_KEY='sb_publishable_8JL0NpLprDRGpJu5sMw61Q_mPM-MimE';
+const db=window.supabase?window.supabase.createClient(SUP_URL,SUP_KEY,{auth:{persistSession:false}}):null;
+
 const $=s=>document.querySelector(s);
-const P=[['Neem & Tulsi Soap',45],['Sandal Soap',55],['Aloe Vera Soap',50],['Turmeric Soap',60]];
-const EX=['Ravi','Anil','Suresh'];
-const load=()=>{let s;try{s=JSON.parse(localStorage.getItem('ay'))}catch(e){}s=s||{o:[],s:[],n:1};s.c=s.c||[];s.cp=s.cp||[];return s};
-let S=load();const save=()=>{try{localStorage.setItem('ay',JSON.stringify(S))}catch(e){}};
 const fm=n=>'₹'+Number(n).toLocaleString('en-IN');
 const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hit=(k,...v)=>!k||v.join(' ').toLowerCase().includes(k);
 const sum=a=>a.reduce((x,y)=>x+y,0);
-const tot=o=>sum(o.items.map(i=>(i.q-i.r)*i.pr));
+const gross=o=>sum(o.items.map(i=>(i.q-i.r)*i.pr));
+const tot=o=>{const g=gross(o),d=Math.min(+o.disc||0,g);return Math.round((g-d)*(1+(+o.taxp||0)/100))};
 const live=()=>S.o.filter(o=>o.st!='Cancelled');
 const ebal=e=>sum(live().filter(o=>o.by==e).map(tot))-sum(S.s.filter(s=>s.ex==e&&s.st=='Approved').map(s=>s.amt));
 const epend=e=>sum(S.s.filter(s=>s.ex==e&&s.st=='Pending').map(s=>s.amt));
 const cbal=n=>sum(live().filter(o=>o.shop==n).map(tot))-sum(S.cp.filter(p=>p.cust==n).map(p=>p.amt));
 const today=()=>new Date().toLocaleDateString('en-IN');
 const pd=s=>{const[d,m,y]=String(s).split('/');return new Date(y,m-1,d).getTime()||0};
-let tab='orders',f='All',q='',lt='Customer',le='';
-const T=[['orders','📦','Orders'],['collect','💰','Collection'],['cust','👥','Customers'],['ledger','📒','Ledger']];
-const H={orders:['Orders','Create and manage orders'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],ledger:['Ledger','Statement with running balance']};
-addEventListener('storage',()=>{S=load();R()});
-let MF=null;
-function openM(t,fn,note){MF=[t,fn];$('#md').innerHTML=`<div class="mb"><div class="mh"><h3>${t}</h3><button class="btn d" onclick="closeM()">✕ Close</button></div>${note?`<div class="ok" style="margin-bottom:10px;font-weight:600">✓ ${note}</div>`:''}${fn()}</div>`;$('#md').hidden=false}
-const again=n=>MF&&openM(MF[0],MF[1],n);
-function closeM(){$('#md').hidden=true;$('#md').innerHTML='';MF=null}
-const newOrder=()=>openM('New order',form);
+const dnum=s=>{const i=String(s||'').match(/^(\d{4})-(\d\d)-(\d\d)/),p=String(s||'').split('/');return i?Date.UTC(+i[1],+i[2]-1,+i[3])/864e5:p.length==3?Date.UTC(+p[2],+p[1]-1,+p[0])/864e5:0};
+const inRange=(d,a,b)=>(!a||dnum(d)>=a)&&(!b||dnum(d)<=b);
+const dm=s=>{const p=String(s||'').split('-');return p.length==3?p[2]+'/'+p[1]+'/'+p[0]:''};
+const rng=(a,b)=>{const A=dnum(a),B=dnum(b);return d=>inRange(d,A,B)};
+const rlab=(a,b)=>a||b?` between ${dm(a)||'the start'} and ${dm(b)||'today'}`:'';
+const err=e=>e&&e.message?e.message:'unexpected error';
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const rO=r=>({id:r.id,no:r.no||'AY-'+String(r.id).padStart(4,'0'),date:r.date,by:r.agent,shop:r.shop,items:r.items||[],st:r.status,disc:+(r.disc||0),taxp:+(r.taxp||0),due:r.due||'',notes:r.notes||''});
+const rC=r=>({id:r.id,name:r.name,phone:r.phone||'',addr:r.addr||''});
+const rSt=r=>({id:r.id,name:r.name,phone:r.phone||'',area:r.area||''});
+const rS=r=>({id:r.id,ex:r.ex,amt:+r.amount,mode:r.mode,date:r.date,st:r.status});
+const rPay=r=>({id:r.id,cust:r.cust,amt:+r.amount,mode:r.mode,date:r.date});
+const rPd=r=>({id:r.id,serial:+(r.serial||0),name:r.name,pcs:+(r.pcs||0),rate:+(r.rate||0)});
+const ST=()=>S.st.map(x=>x.name);
+const byName=a=>a.sort((x,y)=>x.name.localeCompare(y.name));
+
+let S={o:[],s:[],cp:[],c:[],st:[],prod:[]},ME=null,LMODE='in';
+let tab='orders',f='All',q='',qc='',qs='',qk='',lq='',lt='Customer',le='';
+let odf='',odt='',cdf='',cdt='',ldf='',ldt='';
+const T=[['orders','📦','Orders'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','🧑‍💼','Staff'],['prod','🧴','Products'],['ledger','📒','Ledger']];
+const H={orders:['Orders','Create and manage orders'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],prod:['Products','Catalogue used on invoices'],ledger:['Ledger','Statement with running balance']};
+const ACT={orders:['+ New order','newOrder'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],prod:['+ Add product','newProd']};
+
+/* LOGIN */
+function mode(m){
+ LMODE=m;$('#lgb').classList.toggle('up',m=='up');
+ $('#t1').className=m=='in'?'on':'';$('#t2').className=m=='up'?'on':'';
+ $('#nmw').hidden=m!='up';$('#lgo').textContent=m=='up'?'Create account':'Login';
+ $('#pw').autocomplete=m=='up'?'new-password':'current-password';
+ $('#lgsub').textContent=m=='up'?'New here? Register your number to get started':'Office panel · sign in to continue';
+ $('#lge').textContent='';
+}
+function peye(){const i=$('#pw');i.type=i.type=='password'?'text':'password';$('#eye').textContent=i.type=='password'?'👁':'🙈'}
+function lerr(msg){
+ $('#lge').innerHTML=`<span class="ei">⚠</span>${esc(msg)}`;
+ const c=$('#lgb');c.classList.remove('shk');void c.offsetWidth;c.classList.add('shk');
+}
+function doSubmit(e){e.preventDefault();doAuth();return false}
+async function doAuth(){
+ const ph=$('#ph').value.replace(/\D/g,''),pw=$('#pw').value;
+ if(ph.length!=10)return lerr('Enter the full 10-digit mobile number.');
+ if(!pw)return lerr('Enter a password.');
+ if(LMODE=='up'){
+  if(pw.length<4)return lerr('Use at least 4 characters for the password.');
+  if(pw!=$('#pw2').value)return lerr('The two passwords do not match.');
+ }
+ $('#lgo').disabled=true;$('#lge').innerHTML='<span class="wt">Please wait…</span>';
+ try{LMODE=='up'?await signup(ph,pw):await signin(ph,pw)}
+ catch(e){lerr(err(e));$('#lgo').disabled=false}
+}
+async function signup(ph,pw){
+ const {data:du}=await db.from('accounts').select('id').eq('phone',ph).maybeSingle();
+ if(du)throw new Error('This number is already registered. Switch to Login.');
+ const name=$('#nm').value.trim();
+ const salt=[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,'0')).join('');
+ const {error}=await db.from('accounts').insert({phone:ph,name,salt,pw_hash:await sha(salt+':'+ph+':'+pw)});
+ if(error)throw new Error('Could not create account: '+error.message);
+ await enter({phone:ph,name});
+}
+async function signin(ph,pw){
+ const {data,error}=await db.from('accounts').select('*').eq('phone',ph).maybeSingle();
+ if(error)throw new Error('Could not reach the database: '+error.message);
+ if(!data)throw new Error('No account uses that number. Tap Create account.');
+ if(await sha(data.salt+':'+ph+':'+pw)!==data.pw_hash)throw new Error('Wrong password.');
+ await enter({phone:ph,name:data.name});
+}
+async function enter(me){
+ ME=me;sessionStorage.setItem('ay.me',JSON.stringify(me));
+ $('#lg').hidden=true;$('#shell').hidden=false;
+ await sync();
+}
+function out(){sessionStorage.removeItem('ay.me');location.reload()}
+async function ping(){
+ if(!db)return;
+ const {error}=await db.from('accounts').select('id',{count:'exact',head:true});
+ if(error){$('#dot').className='dot no';$('#net').textContent='not connected — '+error.message.slice(0,70)}
+ else{$('#dot').className='dot ok';$('#net').textContent='connected to Ayurgra cloud'}
+}
+async function sync(){
+ $('#app').innerHTML=accBar()+'<div class="empty">Loading from Supabase…</div>';
+ try{
+  const [o,c,st,pr,s,cp]=await Promise.all([
+   db.from('orders').select('*').order('id',{ascending:false}),
+   db.from('customers').select('*').order('name'),
+   db.from('staff').select('*').order('name'),
+   db.from('products').select('*').order('serial',{ascending:true}).order('id',{ascending:true}),
+   db.from('settlements').select('*').order('id',{ascending:false}),
+   db.from('payments').select('*').order('id',{ascending:false})]);
+  const bad=[o,c,st,pr,s,cp].find(r=>r.error);
+  if(bad)throw new Error(bad.error.message+' — is the schema created and reachable?');
+  S={o:o.data.map(rO),c:byName(c.data.map(rC)),st:byName(st.data.map(rSt)),prod:pr.data.map(rPd),s:s.data.map(rS),cp:cp.data.map(rPay)};
+  R();
+ }catch(e){$('#app').innerHTML=accBar()+`<div class="card"><b>Could not load data</b><div class="m" style="margin-top:6px">${esc(err(e))}</div><button class="btn" onclick="sync()">Retry</button></div>`}
+}
+const accBar=()=>`<div class="card ac"><span>Signed in as <b>${esc(ME&&ME.name||ME&&ME.phone||'')}</b></span><span><button class="btn o" onclick="sync()">⟳ Refresh</button><button class="btn d" onclick="out()">Logout</button></span></div>`;
+
+/* MODAL + TOAST */
+let MF=null,TT=null;
+function openM(t,fn,wide){MF={t,fn,wide};$('#md').className=wide?'wide':'';$('#md').innerHTML=`<div class="mb"><div class="mh"><h3>${t}</h3><button class="btn d" onclick="closeM()">✕ Close</button></div>${fn()}</div>`;$('#md').hidden=false}
+function closeM(){$('#md').hidden=true;$('#md').innerHTML='';$('#md').className='';MF=null}
+function done(m){closeM();toast(m)}
+function toast(m){
+ clearTimeout(TT);$('#tst').textContent=m;$('#tst').classList.add('on');
+ TT=setTimeout(()=>$('#tst').classList.remove('on'),2800)}
+const newOrder=()=>openM('New invoice',form,1);
 const newColl=()=>openM('Add collection',collForm);
 const newCust=()=>openM('New customer',custForm);
-function collForm(){return `<div class="k">Customer</div><select id="pc">${S.c.length?S.c.map(c=>`<option value="${esc(c.name)}">${esc(c.name)} (due ${fm(cbal(c.name))})</option>`).join(''):'<option value="">Add a customer first</option>'}</select><div class="k">Amount</div><input type="number" min="1" id="pa" placeholder="Amount"><div class="k">Mode</div><select id="pm"><option>Cash</option><option>UPI</option><option>Bank</option></select><button class="btn" onclick="cpay()">Save collection</button>`}
-function custForm(){return `<input id="cn" placeholder="Shop / customer name"><input id="cph" placeholder="Phone"><input id="ca" placeholder="Address"><button class="btn" onclick="addC()">Save customer</button>`}
+const newStaff=()=>openM('Add staff',()=>staffForm());
+function collForm(){return `<div class="k">Customer</div><select id="pc">${S.c.length?S.c.map(c=>`<option value="${esc(c.name)}">${esc(c.name)} (due ${fm(cbal(c.name))})</option>`).join(''):'<option value="">Add a customer first</option>'}</select><div class="k">Amount</div><input type="number" min="1" id="pa" placeholder="Amount"><div class="k">Mode</div><select id="pm"><option>Cash</option><option>UPI</option><option>Bank</option></select><div class="k">Date (dd/mm/yyyy)</div><input id="pdt" value="${today()}"><button class="btn" onclick="cpay()">Save collection</button>`}
+function custForm(){return `<div class="k">Name</div><input id="cn" placeholder="Shop / customer name"><div class="k">Phone</div><input id="cph" placeholder="Phone"><div class="k">Address</div><input id="ca" placeholder="Address"><button class="btn" onclick="addC()">Save customer</button>`}
+function staffForm(x){
+ const s=x||{name:'',phone:'',area:''};
+ return `<div class="k">Name</div><input id="sn" value="${esc(s.name)}" placeholder="Staff / executive name"><div class="k">Mobile number</div><input id="sph" value="${esc(s.phone)}" inputmode="numeric" placeholder="Phone"><div class="k">Area / route</div><input id="sar" value="${esc(s.area)}" placeholder="Area, locality or route"><button class="btn" onclick="${x?`updS(${x.id})`:'addS()'}">Save staff</button>${x?`<button class="btn d" onclick="delS(${x.id})">Delete</button>`:''}`;
+}
+function fail(a){return alert('Could not save — you are probably offline or the table is missing. '+err(a))}
 function go(t){tab=t;R();scrollTo(0,0)}
 function R(){
  $('#nav').innerHTML=T.map(t=>`<button class="${t[0]==tab?'on':''}" onclick="go('${t[0]}')"><i>${t[1]}</i>${t[2]}</button>`).join('');
- $('#hd').innerHTML=`<div><h1>${H[tab][0]}</h1><p>${H[tab][1]}</p></div>`+({orders:['+ New order','newOrder'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust']}[tab]?`<button class="btn" onclick="${({orders:'newOrder',collect:'newColl',cust:'newCust'})[tab]}()">${({orders:'+ New order',collect:'+ Add collection',cust:'+ New customer'})[tab]}</button>`:'');
- $('#app').innerHTML=({orders:Vo,collect:Vc,cust:Vu,ledger:Vl})[tab]();
+ const a=ACT[tab];
+ $('#hd').innerHTML=`<div><h1>${H[tab][0]}</h1><p>${H[tab][1]}</p></div>`+(a?`<button class="btn" onclick="${a[1]}()">${a[0]}</button>`:'');
+ $('#app').innerHTML=accBar()+({orders:Vo,collect:Vc,cust:Vu,staff:Vs,prod:Vp,ledger:Vl})[tab]();
 }
 const kp=(k,v,c)=>`<div class="card"><div class="k">${k}</div><div class="v ${c||''}">${v}</div></div>`;
+const dr=(a,b,ca,cb,cl)=>`<div class="dr"><div><div class="k">Date from</div><input type="date" value="${a}" onchange="${ca}=this.value;R()"></div><div><div class="k">Date to</div><input type="date" value="${b}" onchange="${cb}=this.value;R()"></div>${a||b?`<button class="btn o" type="button" onclick="${cl}">Clear dates</button>`:''}</div>`;
+const clr=(a,b)=>`${a}='';${b}='';R()`;
 /* ORDERS */
 function Vo(){
- return `<div class="kp">${kp('Orders',S.o.length)}${kp('Sales',fm(sum(live().map(tot))))}${kp('Pending orders',S.o.filter(o=>o.st=='Pending').length,'')}${kp('Awaiting approval',fm(sum(EX.map(epend))),'bad')}</div>`
- +`<div class="chips">${['All','Pending','Confirmed','Delivered','Cancelled'].map(s=>`<button class="${s==f?'on':''}" onclick="f='${s}';R()">${s}</button>`).join('')}</div><input placeholder="🔍 Search shop, order no, executive" value="${esc(q)}" oninput="q=this.value;$('#ol').innerHTML=ol()"><div id="ol">${ol()}</div>`}
-function ol(){const k=q.toLowerCase();return S.o.filter(o=>(f=='All'||o.st==f)&&(o.shop+o.no+o.by).toLowerCase().includes(k)).map(oc).join('')||'<div class="empty">No orders found</div>'}
+ return `<div class="kp">${kp('Orders',S.o.length)}${kp('Sales',fm(sum(live().map(tot))))}${kp('Pending orders',S.o.filter(o=>o.st=='Pending').length,'')}${kp('Awaiting approval',fm(sum(ST().map(epend))),'bad')}</div>`
+ +`<div class="chips">${['All','Pending','Confirmed','Delivered','Cancelled'].map(s=>`<button class="${s==f?'on':''}" onclick="f='${s}';R()">${s}</button>`).join('')}</div>`
+ +dr(odf,odt,'odf','odt',clr('odf','odt'))
+ +`<input placeholder="🔍 Search shop, order no, executive" value="${esc(q)}" oninput="q=this.value;$('#ol').innerHTML=ol()"><div id="ol">${ol()}</div>`}
+function ol(){
+ const k=q.toLowerCase(),inR=rng(odf,odt);
+ const list=S.o.filter(o=>(f=='All'||o.st==f)&&inR(o.date)&&hit(k,o.shop,o.no,o.by,o.date));
+ return `${(odf||odt)?`<div class="m hint">${list.length} invoice(s)${rlab(odf,odt)} · ${fm(sum(list.filter(o=>o.st!='Cancelled').map(tot)))} in range. The cards on top stay all-time.</div>`:''}${list.map(oc).join('')||'<div class="empty">No orders found</div>'}`}
 function oc(o){
  const rt=sum(o.items.map(i=>i.r*i.pr));
- return `<div class="card"><div class="it"><div class="av">${esc(o.shop[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(o.shop)}</b><span class="amt">${fm(tot(o))}</span></div><div class="m">${o.no} · ${o.date} · ${esc(o.by)}</div><div class="m">${o.items.map(i=>i.q+'× '+i.p).join(', ')}${rt?` · returns ${fm(rt)}`:''}</div>
+ return `<div class="card"><div class="it"><div class="av">${esc(o.shop[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(o.shop)}</b><span class="amt">${fm(tot(o))}</span></div><div class="m">${o.no} · ${o.date} · ${esc(o.by)}</div><div class="m">${o.items.map(i=>i.q+'× '+i.p).join(', ')}${rt?` · returns ${fm(rt)}`:''}${o.disc?` · discount ${fm(o.disc)}`:''}${o.taxp?` · GST ${o.taxp}%`:''}${o.due?` · due ${o.due}`:''}</div>
  <div class="act"><span class="tag ${o.st}">${o.st}</span><br><select onchange="stt(${o.id},this.value)">${['Pending','Confirmed','Delivered','Cancelled'].map(s=>`<option ${s==o.st?'selected':''}>${s}</option>`)}</select><button class="btn o" onclick="inv(${o.id})">Invoice</button><button class="btn d" onclick="del(${o.id})">Delete</button></div></div></div></div>`}
-function form(){return `<div class="fl"><div><div class="k">Customer / shop</div><input id="shop" list="cl" placeholder="Type or pick customer"><datalist id="cl">${S.c.map(c=>`<option value="${esc(c.name)}">`).join('')}</datalist></div><div><div class="k">Order for</div><select id="by"><option>Office</option>${EX.map(e=>`<option>${e}</option>`)}</select></div></div>${P.map((p,i)=>`<div class="row"><span>${p[0]} <span class="m">${fm(p[1])}</span></span><input type="number" min="0" id="q${i}" value="0"></div>`).join('')}<button class="btn" onclick="mk()">Create order</button>`}
-function mk(){
- const shop=$('#shop').value.trim(),items=P.map((p,i)=>({p:p[0],pr:p[1],q:+$('#q'+i).value||0,r:0})).filter(i=>i.q>0);
- if(!shop||!items.length)return alert('Enter customer and at least one quantity');
- S=load();S.o.unshift({id:S.n,no:'AY-'+String(S.n).padStart(4,'0'),date:today(),by:$('#by').value,shop,items,st:'Pending'});S.n++;save();R();again('Order created. Add another or close.');
-}
-function stt(id,v){S=load();S.o.find(x=>x.id==id).st=v;save();R()}
-function del(id){if(confirm('Delete this order?')){S=load();S.o=S.o.filter(x=>x.id!=id);save();R()}}
+function form(){
+ const nxt='AY-'+String(S.o.reduce((m,o)=>Math.max(m,o.id),0)+1).padStart(4,'0');
+ return `<div class="ivh"><div><div class="k">Invoice no.</div><div class="ivno">${nxt}</div></div><div class="ivhcol"><div class="k">Invoice date</div><input id="idate" value="${today()}"></div><div class="ivhcol"><div class="k">Status</div><select id="ist"><option>Pending</option><option>Confirmed</option><option>Delivered</option></select></div></div>`
+ +`<div class="fl"><div><div class="k">Bill to (customer / shop)</div><input id="shop" list="cl" placeholder="Type or pick customer" oninput="oiCust()"><datalist id="cl">${S.c.map(c=>`<option value="${esc(c.name)}">`).join('')}</datalist><div class="m" id="custinfo"></div></div><div><div class="k">Order for</div><select id="by"><option>Office</option>${S.st.map(x=>`<option>${esc(x.name)}</option>`).join('')}</select></div></div>`
+ +`<div class="tw"><table class="oit"><thead><tr><th class="c">#</th><th>Item</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th class="c"></th></tr></thead><tbody id="oib">${oiRow()}</tbody></table></div>`
+ +`<datalist id="oip">${S.prod.map(p=>`<option value="${esc(p.name)}">${fm(p.rate)}${p.pcs?' · '+p.pcs+' pcs/box':''}</option>`).join('')}</datalist>`
+ +`<button class="btn o" type="button" onclick="oiAdd()">+ Add item</button>`
+ +`<div class="oitot"><div class="fl2"><div><div class="k">Discount (₹)</div><input type="number" min="0" id="idisc" value="0" oninput="oiRec()"></div><div><div class="k">GST / tax (%)</div><input type="number" min="0" max="100" id="itaxp" value="0" oninput="oiRec()"></div></div><div class="tsum"><div class="r1"><span>Subtotal</span><b id="tsub">₹0</b></div><div class="r1"><span>Discount</span><b id="tdisc">−₹0</b></div><div class="r1"><span>GST / tax</span><b id="ttax">₹0</b></div><div class="r1 gt"><span>Grand total</span><b id="tgrand">₹0</b></div></div></div>`
+ +`<div class="fl"><div><div class="k">Payment due (optional)</div><input id="idue" placeholder="dd/mm/yyyy"></div><div><div class="k">Notes / terms</div><input id="inote" placeholder="e.g. 50% advance, balance on delivery"></div></div>`
+ +`<button class="btn" type="button" onclick="mk()">Create invoice</button>`}
+function oiRow(v){
+ v=v||{q:1,pr:''};
+ return `<tr><td class="c">1</td><td><input class="ip" list="oip" value="${esc(v.p||'')}" placeholder="Item / product name" oninput="oiAuto(this)"></td><td class="n"><input class="iq" type="number" min="1" value="${v.q}" oninput="oiRec()"></td><td class="n"><input class="ipr" type="number" min="0" step="0.01" value="${v.pr}" placeholder="0.00" oninput="oiRate(this)"></td><td class="n ia">₹0</td><td class="c"><button class="ix" type="button" title="Remove this item" onclick="oiDel(this)">✕</button></td></tr>`}
+function oiAuto(el){
+ const r=el.closest('tr').querySelector('.ipr'),m=S.prod.find(p=>p.name.toLowerCase()==el.value.trim().toLowerCase());
+ if(m&&(!r.value||r.dataset.auto=='1')){r.value=m.rate;r.dataset.auto='1'}
+ oiRec()}
+function oiRate(el){el.dataset.auto='';oiRec()}
+function oiAdd(){const tb=$('#oib');tb.insertAdjacentHTML('beforeend',oiRow());tb.lastElementChild.querySelector('.ip').focus();oiRec()}
+function oiDel(btn){if($('#oib').children.length<2)return alert('An invoice needs at least one item');btn.closest('tr').remove();oiRec()}
+function oiRec(){
+ let sub=0;
+ document.querySelectorAll('#oib tr').forEach((tr,i)=>{
+  tr.children[0].textContent=i+1;
+  const a=(+tr.querySelector('.iq').value||0)*(+tr.querySelector('.ipr').value||0);
+  tr.querySelector('.ia').textContent=fm(a);sub+=a});
+ const d=Math.min(+$('#idisc').value||0,sub),gt=Math.round((sub-d)*(1+(+$('#itaxp').value||0)/100));
+ $('#tsub').textContent=fm(sub);$('#tdisc').textContent='−'+fm(d);$('#ttax').textContent=fm(gt-(sub-d));$('#tgrand').textContent=fm(gt)}
+function oiCust(){
+ const n=$('#shop').value.trim(),c=S.c.find(x=>x.name.toLowerCase()==n.toLowerCase());
+ $('#custinfo').innerHTML=c?`${esc(c.phone||'no phone')} ${esc(c.addr||'')} · due <span class="${cbal(c.name)>0?'bad':'ok'}">${fm(cbal(c.name))}</span>`
+  :(n?'<span class="bad">Not saved under Customers — contact details will stay blank on the invoice</span>':'')}
+async function mk(){
+ const shop=$('#shop').value.trim(),date=$('#idate').value.trim()||today();
+ const items=oiLines().filter(i=>i.p&&i.q>0);
+ if(!shop)return alert('Enter the customer name');
+ if(!pd(date))return alert('Use the invoice date format dd/mm/yyyy');
+ if($('#idue').value.trim()&&!pd($('#idue').value.trim()))return alert('Payment due must be dd/mm/yyyy or left blank');
+ if(!items.length)return alert('Add at least one item with a name and a quantity');
+ const sub=sum(items.map(i=>i.q*i.pr)),disc=Math.min(+$('#idisc').value||0,sub),taxp=+$('#itaxp').value||0;
+ const {data,error}=await db.from('orders').insert({date,agent:$('#by').value,shop,items,disc,taxp,status:$('#ist').value,due:$('#idue').value.trim(),notes:$('#inote').value.trim()}).select().single();
+ if(error)return fail(error);
+ S.o.unshift(rO(data));R();done('Invoice '+rO(data).no+' saved for '+data.shop)}
+function oiLines(){
+ const out=[];
+ document.querySelectorAll('#oib tr').forEach(tr=>out.push({p:tr.querySelector('.ip').value.trim(),q:+tr.querySelector('.iq').value||0,pr:+tr.querySelector('.ipr').value||0,r:0}));
+ return out}
+async function stt(id,v){
+ const {error}=await db.from('orders').update({status:v}).eq('id',id);
+ if(error)return fail(error);
+ S.o.find(x=>x.id==id).st=v;R()}
+async function del(id){
+ if(!confirm('Delete this order?'))return;
+ const {error}=await db.from('orders').delete().eq('id',id);
+ if(error)return fail(error);
+ S.o=S.o.filter(x=>x.id!=id);R();done('Order deleted')}
 /* COLLECTION */
 function Vc(){
- const p=S.s.filter(s=>s.st=='Pending'),h=S.s.filter(s=>s.st!='Pending');
- const hist=[...h.map(s=>({id:s.id,t:s.ex+' · settlement',a:s.amt,m:s.mode,d:s.date,st:s.st})),...S.cp.map(x=>({id:x.id,t:x.cust+' · customer payment',a:x.amt,m:x.mode,d:x.date,st:'Received'}))].sort((a,b)=>b.id-a.id);
- return `<div class="kp">${kp('Awaiting approval',fm(sum(p.map(s=>s.amt))),'bad')}${kp('Executive dues',fm(sum(EX.map(ebal))))}${kp('Customer payments',fm(sum(S.cp.map(x=>x.amt))),'ok')}${kp('Customer dues',fm(sum(S.c.map(c=>cbal(c.name)))))}</div>
- <h4>Executive settlements to approve</h4>${p.map(s=>`<div class="card"><div class="top"><b>${fm(s.amt)} · ${s.mode}</b><span class="tag Pending">Pending</span></div><div class="m">${esc(s.ex)} · ${s.date}</div><button class="btn" onclick="ap(${s.id},'Approved')">Approve</button><button class="btn d" onclick="ap(${s.id},'Rejected')">Reject</button></div>`).join('')||'<div class="empty">Nothing waiting for approval</div>'}
- <h4>History</h4>${hist.map(x=>`<div class="card"><div class="top"><b>${fm(x.a)} · ${x.m}</b><span class="tag ${x.st}">${x.st}</span></div><div class="m">${esc(x.t)} · ${x.d}</div></div>`).join('')||'<div class="empty">No history</div>'}`}
-function ap(id,v){S=load();S.s.find(x=>x.id==id).st=v;save();R()}
-function cpay(){const c=$('#pc').value,a=+$('#pa').value;if(!c||!(a>0))return alert('Choose customer and enter amount');S=load();S.cp.unshift({id:Date.now(),cust:c,amt:a,mode:$('#pm').value,date:today()});save();R();again('Collection saved. Add another or close.')}
+ const p=S.s.filter(s=>s.st=='Pending');
+ return `<div class="kp">${kp('Awaiting approval',fm(sum(p.map(s=>s.amt))),'bad')}${kp('Executive dues',fm(sum(ST().map(ebal))))}${kp('Customer payments',fm(sum(S.cp.map(x=>x.amt))),'ok')}${kp('Customer dues',fm(sum(S.c.map(c=>cbal(c.name)))))}</div>
+ ${dr(cdf,cdt,'cdf','cdt',clr('cdf','cdt'))}
+ <input placeholder="🔍 Search customer, executive, amount, mode or date" value="${esc(qk)}" oninput="qk=this.value;$('#cx').innerHTML=cx()"><div id="cx">${cx()}</div>`}
+function cx(){
+ const k=qk.toLowerCase().trim(),inR=rng(cdf,cdt);
+ const p=S.s.filter(s=>s.st=='Pending'&&inR(s.date)&&hit(k,s.ex,s.amt,s.mode,s.date));
+ const hist=[...S.s.filter(s=>s.st!='Pending'&&inR(s.date)).map(s=>({id:s.id,k:'s',t:s.ex+' · settlement',a:s.amt,m:s.mode,d:s.date,st:s.st,w:s.ex})),...S.cp.filter(x=>inR(x.date)).map(x=>({id:x.id,k:'cp',t:x.cust+' · customer payment',a:x.amt,m:x.mode,d:x.date,st:'Received',w:x.cust}))].filter(x=>hit(k,x.w,x.a,x.m,x.d)).sort((a,b)=>b.id-a.id);
+ return `${(cdf||cdt)?`<div class="m hint">${p.length+hist.length} entry(ies)${rlab(cdf,cdt)} · ${fm(sum(hist.filter(x=>x.k=='cp').map(x=>x.a)))} collected from customers in range. The cards on top stay all-time.</div>`:''}
+ <h4>Executive settlements to approve${k?' matching '+esc(qk):''}</h4>${p.map(s=>`<div class="card"><div class="top"><b>${fm(s.amt)} · ${s.mode}</b><span class="tag Pending">Pending</span></div><div class="m">${esc(s.ex)} · ${s.date}</div><button class="btn" onclick="ap(${s.id},'Approved')">Approve</button><button class="btn d" onclick="ap(${s.id},'Rejected')">Reject</button><button class="btn o" onclick="editColl('s',${s.id})">Edit</button><button class="btn d" onclick="delColl('s',${s.id})">Delete</button></div>`).join('')||`<div class="empty">${k||cdf||cdt?'No settlement matches this filter':'Nothing waiting for approval'}</div>`}
+ <h4>History${k?' matching '+esc(qk):''}</h4>${hist.map(x=>`<div class="card"><div class="top"><b>${fm(x.a)} · ${x.m}</b><span class="tag ${x.st}">${x.st}</span></div><div class="m">${esc(x.t)} · ${x.d}</div><button class="btn o" onclick="editColl('${x.k}',${x.id})">Edit</button><button class="btn d" onclick="delColl('${x.k}',${x.id})">Delete</button></div>`).join('')||`<div class="empty">${k||cdf||cdt?'No collection matches this filter':'No history'}</div>`}`}
+function collRec(k,id){return (k=='s'?S.s:S.cp).find(x=>x.id==id)}
+function editColl(k,id){if(collRec(k,id))openM(k=='s'?'Edit settlement':'Edit collection',()=>collEditForm(k,id))}
+function collEditForm(k,id){
+ const x=collRec(k,id);if(!x)return '<div class="empty">Entry no longer exists</div>';
+ const val=k=='s'?x.ex:x.cust,who=[...(k=='s'?ST():S.c.map(c=>c.name))];if(!who.includes(val))who.unshift(val);
+ return `<div class="k">${k=='s'?'Executive':'Customer'}</div><select id="ew">${who.map(n=>`<option ${n==val?'selected':''}>${esc(n)}</option>`).join('')}</select>`
+ +`<div class="k">Amount</div><input type="number" min="1" id="eam" value="${x.amt}">`
+ +`<div class="k">Mode</div><select id="em">${['Cash','UPI','Bank'].map(m=>`<option ${m==x.mode?'selected':''}>${m}</option>`).join('')}</select>`
+ +`<div class="k">Date (dd/mm/yyyy)</div><input id="ed" value="${esc(x.date)}">`
+ +(k=='s'?`<div class="k">Status</div><select id="es">${['Pending','Approved','Rejected'].map(s=>`<option ${s==x.st?'selected':''}>${s}</option>`).join('')}</select>`:'')
+ +`<button class="btn" onclick="updColl('${k}',${id})">Save changes</button><button class="btn d" onclick="delColl('${k}',${id})">Delete</button>`}
+async function updColl(k,id){
+ const x=collRec(k,id);if(!x)return closeM();
+ const w=$('#ew').value,a=+$('#eam').value,d=$('#ed').value.trim()||today();
+ if(!w||!(a>0))return alert('Pick '+(k=='s'?'an executive':'a customer')+' and enter an amount');
+ if(!pd(d))return alert('Use the date format dd/mm/yyyy');
+ const row=k=='s'?{ex:w,amount:a,mode:$('#em').value,date:d,status:$('#es').value}:{cust:w,amount:a,mode:$('#em').value,date:d};
+ const {error}=await db.from(k=='s'?'settlements':'payments').update(row).eq('id',id);
+ if(error)return fail(error);
+ if(k=='s'){x.ex=w;x.st=row.status}else x.cust=w;
+ x.amt=a;x.mode=row.mode;x.date=d;R();done('Entry updated')}
+async function delColl(k,id){
+ const x=collRec(k,id);if(!x)return;
+ if(!confirm(`Delete this ${k=='s'?'settlement':'collection'} of ${fm(x.amt)} (${x.date})?`))return;
+ const {error}=await db.from(k=='s'?'settlements':'payments').delete().eq('id',id);
+ if(error)return fail(error);
+ if(k=='s')S.s=S.s.filter(p=>p.id!=id);else S.cp=S.cp.filter(p=>p.id!=id);
+ R();done('Entry deleted')}
+async function ap(id,v){
+ const {error}=await db.from('settlements').update({status:v}).eq('id',id);
+ if(error)return fail(error);
+ S.s.find(x=>x.id==id).st=v;R()}
+async function cpay(){
+ const c=$('#pc').value,a=+$('#pa').value,d=$('#pdt').value.trim()||today();
+ if(!c||!(a>0))return alert('Choose customer and enter amount');
+ if(!pd(d))return alert('Use the date format dd/mm/yyyy');
+ const {data,error}=await db.from('payments').insert({cust:c,amount:a,mode:$('#pm').value,date:d}).select().single();
+ if(error)return fail(error);
+ S.cp.unshift(rPay(data));R();done('Collection of '+fm(rPay(data).amt)+' saved')}
 /* CUSTOMERS */
 function Vu(){
- return ''
- +(S.c.map(c=>{const b=cbal(c.name);return `<div class="card"><div class="it"><div class="av">${esc(c.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(c.name)}</b><span class="amt ${b>0?'bad':'ok'}">${fm(b)}</span></div><div class="m">${esc(c.phone||'No phone')} · ${esc(c.addr||'No address')}</div><div class="m">${S.o.filter(o=>o.shop==c.name).length} orders</div><button class="btn o" onclick="lt='Customer';le=this.dataset.n;go('ledger')" data-n="${esc(c.name)}">Open ledger</button></div></div></div>`}).join('')||'<div class="empty">No customers yet</div>')}
-function addC(){const n=$('#cn').value.trim();if(!n)return alert('Enter name');S=load();if(S.c.some(c=>c.name.toLowerCase()==n.toLowerCase()))return alert('Customer already exists');S.c.push({id:Date.now(),name:n,phone:$('#cph').value.trim(),addr:$('#ca').value.trim()});save();R();again('Customer added. Add another or close.')}
+ return `<input placeholder="🔍 Search name, phone or address" value="${esc(qc)}" oninput="qc=this.value;$('#ul').innerHTML=ulList()"><div id="ul">${ulList()}</div>`}
+function ulList(){
+ const k=qc.toLowerCase().trim();
+ return S.c.filter(c=>hit(k,c.name,c.phone,c.addr)).map(ucard).join('')||`<div class="empty">${k?'No customer matches that search':'No customers yet'}</div>`}
+function ucard(c){
+ const b=cbal(c.name);
+ return `<div class="card"><div class="it"><div class="av">${esc(c.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(c.name)}</b><span class="amt ${b>0?'bad':'ok'}">${fm(b)}</span></div><div class="m">${esc(c.phone||'No phone')} · ${esc(c.addr||'No address')}</div><div class="m">${S.o.filter(o=>o.shop==c.name).length} orders</div><button class="btn o" onclick="lt='Customer';le=this.dataset.n;go('ledger')" data-n="${esc(c.name)}">Open ledger</button><button class="btn o" onclick="editC(${c.id})">Edit</button><button class="btn d" onclick="delC(${c.id})">Delete</button></div></div></div>`}
+function custEditForm(c){return `<div class="k">Shop / customer name</div><input id="ecn" value="${esc(c.name)}"><div class="k">Phone</div><input id="ecph" value="${esc(c.phone||'')}"><div class="k">Address</div><input id="eca" value="${esc(c.addr||'')}"><button class="btn" onclick="updC(${c.id})">Save changes</button><button class="btn d" onclick="delC(${c.id})">Delete customer</button>`}
+function editC(id){const c=S.c.find(x=>x.id==id);if(c)openM('Edit customer',()=>custEditForm(c))}
+async function updC(id){
+ const c=S.c.find(x=>x.id==id);if(!c)return closeM();
+ const n=$('#ecn').value.trim();
+ if(!n)return alert('Enter name');
+ if(n.toLowerCase()!=c.name.toLowerCase()&&S.c.some(x=>x.id!=id&&x.name.toLowerCase()==n.toLowerCase()))return alert('Another customer already uses that name');
+ const old=c.name,phone=$('#ecph').value.trim(),addr=$('#eca').value.trim();
+ const {error}=await db.from('customers').update({name:n,phone,addr}).eq('id',id);
+ if(error)return fail(error);
+ if(old!=n){
+  const [a,b]=await Promise.all([db.from('orders').update({shop:n}).eq('shop',old),db.from('payments').update({cust:n}).eq('cust',old)]);
+  if(a.error||b.error)alert('Saved, but the old name is still on some records: '+(a.error||b.error).message);
+  S.o.forEach(o=>{if(o.shop==old)o.shop=n});
+  S.cp.forEach(p=>{if(p.cust==old)p.cust=n});
+  if(lt=='Customer'&&le==old)le=n;
+ }
+ c.name=n;c.phone=phone;c.addr=addr;byName(S.c);R();done('Customer updated')}
+async function delC(id){
+ const c=S.c.find(x=>x.id==id);if(!c)return;
+ const n=S.o.filter(o=>o.shop==c.name).length,p=S.cp.filter(x=>x.cust==c.name).length;
+ if(!confirm(`Delete ${c.name}?${n||p?`\nTheir ${n} order(s) and ${p} payment(s) stay on record as text, but this customer card and its ledger entry will be removed.`:''}`))return;
+ const {error}=await db.from('customers').delete().eq('id',id);
+ if(error)return fail(error);
+ S.c=S.c.filter(x=>x.id!=id);if(lt=='Customer'&&le==c.name)le='';R();done(c.name+' deleted')}
+async function addC(){
+ const n=$('#cn').value.trim();if(!n)return alert('Enter name');
+ if(S.c.some(c=>c.name.toLowerCase()==n.toLowerCase()))return alert('Customer already exists');
+ const {data,error}=await db.from('customers').insert({name:n,phone:$('#cph').value.trim(),addr:$('#ca').value.trim()}).select().single();
+ if(error)return fail(error);
+ S.c.push(rC(data));byName(S.c);R();done(n+' added to customers')}
+/* STAFF */
+function Vs(){
+ return `<div class="kp">${kp('Staff',S.st.length)}${kp('Executive dues',fm(sum(ST().map(ebal))))}${kp('Awaiting approval',fm(sum(ST().map(epend))),'bad')}${kp('Settled',fm(sum(S.s.filter(x=>x.st=='Approved').map(x=>x.amt))),'ok')}</div><input placeholder="🔍 Search name, phone or area" value="${esc(qs)}" oninput="qs=this.value;$('#sl').innerHTML=slList()"><div id="sl">${slList()}</div>`}
+function slList(){
+ const k=qs.toLowerCase().trim();
+ return S.st.filter(x=>hit(k,x.name,x.phone,x.area)).map(scard).join('')||`<div class="empty">${k?'No staff matches that search':'No staff yet — add your first executive'}</div>`}
+function scard(x){
+ const d=ebal(x.name),n=live().filter(o=>o.by==x.name).length,p=epend(x.name);
+ return `<div class="card"><div class="it"><div class="av">${esc(x.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(x.name)}</b><span class="amt ${d>0?'bad':'ok'}">${fm(d)}</span></div><div class="m">${esc(x.phone||'No phone')} · ${esc(x.area||'No area')}</div><div class="m">${n} order(s)${p?` · <span class="bad">${fm(p)} awaiting approval</span>`:''}</div><button class="btn o" onclick="lt='Executive';le=this.dataset.n;go('ledger')" data-n="${esc(x.name)}">Open ledger</button><button class="btn o" onclick="editS(${x.id})">Edit</button><button class="btn d" onclick="delS(${x.id})">Delete</button></div></div></div>`}
+function editS(id){const x=S.st.find(y=>y.id==id);if(x)openM('Edit staff',()=>staffForm(x))}
+async function addS(){
+ const n=$('#sn').value.trim();if(!n)return alert('Enter name');
+ if(ST().some(v=>v.toLowerCase()==n.toLowerCase()))return alert('A staff member with that name already exists');
+ const {data,error}=await db.from('staff').insert({name:n,phone:$('#sph').value.trim(),area:$('#sar').value.trim()}).select().single();
+ if(error)return fail(error);
+ S.st.push(rSt(data));byName(S.st);R();done(n+' added to staff')}
+async function updS(id){
+ const x=S.st.find(y=>y.id==id);if(!x)return closeM();
+ const n=$('#sn').value.trim();
+ if(!n)return alert('Enter name');
+ if(n.toLowerCase()!=x.name.toLowerCase()&&ST().some(v=>v.toLowerCase()==n.toLowerCase()))return alert('Another staff member already uses that name');
+ const old=x.name,phone=$('#sph').value.trim(),area=$('#sar').value.trim();
+ const {error}=await db.from('staff').update({name:n,phone,area}).eq('id',id);
+ if(error)return fail(error);
+ if(old!=n){
+  const [a,b]=await Promise.all([db.from('orders').update({agent:n}).eq('agent',old),db.from('settlements').update({ex:n}).eq('ex',old)]);
+  if(a.error||b.error)alert('Saved, but the old name is still on some records: '+(a.error||b.error).message);
+  S.o.forEach(o=>{if(o.by==old)o.by=n});
+  S.s.forEach(s=>{if(s.ex==old)s.ex=n});
+  if(lt=='Executive'&&le==old)le=n;
+ }
+ x.name=n;x.phone=phone;x.area=area;byName(S.st);R();done('Staff updated')}
+async function delS(id){
+ const x=S.st.find(y=>y.id==id);if(!x)return;
+ const n=live().filter(o=>o.by==x.name).length,p=S.s.filter(s=>s.ex==x.name).length;
+ if(!confirm(`Delete ${x.name}?${n||p?`\nTheir ${n} order(s) and ${p} settlement(s) stay on record as text, but this staff card and its executive ledger will be removed.`:''}`))return;
+ const {error}=await db.from('staff').delete().eq('id',id);
+ if(error)return fail(error);
+ S.st=S.st.filter(y=>y.id!=id);if(lt=='Executive'&&le==x.name)le='';R();done(x.name+' deleted')}
+/* PRODUCTS */
+function nextSerial(){return S.prod.reduce((m,p)=>Math.max(m,+p.serial||0),0)+1}
+const newProd=()=>openM('Add product',()=>prodForm());
+function prodForm(x){
+ const p=x||{serial:nextSerial(),name:'',pcs:'',rate:''};
+ return `<div class="fl"><div><div class="k">Serial No</div><input type="number" min="1" id="pser" value="${p.serial||''}" placeholder="Auto"></div><div><div class="k">Rate (₹)</div><input type="number" min="0" step="0.01" id="prate" value="${p.rate||''}" placeholder="0.00"></div></div>`
+ +`<div class="k">Product name</div><input id="pname" value="${esc(p.name)}" placeholder="e.g. Neem & Tulsi Soap">`
+ +`<div class="k">Pcs / box</div><input type="number" min="0" id="ppcs" value="${p.pcs||''}" placeholder="Pieces in one box">`
+ +`<button class="btn" type="button" onclick="${x?`updP(${x.id})`:'addP()'}">Save product</button>${x?`<button class="btn d" type="button" onclick="delP(${x.id})">Delete</button>`:''}`}
+function prodRead(){return {serial:Math.round(+$('#pser').value||0),name:$('#pname').value.trim(),pcs:Math.round(+$('#ppcs').value||0),rate:+$('#prate').value||0}}
+function editP(id){const x=S.prod.find(p=>p.id==id);if(x)openM('Edit product',()=>prodForm(x))}
+async function addP(){
+ const v=prodRead();
+ if(!v.name)return alert('Enter the product name');
+ if(!(v.rate>0))return alert('Enter a rate above 0 — that is what invoices pick up');
+ if(S.prod.some(p=>p.name.toLowerCase()==v.name.toLowerCase()))return alert('A product with that name already exists');
+ const {data,error}=await db.from('products').insert(v).select().single();
+ if(error)return fail(error);
+ S.prod.push(rPd(data));R();done(v.name+' added to products')}
+async function updP(id){
+ const x=S.prod.find(p=>p.id==id);if(!x)return closeM();
+ const v=prodRead();
+ if(!v.name)return alert('Enter the product name');
+ if(!(v.rate>0))return alert('Enter a rate above 0');
+ if(S.prod.some(p=>p.id!=id&&p.name.toLowerCase()==v.name.toLowerCase()))return alert('Another product already uses that name');
+ const {error}=await db.from('products').update(v).eq('id',id);
+ if(error)return fail(error);
+ Object.assign(x,v);R();done('Product updated')}
+async function delP(id){
+ const x=S.prod.find(p=>p.id==id);if(!x)return;
+ const used=S.o.filter(o=>o.items.some(i=>i.p==x.name)).length;
+ if(!confirm(`Delete ${x.name}?${used?`\nIt appears on ${used} existing invoice(s). Those invoices keep their own copy of the name and rate, so nothing on them changes.`:''}`))return;
+ const {error}=await db.from('products').delete().eq('id',id);
+ if(error)return fail(error);
+ S.prod=S.prod.filter(p=>p.id!=id);R();done(x.name+' deleted')}
+function Vp(){
+ const rs=S.prod.map(p=>p.rate);
+ return `<div class="kp">${kp('Products',S.prod.length)}${kp('With box size',S.prod.filter(p=>p.pcs>0).length)}${kp('Lowest rate',rs.length?fm(Math.min(...rs)):'—')}${kp('Highest rate',rs.length?fm(Math.max(...rs)):'—')}</div>`
+ +`<div class="card"><div class="tw"><table><tr><th class="n">Serial No</th><th>Product Name</th><th class="n">Pcs/Box</th><th class="n">Rate</th><th>Actions</th></tr>${S.prod.map(p=>`<tr><td class="n">${p.serial||'—'}</td><td>${esc(p.name)}</td><td class="n">${p.pcs||'—'}</td><td class="n">${fm(p.rate)}</td><td><button class="btn o" onclick="editP(${p.id})">Edit</button><button class="btn d" onclick="delP(${p.id})">Delete</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">No products yet — add your first item</td></tr>'}</table></div><div class="m" style="margin-top:8px">Invoices already created keep the name and rate they were billed with, so editing here only changes future entries.</div></div>`}
 /* LEDGER */
 function rows(){
  let r=[];
  if(lt=='Customer'){live().filter(o=>o.shop==le).forEach(o=>r.push({d:o.date,t:'Invoice '+o.no,dr:tot(o),cr:0,k:0,id:o.id}));S.cp.filter(p=>p.cust==le).forEach(p=>r.push({d:p.date,t:'Payment ('+p.mode+')',dr:0,cr:p.amt,k:1,id:p.id}))}
- else{live().filter(o=>o.by==le).forEach(o=>r.push({d:o.date,t:'Invoice '+o.no+' · '+o.shop,dr:tot(o),cr:0,k:0,id:o.id}));S.s.filter(s=>s.ex==le&&s.st=='Approved').forEach(s=>r.push({d:s.date,t:'Settlement ('+s.mode+')',dr:0,cr:s.amt,k:1,id:s.id}))}
- r.sort((a,b)=>pd(a.d)-pd(b.d)||a.k-b.k||a.id-b.id);let b=0;r.forEach(x=>{b+=x.dr-x.cr;x.b=b});return r}
-function ltable(r){return `<div class="tw"><table><tr><th>Date</th><th>Particulars</th><th class="n">Debit</th><th class="n">Credit</th><th class="n">Balance</th></tr>${r.map(x=>`<tr><td>${x.d}</td><td>${esc(x.t)}</td><td class="n">${x.dr?fm(x.dr):''}</td><td class="n">${x.cr?fm(x.cr):''}</td><td class="n">${fm(x.b)}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No entries</td></tr>'}${r.length?`<tr><td colspan="2"><b>Closing balance</b></td><td class="n"><b>${fm(sum(r.map(x=>x.dr)))}</b></td><td class="n"><b>${fm(sum(r.map(x=>x.cr)))}</b></td><td class="n"><b>${fm(r[r.length-1].b)}</b></td></tr>`:''}</table></div>`}
+ else{live().filter(o=>o.by==le).forEach(o=>r.push({d:o.date,t:'Invoice '+o.no+' · '+o.shop,dr:tot(o),cr:0,id:o.id,k:0}));S.s.filter(s=>s.ex==le&&s.st=='Approved').forEach(s=>r.push({d:s.date,t:'Settlement ('+s.mode+')',dr:0,cr:s.amt,k:1,id:s.id}))}
+ r.sort((a,b)=>dnum(a.d)-dnum(b.d)||a.k-b.k||a.id-b.id);let b=0;r.forEach(x=>{b+=x.dr-x.cr;x.b=b});return r}
+function ltable(r,open){
+ open=open||0;
+ const op=(ldf||ldt)&&open?`<tr><td>${ldf?dm(ldf):'—'}</td><td><b>Opening balance</b></td><td class="n"></td><td class="n"></td><td class="n"><b>${fm(open)}</b></td></tr>`:'';
+ return `<div class="tw"><table><tr><th>Date</th><th>Particulars</th><th class="n">Debit</th><th class="n">Credit</th><th class="n">Balance</th></tr>${op}${r.map(x=>`<tr><td>${x.d}</td><td>${esc(x.t)}</td><td class="n">${x.dr?fm(x.dr):''}</td><td class="n">${x.cr?fm(x.cr):''}</td><td class="n">${fm(x.b)}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No entries'+(ldf||ldt?' in this date range':'')+'</td></tr>'}${(r.length||open)?`<tr><td colspan="2"><b>Closing balance${ldt?' as on '+dm(ldt):''}</b></td><td class="n"><b>${fm(sum(r.map(x=>x.dr)))}</b></td><td class="n"><b>${fm(sum(r.map(x=>x.cr)))}</b></td><td class="n"><b>${fm(r.length?r[r.length-1].b:open)}</b></td></tr>`:''}</table></div>`}
+function lr(){
+ const all=rows(),A=dnum(ldf),B=dnum(ldt);let open=0;
+ all.forEach(x=>{if(dnum(x.d)<A)open=x.b});
+ return {r:all.filter(x=>inRange(x.d,A,B)),open:open}}
+function names(){return lt=='Customer'?S.c.map(c=>c.name):ST()}
 function Vl(){
- const list=lt=='Customer'?S.c.map(c=>c.name):EX;if(!list.includes(le))le=list[0]||'';
- const r=rows();
- return `<div class="chips">${['Customer','Executive'].map(s=>`<button class="${s==lt?'on':''}" onclick="lt='${s}';le='';R()">${s} ledger</button>`).join('')}</div>
- <div class="card"><select onchange="le=this.value;R()">${list.map(n=>`<option value="${esc(n)}" ${n==le?'selected':''}>${esc(n)}</option>`).join('')||'<option>No customers yet</option>'}</select>${ltable(r)}${r.length?`<button class="btn o" onclick="lp()">Print ledger</button>`:''}<div class="m" style="margin-top:8px">Debit = invoices (after returns). Credit = payments received${lt=='Executive'?' (approved settlements only)':''}.</div></div>`}
-function lp(){$('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">Ayurgra Herbal Soap</h2><div style="color:#555">${lt} ledger · ${esc(le)} · ${today()}</div>${ltable(rows())}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
+ const list=names();if(!list.includes(le))le=list[0]||'';
+ return `<div class="chips">${['Customer','Executive'].map(s=>`<button class="${s==lt?'on':''}" onclick="lt='${s}';le='';lq='';R()">${s} ledger</button>`).join('')}</div>
+ ${dr(ldf,ldt,'ldf','ldt',clr('ldf','ldt'))}
+ <div class="card"><input placeholder="🔍 Search ${lt=='Customer'?'customer':'staff'} name" value="${esc(lq)}" oninput="lq=this.value;$('#lbox').innerHTML=lbox()"><div id="lbox">${lbox()}</div><div class="m" style="margin-top:8px">Debit = invoices (after returns). Credit = payments received${lt=='Executive'?' (approved settlements only)':''}.${ldf||ldt?' Balances stay absolute: the statement opens with what was outstanding'+(ldf?' before '+dm(ldf):'')+' and closes with the real balance.'+(ldt?' Entries after '+dm(ldt)+' are hidden.':''):''}</div></div>`}
+function lbox(){
+ const k=lq.toLowerCase().trim(),list=names().filter(n=>hit(k,n));
+ if(list.length&&!list.includes(le))le=list[0];
+ const w=list.includes(le)?lr():{r:[],open:0};
+ return `<select onchange="le=this.value;lq='';R()">${list.map(n=>`<option value="${esc(n)}" ${n==le?'selected':''}>${esc(n)}</option>`).join('')||`<option value="">${k?'No '+(lt=='Customer'?'customer':'staff')+' matches “'+esc(lq)+'”':'No '+(lt=='Customer'?'customers':'staff')+' yet'}</option>`}</select>${ltable(w.r,w.open)}${w.r.length?`<button class="btn o" onclick="lp()">Print ledger</button>`:''}`}
+function lp(){
+ const w=lr();
+ $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">Ayurgra Herbal Soap</h2><div style="color:#555">${lt} ledger · ${esc(le)} · ${today()}${(ldf||ldt)?' · '+rlab(ldf,ldt):''}</div>${ltable(w.r,w.open)}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
 /* INVOICE */
 function inv(id){
  const o=S.o.find(x=>x.id==id),c=S.c.find(x=>x.name==o.shop),rt=sum(o.items.map(i=>i.r*i.pr));
- $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0;color:#1f5c29">Ayurgra Herbal Soap</h2><div style="color:#555">Invoice ${o.no} · ${o.date}</div><p>Bill to: <b>${esc(o.shop)}</b>${c?`<br>${esc(c.phone||'')} ${esc(c.addr||'')}`:''}<br>Delivery: ${esc(o.by)}</p><table><tr><th>Item</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th></tr>${o.items.map(i=>`<tr><td>${i.p}</td><td class="n">${i.q}</td><td class="n">${fm(i.pr)}</td><td class="n">${fm(i.q*i.pr)}</td></tr>`).join('')}${rt?`<tr><td colspan="3">Returns</td><td class="n">−${fm(rt)}</td></tr>`:''}<tr><td colspan="3"><b>Total</b></td><td class="n"><b>${fm(tot(o))}</b></td></tr></table><button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;
+ const g=gross(o),d=Math.min(+o.disc||0,g),t=tot(o)-(g-d);
+ $('#inv').innerHTML=`<div class="sheet"><div class="ivtop"><div><h2>Ayurgra Herbal Soap</h2><div class="ivsub">Ayurvedic &amp; herbal products</div></div><div class="ivmeta"><b>TAX INVOICE</b><div>${o.no}</div><div>${o.date}</div>${o.due?`<div>Due: ${o.due}</div>`:''}</div></div>`
+ +`<div class="ivgrid"><div><div class="k">Bill to</div><b>${esc(o.shop)}</b>${c&&c.phone?`<div>${esc(c.phone)}</div>`:''}${c&&c.addr?`<div>${esc(c.addr)}</div>`:''}</div><div><div class="k">Delivery through</div><b>${esc(o.by)}</b><div>Status: ${o.st}</div></div></div>`
+ +`<table><tr><th>Item</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th></tr>${o.items.map(i=>`<tr><td>${esc(i.p)}</td><td class="n">${i.q}</td><td class="n">${fm(i.pr)}</td><td class="n">${fm(i.q*i.pr)}</td></tr>`).join('')}`
+ +(rt?`<tr class="ivl"><td colspan="3">Less: returns</td><td class="n">−${fm(rt)}</td></tr>`:'')
+ +`<tr class="ivl"><td colspan="3">Subtotal</td><td class="n">${fm(g)}</td></tr>`
+ +(d?`<tr class="ivl"><td colspan="3">Less: discount</td><td class="n">−${fm(d)}</td></tr>`:'')
+ +(t?`<tr class="ivl"><td colspan="3">Add: GST / tax @ ${o.taxp}%</td><td class="n">${fm(t)}</td></tr>`:'')
+ +`<tr class="ivgt"><td colspan="3">Total payable</td><td class="n">${fm(tot(o))}</td></tr></table>`
+ +`<div class="ivw">Amount in words: ${words(tot(o))} rupees only</div>`
+ +(o.notes?`<div class="ivn"><b>Notes &amp; terms</b><br>${esc(o.notes)}</div>`:'')
+ +`<div class="ivfoot">Goods once sold are taken back only as per company policy · Thank you for your business</div><div class="ivsign"><div>Customer signature</div><div>For Ayurgra Herbal Soap</div></div>`
+ +`<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;
  $('#inv').hidden=false}
-R();
+function words(n){
+ n=Math.round(+n||0);if(!n)return 'Zero';
+ const ONE=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+ const TEN=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+ const t2=v=>v<20?ONE[v]:TEN[Math.floor(v/10)]+(v%10?' '+ONE[v%10]:'');
+ const t3=v=>[(v>=100?ONE[Math.floor(v/100)]+' Hundred':''),(v%100?t2(v%100):'')].filter(s=>s).join(' ');
+ let out=[],r=n;
+ if(r>=10000000){out.push(t2(Math.floor(r/10000000))+' Crore');r%=10000000}
+ if(r>=100000){out.push(t2(Math.floor(r/100000))+' Lakh');r%=100000}
+ if(r>=1000){out.push(t2(Math.floor(r/1000))+' Thousand');r%=1000}
+ if(r>0)out.push(t3(r));
+ return out.join(' ')}
+/* BOOT */
+(async function boot(){
+ if(!db){$('#lgo').disabled=true;$('#dot').className='dot no';return lerr('supabase-js did not load — this page needs an internet connection.')}
+ if(!window.crypto||!crypto.subtle){$('#lgo').disabled=true;$('#dot').className='dot no';return lerr('This browser blocks secure hashing. Open the file locally (file://) or over https.')}
+ mode('in');ping();
+ const keep=sessionStorage.getItem('ay.me');
+ if(keep){try{ME=JSON.parse(keep)}catch(e){ME=null}}
+ if(ME)await enter(ME);else $('#ph').focus();
+})();
 </script></body></html>
