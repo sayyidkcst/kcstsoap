@@ -1,9 +1,9 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Ayurgra – Office</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#f2f6ef;--c:#fff;--t:#17261b;--m:#6b7d6e;--g:#2f7d3a;--g2:#1f5c29;--s:#e6f1e2;--b:#e0e9dc;--r:#c0392b;--y:#b7791f;--sh:0 2px 10px #1d3a2314;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1811;--c:#18241b;--t:#e7f0e7;--m:#9aab9c;--g:#58b866;--g2:#2f7d3a;--s:#223427;--b:#2a3a2d;--r:#ff8a80;--y:#f0b44c;--sh:none;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0f1811;--c:#18241b;--t:#e7f0e7;--m:#9aab9c;--g:#58b866;--g2:#2f7d3a;--s:#223427;--b:#2a3a2d;--r:#ff8a80;--y:#f0b44c;--sh:none;color-scheme:dark}
+:root{--bg:#f4f7fc;--c:#fff;--t:#16202c;--m:#64748b;--g:#2563eb;--g2:#1e3a8a;--s:#e8f0fe;--b:#dbe5f1;--r:#c0392b;--y:#b7791f;--sh:0 2px 10px #1e3a8a14;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--c:#111b2c;--t:#e7eefb;--m:#93a5bd;--g:#3b82f6;--g2:#1d4ed8;--s:#172a45;--b:#22334c;--r:#ff8a80;--y:#f0b44c;--sh:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1220;--c:#111b2c;--t:#e7eefb;--m:#93a5bd;--g:#3b82f6;--g2:#1d4ed8;--s:#172a45;--b:#22334c;--r:#ff8a80;--y:#f0b44c;--sh:none;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
 aside{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--c);border-top:1px solid var(--b);padding-bottom:env(safe-area-inset-bottom,0px)}
 .brand{display:none}#nav{display:flex}#nav button{flex:1;border:0;background:none;color:var(--m);padding:9px 0 8px;font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px}#nav button i{font-style:normal;font-size:20px}#nav button.on{color:var(--g);font-weight:600}
@@ -29,9 +29,6 @@ input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--b)
 .tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--b);white-space:nowrap}th{color:var(--m);font-size:12px}td.n,th.n{text-align:right}.tw .btn{margin:2px;padding:6px 10px;font-size:12px}
 #md{position:fixed;inset:0;z-index:8;background:#000b;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:20px 14px}#md[hidden]{display:none}.mb{background:var(--c);color:var(--t);border-radius:18px;width:100%;max-width:520px;padding:18px;margin:auto;box-shadow:0 12px 40px #0008}.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.mh h3{margin:0;font-size:18px}.mh .btn{margin:0}
 #inv{position:fixed;inset:0;background:var(--bg);overflow:auto;padding:16px;z-index:9}#inv .sheet{max-width:680px;margin:0 auto;background:#fff;color:#111;padding:24px;border-radius:12px}#inv table{margin:12px 0}#inv th,#inv td{border-color:#ddd}
-#tst{position:fixed;left:50%;bottom:92px;z-index:11;transform:translate(-50%,14px);opacity:0;background:var(--g2);color:#fff;padding:11px 18px;border-radius:24px;font-size:14px;font-weight:600;line-height:1.3;box-shadow:0 10px 26px #0003;pointer-events:none;max-width:86vw;text-align:center;transition:opacity .22s,transform .22s}
-#tst.on{opacity:1;transform:translate(-50%,0)}
-@media(min-width:820px){#tst{bottom:26px}}
 /* INVOICE ENTRY + SHEET */
 #md.wide .mb{max-width:780px}
 .mb{animation:pop .22s cubic-bezier(.2,.8,.3,1) both}
@@ -54,34 +51,34 @@ input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--b)
 .tsum{background:var(--s);border-radius:13px;padding:11px 14px;min-width:250px}
 .r1{display:flex;justify-content:space-between;gap:18px;padding:2px 0;font-size:14px}
 .r1.gt{border-top:1px solid var(--b);margin-top:7px;padding-top:7px;font-size:16px}
-#inv .sheet h2{margin:0;color:#1f5c29;font-size:23px}
-#inv .ivtop{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border-bottom:2px solid #1f5c29;padding-bottom:10px;margin-bottom:14px}
+#inv .sheet h2{margin:0;color:#1e3a8a;font-size:23px}
+#inv .ivtop{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border-bottom:2px solid #1e3a8a;padding-bottom:10px;margin-bottom:14px}
 #inv .ivsub{color:#555;font-size:13px;margin-top:2px}
 #inv .ivmeta{text-align:right;font-size:13px;color:#333;line-height:1.5}
-#inv .ivmeta b{display:block;font-size:12px;letter-spacing:.14em;color:#1f5c29;margin-bottom:3px}
+#inv .ivmeta b{display:block;font-size:12px;letter-spacing:.14em;color:#1e3a8a;margin-bottom:3px}
 #inv .ivgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;font-size:14px}
 #inv .k{color:#666;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
 #inv .ivl td{border-bottom:1px solid #eee;font-size:13.5px;color:#333}
 #inv .ivgt td{border-bottom:0;padding-top:10px;font-size:16px;font-weight:700;color:#111}
 #inv .ivw{margin-top:10px;font-size:13px;color:#333;font-style:italic}
-#inv .ivn{margin-top:14px;font-size:13px;color:#333;background:#f5f7f3;padding:10px 12px;border-radius:8px;border-left:3px solid #2f7d3a}
+#inv .ivn{margin-top:14px;font-size:13px;color:#333;background:#f4f7fc;padding:10px 12px;border-radius:8px;border-left:3px solid #2563eb}
 #inv .ivfoot{margin-top:16px;font-size:12px;color:#666;text-align:center;border-top:1px dashed #ccc;padding-top:10px}
 #inv .ivsign{display:flex;justify-content:space-between;margin-top:30px;font-size:12px;color:#666}
 /* LOGIN */
-#lg{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:20px;overflow:auto;background:radial-gradient(900px 460px at 8% -12%,#2f7d3a2e,transparent 62%),radial-gradient(760px 420px at 108% 112%,#1f5c292a,transparent 60%),var(--bg)}
+#lg{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:20px;overflow:auto;background:radial-gradient(900px 460px at 8% -12%,#2563eb2e,transparent 62%),radial-gradient(760px 420px at 108% 112%,#1e40af2a,transparent 60%),var(--bg)}
 #lg[hidden]{display:none}
-.lgb{position:relative;overflow:hidden;background:var(--c);border:1px solid var(--b);border-radius:22px;padding:24px 22px 20px;width:100%;max-width:400px;box-shadow:0 20px 55px #12240f2b;animation:rise .38s cubic-bezier(.2,.8,.3,1) both}
-.lgtop{position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--g2),var(--g),#93d99d)}
-.lgmark{width:58px;height:58px;margin:8px auto 10px;border-radius:19px;background:linear-gradient(140deg,var(--g2),var(--g));display:grid;place-items:center;font-size:29px;box-shadow:0 10px 22px #1f5c2945}
+.lgb{position:relative;overflow:hidden;background:var(--c);border:1px solid var(--b);border-radius:22px;padding:24px 22px 20px;width:100%;max-width:400px;box-shadow:0 20px 55px #0f1f3a2b;animation:rise .38s cubic-bezier(.2,.8,.3,1) both}
+.lgtop{position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--g2),var(--g),#93b4f5)}
+.lgmark{width:58px;height:58px;margin:8px auto 10px;border-radius:19px;background:linear-gradient(140deg,var(--g2),var(--g));display:grid;place-items:center;font-size:29px;box-shadow:0 10px 22px #1e40af45}
 .lgb h2{margin:0;text-align:center;font-size:24px;letter-spacing:.01em}
 .lgb p{margin:3px 0 16px;text-align:center;color:var(--m);font-size:13px}
 .seg{position:relative;display:grid;grid-template-columns:1fr 1fr;background:var(--s);border-radius:13px;padding:4px;margin-bottom:16px}
 .seg button{position:relative;z-index:1;border:0;background:none;font:inherit;font-weight:600;font-size:13px;color:var(--m);padding:9px 0;border-radius:10px;cursor:pointer;transition:color .2s}
 .seg button.on{color:var(--g)}
-.knob{position:absolute;z-index:0;top:4px;left:4px;width:calc(50% - 4px);height:calc(100% - 8px);background:var(--c);border-radius:10px;box-shadow:0 2px 8px #1d3a2326;transition:transform .24s cubic-bezier(.3,.8,.3,1)}
+.knob{position:absolute;z-index:0;top:4px;left:4px;width:calc(50% - 4px);height:calc(100% - 8px);background:var(--c);border-radius:10px;box-shadow:0 2px 8px #0f1f3a26;transition:transform .24s cubic-bezier(.3,.8,.3,1)}
 .lgb.up .knob{transform:translateX(100%)}
 .fld{display:flex;align-items:center;gap:9px;border:1px solid var(--b);border-radius:12px;background:var(--bg);padding:0 12px;margin-bottom:10px;transition:border-color .18s,box-shadow .18s}
-.fld:focus-within{border-color:var(--g);box-shadow:0 0 0 3px #2f7d3a26}
+.fld:focus-within{border-color:var(--g);box-shadow:0 0 0 3px #2563eb26}
 .fld input{flex:1;min-width:0;width:auto;border:0;background:none;padding:12px 0;margin:0}
 .fld input:focus{outline:none}
 .fi{font-size:15px;opacity:.7}
@@ -89,8 +86,8 @@ input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--b)
 #lge{min-height:20px;font-size:13px;color:var(--r);margin:2px 0 0}
 #lge .wt{color:var(--m)}
 .ei{margin-right:5px}
-.btn.lg{display:block;width:100%;margin:10px 0 0;padding:13px;border-radius:13px;font-size:15px;background:linear-gradient(135deg,var(--g2),var(--g));box-shadow:0 8px 20px #1f5c2938;transition:transform .12s,box-shadow .12s}
-.btn.lg:hover{transform:translateY(-1px);box-shadow:0 11px 24px #1f5c2948}
+.btn.lg{display:block;width:100%;margin:10px 0 0;padding:13px;border-radius:13px;font-size:15px;background:linear-gradient(135deg,var(--g2),var(--g));box-shadow:0 8px 20px #1e40af38;transition:transform .12s,box-shadow .12s}
+.btn.lg:hover{transform:translateY(-1px);box-shadow:0 11px 24px #1e40af48}
 .btn.lg:active{transform:translateY(0)}
 .lgfoot{display:flex;align-items:center;gap:7px;justify-content:center;margin-top:14px;font-size:12px;color:var(--m)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--m);flex:none}
@@ -100,7 +97,7 @@ input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--b)
 .shk{animation:shk .38s}
 @media(min-width:820px){.lgb{padding:30px 32px 24px}}
 #shell[hidden]{display:none}
-@media print{#shell,#md,#lg,#tst{display:none!important}#inv{position:static;padding:0;background:#fff}#inv .np,.np{display:none!important}#inv .sheet{break-after:page;page-break-after:always;box-shadow:none;border-radius:0;margin:0 auto}#inv .sheet:last-of-type{break-after:auto;page-break-after:auto}}
+@media print{#shell,#md,#lg{display:none!important}#inv{position:static;padding:0;background:#fff}#inv .np,.np{display:none!important}#inv .sheet{break-after:page;page-break-after:always;box-shadow:none;border-radius:0;margin:0 auto}#inv .sheet:last-of-type{break-after:auto;page-break-after:auto}}
 .ck{width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:var(--g);cursor:pointer;padding:0}
 .sbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px}.sbar .sall{display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}.sbar .m{margin-left:auto}.sbb .btn{margin:0 0 0 6px}
 .pth{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--s);display:block}.pph{display:grid;place-items:center;font-size:20px}.pth.big{width:84px;height:84px;border-radius:14px;font-size:30px}
@@ -108,60 +105,160 @@ input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--b)
 #inv .sheet+.sheet{margin-top:16px}#inv .ivbar{max-width:680px;margin:0 auto 12px;display:flex;align-items:center;gap:10px}#inv .ivbar .btn{margin:0}#inv .ivbar b{margin-right:auto}
 
 /* PRO THEME */
-:root{--g:#1f7a3d;--g2:#14532d;--sh:0 1px 2px #0f2a1a0f,0 8px 24px #0f2a1a10}
+:root{--g:#2563eb;--g2:#1e3a8a;--sh:0 1px 2px #0f1f3a0f,0 8px 24px #0f1f3a10}
 body{font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
-.hd{background:radial-gradient(120% 170% at 0 0,#24913f 0,#14532d 58%,#0d3b20 100%);padding:30px 24px 60px;border-radius:0 0 28px 28px;box-shadow:0 10px 30px #0d3b2033}
+.hd{background:radial-gradient(120% 170% at 0 0,#3b82f6 0,#1e3a8a 58%,#172f63 100%);padding:30px 24px 60px;border-radius:0 0 28px 28px;box-shadow:0 10px 30px #172f6333}
 .hd h1{font-size:26px;font-weight:700;letter-spacing:-.015em}.hd p{opacity:.8}
 main{margin-top:-38px}
-.card{border-radius:18px;transition:box-shadow .2s}.card:hover{box-shadow:0 2px 4px #0f2a1a12,0 14px 32px #0f2a1a1a}
-.kp .card{border-left:4px solid var(--g);border-radius:14px}.kp .card .v{font-size:23px;font-weight:700;letter-spacing:-.01em}.kp .card:nth-child(2){border-left-color:#d49b2c}.kp .card:nth-child(3){border-left-color:#3b82c4}.kp .card:nth-child(4){border-left-color:#8b5cc4}
+.card{border-radius:18px;transition:box-shadow .2s}.card:hover{box-shadow:0 2px 4px #0f1f3a12,0 14px 32px #0f1f3a1a}
+.kp .card{border-left:4px solid var(--g);border-radius:14px}.kp .card .v{font-size:23px;font-weight:700;letter-spacing:-.01em}.kp .card:nth-child(2){border-left-color:#d49b2c}.kp .card:nth-child(3){border-left-color:#0891b2}.kp .card:nth-child(4){border-left-color:#8b5cc4}
 .k{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 th{background:var(--s);color:var(--g);text-transform:uppercase;letter-spacing:.05em;font-size:11px}th:first-child{border-radius:8px 0 0 8px}th:last-child{border-radius:0 8px 8px 0}
-tr:hover td{background:#2f7d3a0d}
-.btn{border-radius:10px;box-shadow:0 1px 2px #0f2a1a22;transition:filter .15s,transform .15s}.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.btn.o,.btn.d{box-shadow:none}.hd .btn{box-shadow:0 4px 14px #0003}
-.av{background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;box-shadow:0 4px 10px #14532d33}
+tr:hover td{background:#2563eb0d}
+.btn{border-radius:10px;box-shadow:0 1px 2px #0f1f3a22;transition:filter .15s,transform .15s}.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.btn.o,.btn.d{box-shadow:none}.hd .btn{box-shadow:0 4px 14px #0003}
+.av{background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;box-shadow:0 4px 10px #1e3a8a33}
 .tag{border-radius:20px;padding:4px 11px}
-.chips button{box-shadow:0 1px 2px #0f2a1a0d}
+.chips button{box-shadow:0 1px 2px #0f1f3a0d}
 input,select{border-radius:11px;padding:11px 13px}
 .tbh td{background:var(--s);font-weight:700;color:var(--g)}.tbs td{font-weight:700;border-top:2px solid var(--b)}.tbg td{font-weight:800;font-size:15px;border-top:2px solid var(--g);border-bottom:0}
-@media(min-width:820px){aside{background:linear-gradient(180deg,#14532d,#0b2f19);color:#fff;border:0;box-shadow:4px 0 24px #0d3b2024}.brand{color:#fff;font-size:21px}.brand small{color:#a9cfb4}#nav button{color:#c6e0cd}#nav button:hover{background:#ffffff14}#nav button.on{background:#ffffff1f;color:#fff;font-weight:600;box-shadow:inset 3px 0 0 #8de29f}}
+@media(min-width:820px){aside{background:linear-gradient(180deg,#1e3a8a,#0b1b3a);color:#fff;border:0;box-shadow:4px 0 24px #172f6324}.brand{color:#fff;font-size:21px}.brand small{color:#a9c3e0}#nav button{color:#c6d8f0}#nav button:hover{background:#ffffff14}#nav button.on{background:#ffffff1f;color:#fff;font-weight:600;box-shadow:inset 3px 0 0 #93c5fd}}
 @media(max-width:819px){#nav{overflow-x:auto}#nav button{min-width:62px}.hd{border-radius:0 0 22px 22px}}
 .sqlb{white-space:pre-wrap;background:var(--s);padding:10px 12px;border-radius:10px;font-size:12px;overflow-x:auto;margin:8px 0 0}.msel{width:auto!important;margin:0 0 0 6px!important;padding:8px 10px!important;display:inline-block}
 @media(min-width:820px){aside{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#ffffff45 transparent}aside::-webkit-scrollbar{width:6px}aside::-webkit-scrollbar-thumb{background:#ffffff45;border-radius:6px}}
 .calh{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}.calh h3{flex:1;text-align:center;margin:0;min-width:140px}.calh .btn{margin:0}
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.ch{text-align:center;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--g);padding:4px 0}
-.cd{min-height:84px;border:1px solid var(--b);border-radius:10px;padding:4px;cursor:pointer;overflow:hidden;background:var(--c,transparent)}.cd:hover{border-color:var(--g);box-shadow:0 2px 8px #0f2a1a1a}.cd.off{border:0;cursor:default;box-shadow:none}.cd.td{outline:2px solid var(--g)}.cd>b{font-size:12px}
+.cd{min-height:84px;border:1px solid var(--b);border-radius:10px;padding:4px;cursor:pointer;overflow:hidden;background:var(--c,transparent)}.cd:hover{border-color:var(--g);box-shadow:0 2px 8px #0f1f3a1a}.cd.off{border:0;cursor:default;box-shadow:none}.cd.td{outline:2px solid var(--g)}.cd>b{font-size:12px}
 .rc{display:block;color:#fff;font-size:10px;line-height:1.3;padding:2px 5px;border-radius:6px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lg{display:inline-flex;align-items:center;gap:6px;margin:8px 14px 0 0;font-size:12px}.lg i{width:10px;height:10px;border-radius:50%;display:inline-block}
 @media(max-width:600px){.cd{min-height:62px;padding:2px}.rc{font-size:9px;padding:1px 3px}.cal{gap:3px}}
-.cd.wo{background:repeating-linear-gradient(45deg,transparent 0 6px,#8a8f8c22 6px 12px)}.rc.off{background:#8a948f}
-.oit .ib,.oit .ipr{width:78px;text-align:right}
+.cd.wo{background:repeating-linear-gradient(45deg,transparent 0 6px,#94a3b822 6px 12px)}.rc.off{background:#94a3b8}
+.oit .ib,.oit .ipr{width:78px;text-align:right}.oit .ig{width:64px;text-align:right}
 .card.ost-Pending{background:rgba(250,204,21,.17);border-color:rgba(234,179,8,.4)}.card.ost-Confirmed{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.38)}.card.ost-Cancelled{background:rgba(239,68,68,.13);border-color:rgba(239,68,68,.4)}
-#tst{top:50%;bottom:auto;transform:translate(-50%,-46%) scale(.9);border-radius:22px;padding:24px 34px;background:var(--c);color:var(--t);border:1px solid var(--b);box-shadow:0 24px 70px #0005;display:flex;flex-direction:column;align-items:center;gap:12px;font-size:16px;min-width:220px}
-#tst.on{transform:translate(-50%,-50%) scale(1)}@media(min-width:820px){#tst{bottom:auto}}
-.tic,.dic{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:28px;font-weight:700;color:#fff;margin:0 auto;animation:pop .4s}.tic{background:linear-gradient(135deg,#2fa84f,#14532d)}
+.dic{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:28px;font-weight:700;color:#fff;margin:0 auto;animation:pop .4s}
 #dlg{position:fixed;inset:0;z-index:12;background:#000a;display:flex;align-items:center;justify-content:center;padding:16px}#dlg[hidden]{display:none}
 .dbox{background:var(--c);color:var(--t);border-radius:22px;max-width:420px;width:100%;padding:26px 24px 20px;text-align:center;box-shadow:0 24px 70px #0006;animation:pop .28s}.dbox h3{margin:12px 0 6px}
 .dmsg{white-space:pre-wrap;color:var(--m);font-size:14px;line-height:1.5;max-height:46vh;overflow:auto}
-.ask .dic{background:#3b82c4}.warn .dic{background:#e0a21a}.ok .dic{background:#2fa84f}.dbt{display:flex;gap:10px;justify-content:center;margin-top:18px}.dbt .btn{margin:0;min-width:110px}
+.ask .dic{background:#0891b2}.warn .dic{background:#e0a21a}.ok .dic{background:#2fa84f}.dbt{display:flex;gap:10px;justify-content:center;margin-top:18px}.dbt .btn{margin:0;min-width:110px}
 @keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
 #md.cm .mb{max-width:900px;padding:0;overflow:hidden}.cmh{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;background:var(--s)}.cmh h3{margin:0;font-size:18px}.cx{background:none;border:0;font-size:20px;color:var(--m);cursor:pointer;padding:4px 8px}.cmbody{padding:20px 22px 24px}
 .cg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 18px}.cg .k{text-transform:none;letter-spacing:0;font-size:13px;font-weight:600;color:var(--t)}.cg .rq::after{content:" *";color:#d1495b}
 textarea{width:100%;font:inherit;border:1px solid var(--b);border-radius:11px;padding:11px 13px;background:var(--c);color:var(--t);resize:vertical;min-height:44px}
-.cft{display:flex;justify-content:flex-end;gap:10px;margin-top:26px}.cft .btn{margin:0;min-width:84px}.btn.cs{background:#3b4a86;color:#fff}
+.cft{display:flex;justify-content:flex-end;gap:10px;margin-top:26px}.cft .btn{margin:0;min-width:84px}.btn.cs{background:#1d4ed8;color:#fff}
 @media(max-width:760px){.cg{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:480px){.cg{grid-template-columns:1fr}}
 .card.ost-Settled{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.38)}
 @page{size:A4;margin:8mm}
-#inv .sheet.tx{max-width:800px;padding:0;border-radius:0;background:#fff;color:#000;font:12px/1.4 "Times New Roman",Times,serif}
-.tx .bx{border:1px solid #000}.tx .hd1{text-align:center;padding:6px 8px 4px;border-bottom:1px solid #000}.tx .hd1 h2{margin:0 0 2px;font-size:21px;letter-spacing:.3px;text-transform:uppercase;color:#000}.tx .hd1 div{font-weight:700}
-.tx .gs{text-align:center;font-weight:700;font-size:14px;padding:5px;border-bottom:1px solid #000}
-.tx .two{display:grid;grid-template-columns:1.25fr 1fr;border-bottom:1px solid #000}.tx .two>div{padding:5px 8px}.tx .two>div+div{border-left:1px solid #000}
-#inv .itx{width:100%;border-collapse:collapse;margin:0}#inv .itx th,#inv .itx td{border:1px solid #000;padding:3px 5px;white-space:normal;font-size:11.5px;color:#000;vertical-align:top}
-#inv .itx th{background:#fff;text-transform:none;letter-spacing:0;border-radius:0;text-align:center;font-weight:700}#inv .itx tbody td{border-top:0;border-bottom:0}#inv .itx tr:hover td{background:none}
-#inv .itx .r{text-align:right}#inv .itx .c{text-align:center}#inv .itx .sp td{height:90px}#inv .itx tfoot td{font-weight:700;border-top:1px solid #000}
-.tx .bt{display:grid;grid-template-columns:1.1fr 1fr;border-top:1px solid #000}.tx .bl,.tx .br{padding:5px 8px}.tx .br{border-left:1px solid #000}.tx .bk{display:flex;gap:10px;align-items:flex-end;margin-top:8px}.tx .bk img{width:88px;height:88px;object-fit:contain}.tx .bk .qr{text-align:center;font-size:11px}
-.tx .kv{display:flex;justify-content:space-between;gap:10px;padding:1px 0}.tx .kv.b{font-weight:700}.tx .sg{text-align:right;font-weight:700;padding:6px 8px 4px}.tx .sg .as{margin-top:30px}
-.tx .pdt{font-size:11px;margin-top:4px;color:#000}
+#inv .sheet.tx{max-width:194mm;padding:0;border-radius:0;background:#fff;color:#16202c;font:12px/1.55 "Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tx .bx{background:#fff;border:1px solid #dbe5f1;border-radius:16px;overflow:hidden;box-shadow:0 18px 55px rgba(15,42,26,.12)}
+.tx .hd1{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding:18px 22px 15px;border-bottom:1px solid #dbe5f1;background:linear-gradient(135deg,#f3f7fd 0%,#fff 68%)}
+.tx .brand{display:flex;align-items:center;gap:12px;min-width:0}
+.tx .mark{flex:0 0 auto;width:46px;height:46px;border-radius:14px;background:#eaf1fd;border:1px solid #c9d9ef;color:#1e3a8a;display:grid;place-items:center;font:700 21px/1 Georgia,"Times New Roman",serif}
+#inv .tx .hd1 h2{margin:0;font:700 22px/1.15 Georgia,"Times New Roman",serif;color:#1e3a8a;letter-spacing:.2px}
+.tx .tagl{margin-top:2px;font-size:11px;color:#64748b;letter-spacing:.03em}
+.tx .hco{max-width:52%;text-align:right;font-size:11px;line-height:1.55;color:#3d4b5e}
+.tx .hco .gstl{margin-top:3px;font-weight:700;color:#1e3a8a;letter-spacing:.04em}
+.tx .ttl{padding:7px 22px;background:#eaf1fd;border-bottom:1px solid #dbe5f1;text-align:center;color:#1e3a8a;font-size:11px;font-weight:700;letter-spacing:.34em;text-transform:uppercase}
+.tx .two{display:grid;grid-template-columns:1.15fr 1fr;border-bottom:1px solid #dbe5f1}
+.tx .two>div{padding:13px 22px}
+.tx .two>div+div{border-left:1px solid #dbe5f1;background:#f8fafe}
+.tx .lbl{margin-bottom:5px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7b8ca1}
+.tx .bn{margin-bottom:3px;font-size:14px;font-weight:700;line-height:1.3;color:#1e3a8a}
+.tx .ln{font-size:11.5px;line-height:1.5;color:#43526a}
+.tx .meta div{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:3px 0;font-size:11px;border-bottom:1px dashed #e6edf6}
+.tx .meta div:last-child{border-bottom:0;padding-bottom:0}
+.tx .meta span{color:#7b8ca1;white-space:nowrap}
+.tx .meta b{font-weight:600;color:#16202c;text-align:right;overflow-wrap:anywhere}
+#inv .itx{width:100%;border-collapse:collapse;margin:0;font-size:11px}
+#inv .itx th,#inv .itx td{white-space:normal;border:0;padding:6px 7px;color:#1f2c3b;font-size:11px;vertical-align:top}
+#inv .itx th{border-bottom:1.5px solid #c4d5e9;background:#eaf1fd;color:#1e3a8a;padding:8px 7px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;text-align:left;vertical-align:middle}
+#inv .itx td{border-bottom:1px solid #edf2f8}
+#inv .itx tbody tr:nth-child(even) td{background:#fafcff}
+#inv .itx .r{text-align:right;font-variant-numeric:tabular-nums}
+#inv .itx .c{text-align:center}
+#inv .itx .sp td{height:44px;border-bottom:0;background:#fff}
+#inv .itx tfoot td{border-top:1.5px solid #c4d5e9;border-bottom:0;font-weight:700;background:#f5f9fd}
+.tx .bt{display:grid;grid-template-columns:1.1fr 1fr}
+.tx .bl,.tx .br{padding:14px 22px}
+.tx .br{border-left:1px solid #dbe5f1;background:#f8fafe}
+.tx .words{font-size:12.5px;font-weight:600;line-height:1.5;color:#16202c}
+.tx .bank{margin-top:12px}
+.tx .bank div{font-size:11px;line-height:1.55;color:#43526a}
+.tx .bank .lbl{margin-bottom:2px}
+.tx .qrbox{margin-top:14px;display:inline-flex;flex-direction:column;align-items:center;gap:4px}
+.tx .qrbox img{width:86px;height:86px;object-fit:contain;border:1px solid #dbe5f1;border-radius:10px;padding:4px;background:#fff}
+.tx .qrbox div{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#7b8ca1}
+.tx .kv{display:flex;justify-content:space-between;gap:14px;padding:3px 0;font-size:11.5px;color:#52627a}
+.tx .kv span:last-child{color:#16202c;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.tx .kv.gt{margin:8px 0 6px;padding:8px 11px;border:1px solid #bcd2ec;border-radius:9px;background:#e7effc;color:#1e3a8a;font-size:13px;font-weight:700}
+.tx .kv.gt span{color:#1e3a8a}
+.tx .kv.dn{margin-top:5px;padding-top:7px;border-top:1px solid #dbe5f1;font-size:12.5px;font-weight:700;color:#1e3a8a}
+.tx .kv.dn span{color:#1e3a8a}
+.tx .vhead{margin:10px 0 3px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7b8ca1}
+.tx .sg{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;padding:12px 22px 14px;border-top:1px solid #dbe5f1}
+.tx .thx{font-size:11px;font-style:italic;color:#7b8ca1}
+.tx .sign{min-width:180px;text-align:center;font-size:11px;color:#43526a}
+.tx .sign .for{font-weight:700;color:#1e3a8a}
+.tx .sign .as{margin-top:34px;border-top:1px solid #c8d6e8;padding-top:4px;color:#64748b}
+.tx .pdt{padding:0 22px 10px;text-align:right;font-size:9.5px;color:#93a2b6;letter-spacing:.03em}
+@media(max-width:640px){.tx .two{grid-template-columns:1fr}.tx .two>div+div{border-left:0;border-top:1px solid #dbe5f1}.tx .bt{grid-template-columns:1fr}.tx .br{border-left:0;border-top:1px solid #dbe5f1}.tx .hd1{flex-direction:column}.tx .hco{max-width:none;text-align:left}}
+@media print{#inv .sheet.tx{max-width:194mm}.tx .bx{border-radius:0;box-shadow:none}}
 .tf td{white-space:normal}.tf td:nth-child(3),.tf th:nth-child(3){border-left:2px solid var(--b)}
+/* AYURGRA HERBAL THEME */
+:root{--bg:#eef3ee;--c:#fff;--t:#17261f;--m:#5f7268;--g:#2b7a57;--g2:#12392c;--s:#e3f0e8;--b:#d6e2d9;--r:#b93a2e;--y:#b9770e;--gold:#d99a1c;--side:#12392c;--sh:0 1px 2px #12392c0d,0 6px 18px #12392c10;--rad:14px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1713;--c:#15231c;--t:#e6f1ea;--m:#92a99b;--g:#4fb37f;--g2:#0f2f24;--s:#1b3328;--b:#25392e;--r:#ff8f82;--y:#f0b44c;--gold:#f0b44c;--side:#0a1a13;--sh:none}}
+:root[data-theme="dark"]{--bg:#0d1713;--c:#15231c;--t:#e6f1ea;--m:#92a99b;--g:#4fb37f;--g2:#0f2f24;--s:#1b3328;--b:#25392e;--r:#ff8f82;--y:#f0b44c;--gold:#f0b44c;--side:#0a1a13;--sh:none}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h3,.brand,.v,.ivno{font-family:Georgia,"Iowan Old Style","Palatino Linotype",serif;letter-spacing:-.01em}
+.hd{background:radial-gradient(520px 200px at 92% -40%,#d99a1c40,transparent 70%),linear-gradient(135deg,var(--g2),#1d5c43);padding:26px 22px 56px}
+.hd h1{font-size:26px;font-weight:600}.hd p{opacity:.8}
+.hd .btn{background:var(--gold);color:#2a1b00;box-shadow:0 3px 10px #0003}
+main{max-width:1000px;margin-top:-38px}
+.card{border-radius:var(--rad);padding:18px;box-shadow:var(--sh)}
+.card h3{font-size:18px}
+h4{font-family:inherit;text-transform:none;letter-spacing:0;font-size:15px;font-weight:700;color:var(--t);margin:24px 2px 10px;display:flex;align-items:center;gap:10px}
+h4::after{content:"";flex:1;height:1px;background:var(--b)}
+.kp .card{position:relative;overflow:hidden;padding:15px 16px}
+.kp .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(var(--g),var(--gold))}
+.v{font-size:24px;font-weight:700;color:var(--t)}
+input,select{border-radius:10px;background:var(--c);transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{outline:0;border-color:var(--g);box-shadow:0 0 0 3px #2b7a5726}
+.btn{background:linear-gradient(180deg,#34906a,var(--g));border-radius:10px;box-shadow:0 1px 2px #12392c33;transition:transform .12s,filter .12s}
+.btn:hover{filter:brightness(1.07)}.btn:active{transform:translateY(1px)}
+.btn.o{background:var(--s);color:var(--g);box-shadow:none}.btn.d{background:transparent;box-shadow:none}.btn.d:hover{background:#b93a2e14}
+.btn:focus-visible,#nav button:focus-visible,.chips button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.chips button{transition:background .15s}.chips button.on{background:var(--g2);border-color:var(--g2)}
+.tw{border-radius:10px}
+table{border-collapse:separate;border-spacing:0}
+th{background:var(--s);color:var(--g2);font-weight:700;font-size:12px;padding:10px 8px;position:sticky;top:0}
+:root[data-theme="dark"] th{color:var(--t)}
+th:first-child{border-radius:9px 0 0 9px}th:last-child{border-radius:0 9px 9px 0}
+td{padding:10px 8px}tbody tr:hover td,table tr:hover td{background:#2b7a570a}
+.tag{border-radius:20px;padding:4px 10px;background:var(--s)}
+.tag.Pending,.Pending.tag{background:#d99a1c26}.tag.Rejected,.tag.Cancelled{background:#b93a2e1c}
+.av{background:linear-gradient(135deg,var(--s),#f4e3b8);color:var(--g2)}
+.empty{padding:34px 0}
+#md{backdrop-filter:blur(3px);background:#0a1a13bb}.mb{border-radius:18px;border:1px solid var(--b)}
+.tsum{background:var(--s);border:1px solid var(--b)}
+aside{box-shadow:0 -4px 16px #12392c14}
+@media(min-width:820px){
+ aside{background:linear-gradient(180deg,var(--side),#0c2a20);border-right:0;width:236px;box-shadow:none}
+ .brand{color:#fff;font-size:22px;padding:6px 8px 18px;margin-bottom:14px;border-bottom:1px solid #ffffff1f}
+ .brand small{color:#9ec7b1;font-family:system-ui,sans-serif;font-size:12px;margin-top:2px}
+ #nav{overflow:visible;max-height:none}
+ #nav button{color:#b9d3c5;border-radius:10px;transition:background .15s,color .15s}
+ #nav button:hover{background:#ffffff12;color:#fff}
+ #nav button.on{background:#ffffff1f;color:#fff;box-shadow:inset 3px 0 0 var(--gold)}
+ .ct{margin-left:236px}
+}
+#nav button.on{color:var(--g)}
+@media(min-width:820px){#nav button.on{color:#fff}}
+#lg{background:radial-gradient(900px 460px at 8% -12%,#2b7a572e,transparent 62%),radial-gradient(760px 420px at 108% 112%,#d99a1c24,transparent 60%),var(--bg)}
+.lgtop{background:linear-gradient(90deg,var(--g2),var(--g),var(--gold))!important}
+#inv .sheet h2,#inv .ivmeta b{color:#12392c}#inv .ivtop{border-bottom-color:#12392c}#inv .ivn{border-left-color:#2b7a57;background:#eef3ee}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.ldg{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:70px 0;color:var(--m);font-size:14px}
+.spin{width:46px;height:46px;border-radius:50%;border:4px solid var(--s);border-top-color:var(--g);border-right-color:var(--gold);animation:spn .8s linear infinite}
+@keyframes spn{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spin{animation:spn 2.4s linear infinite!important}}
 </style></head><body>
 <div id="lg"><div class="lgb" id="lgb">
  <div class="lgtop"></div><div class="lgmark">🌿</div><h2>Ayurgra</h2><p id="lgsub">Office panel · sign in to continue</p>
@@ -176,7 +273,7 @@ textarea{width:100%;font:inherit;border:1px solid var(--b);border-radius:11px;pa
  <div class="lgfoot"><span class="dot" id="dot"></span><span id="net">checking cloud connection…</span></div>
 </div></div>
 <div id="shell" hidden><aside><div class="brand">🌿 Ayurgra<small>Office panel</small></div><div id="nav"></div></aside><div class="ct"><div class="hd" id="hd"></div><main id="app"></main></div></div>
-<div id="md" hidden></div><div id="inv" hidden></div><div id="tst" role="status" aria-live="polite"></div><div id="dlg" hidden></div>
+<div id="md" hidden></div><div id="inv" hidden></div><div id="dlg" hidden></div>
 <script>
 const SUP_URL='https://yrvpfbsbbpfpkpnhzxyi.supabase.co';
 const SUP_KEY='sb_publishable_8JL0NpLprDRGpJu5sMw61Q_mPM-MimE';
@@ -188,7 +285,10 @@ const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const hit=(k,...v)=>!k||v.join(' ').toLowerCase().includes(k);
 const sum=a=>a.reduce((x,y)=>x+y,0);
 const gross=o=>sum(o.items.map(i=>(i.q-i.r)*i.pr));
-const tot=o=>{const g=gross(o),d=Math.min(+o.disc||0,g);return Math.round((g-d)*(1+(+o.taxp||0)/100))};
+const lineGst=(i,o)=>i.g!=null&&i.g!==''?+i.g:(+o.taxp||0);
+const gstRates=o=>[...new Set(o.items.map(i=>lineGst(i,o)).filter(g=>g>0))];
+const gstAvg=it=>{const b=sum(it.map(i=>(i.q-(+i.r||0))*i.pr));return b?Math.round(sum(it.map(i=>(i.q-(+i.r||0))*i.pr*(+i.g||0)))/b*100)/100:0};
+const tot=o=>{const g=gross(o),d=Math.min(+o.disc||0,g);return Math.round(g-d+(g?sum(o.items.map(i=>(i.q-i.r)*i.pr*lineGst(i,o)))/100*(g-d)/g:0))};
 const live=()=>S.o.filter(o=>o.st!='Cancelled');
 const led=()=>S.o.filter(o=>o.st!='Pending'&&o.st!='Cancelled');
 const ebal=e=>sum(led().filter(o=>o.by==e).map(tot))-sum(S.s.filter(s=>s.ex==e&&s.st=='Settled').map(s=>s.amt));
@@ -212,12 +312,12 @@ function gfail(e){if(/gst/i.test(err(e)))return alert('The customers table needs
 const rSt=r=>({id:r.id,name:r.name,phone:r.phone||'',area:r.area||'',designation:r.designation||'',join:r.join_date||''});
 const rS=r=>({id:r.id,ex:r.ex,amt:+r.amount,mode:r.mode,date:r.date,st:{Approved:'Settled',Rejected:'Cancelled'}[r.status]||r.status});
 const rPay=r=>({id:r.id,cust:r.cust,amt:+r.amount,mode:r.mode,date:r.date,by:r.collected_by||'',dis:+(r.discount||0),rem:r.remarks||'',inv:r.invoice||'',st:{Approved:'Settled',Received:'Settled',Rejected:'Cancelled'}[r.status]||r.status||'Settled'});
-const rPd=r=>({id:r.id,serial:+(r.serial||0),name:r.name,pcs:+(r.pcs||0),rate:+(r.rate||0),image:r.image||'',hsn:r.hsn||'',uom:r.uom||''});
+const rPd=r=>({id:r.id,serial:+(r.serial||0),name:r.name,pcs:+(r.pcs||0),rate:+(r.rate||0),image:r.image||'',hsn:r.hsn||'',uom:r.uom||'',gst:+(r.gst||0)});
 const ST=()=>S.st.map(x=>x.name);
 const byName=a=>a.sort((x,y)=>x.name.localeCompare(y.name));
 
 let S={o:[],s:[],cp:[],c:[],st:[],prod:[],pu:[],cn:[],pn:[],rt:[],ex:[]},ME=null,LMODE='in';
-let pfa='',pfb='',RC={y:new Date().getFullYear(),m:new Date().getMonth(),s:'All'},cf='All',sel=new Set(),PIMG='',MS='Confirmed',MISS=[],qb='',qe='';
+let pfa='',pfb='',RC={y:new Date().getFullYear(),m:new Date().getMonth(),s:'All'},cf='All',sel=new Set(),PIMG='',DG=0,MS='Confirmed',MISS=[],qb='',qe='';
 let CO={name:'Ayurgra Herbal Soap',tag:'Ayurvedic & herbal products',addr:'',phone:'',email:'',gst:'',fssai:'',bank:'',branch:'',acno:'',ifsc:'',qr:''};
 let tab='orders',f='All',q='',qc='',qs='',qk='',lq='',lt='Customer',le='';
 let odf='',odt='',cdf='',cdt='',ldf='',ldt='';
@@ -252,43 +352,46 @@ async function enter(me){
  $('#lg').hidden=true;$('#shell').hidden=false;
  await sync();
 }
-function out(){sessionStorage.removeItem('ay.me');location.reload()}
+function out(){sessionStorage.removeItem('ay.me');try{localStorage.removeItem('ay.cache')}catch(e){}location.reload()}
 async function ping(){
  if(!db)return;
  const {error}=await db.from('accounts').select('id',{count:'exact',head:true});
  if(error){$('#dot').className='dot no';$('#net').textContent='not connected — '+error.message.slice(0,70)}
  else{$('#dot').className='dot ok';$('#net').textContent='connected to Ayurgra cloud'}
 }
+function applyData(d){
+ S={o:d.o.map(rO),c:byName(d.c.map(rC)),st:byName(d.st.map(rSt)),prod:d.pr.map(rPd),s:d.s.map(rS),cp:d.cp.map(rPay)};
+ try{const l=JSON.parse(localStorage.getItem('ay.co')||'null');if(l)Object.assign(CO,l)}catch(e){}
+ const x=d.co;if(x)Object.assign(CO,{name:x.name||CO.name,tag:x.tag||'',addr:x.addr||'',phone:x.phone||'',email:x.email||'',gst:x.gst||'',fssai:x.fssai??CO.fssai,bank:x.bank??CO.bank,branch:x.branch??CO.branch,acno:x.acno??CO.acno,ifsc:x.ifsc??CO.ifsc,qr:x.qr??CO.qr});
+ MISS=d.miss||[];[S.pu,S.cn,S.pn,S.rt,S.ex]=[d.pu.map(kgRow),d.cn.map(kgRow),d.pn,d.rt,d.ex]}
 async function sync(){
- $('#app').innerHTML=accBar()+'<div class="empty">Loading from Supabase…</div>';
+ let hit=false;
+ try{const c=JSON.parse(localStorage.getItem('ay.cache')||'null');if(c&&c.me==(ME&&ME.phone)&&c.d){applyData(c.d);hit=true;R()}}catch(e){}
+ if(!hit)$('#app').innerHTML=accBar()+'<div class="ldg" role="status" aria-live="polite"><div class="spin"></div><div>Loading data…</div></div>';
  try{
-  const [o,c,st,pr,s,cp]=await Promise.all([
-   db.from('orders').select('*').order('id',{ascending:false}),
-   db.from('customers').select('*').order('name'),
-   db.from('staff').select('*').order('name'),
+  const q=(t,o)=>db.from(t).select('*').order(o||'id',{ascending:!!o}),opt=t=>q(t).then(r=>({t,data:r.error?null:r.data}));
+  const [o,c,st,pr,s,cp,co,pu,cn,pn,rt,ex]=await Promise.all([
+   q('orders'),q('customers','name'),q('staff','name'),
    db.from('products').select('*').order('serial',{ascending:true}).order('id',{ascending:true}),
-   db.from('settlements').select('*').order('id',{ascending:false}),
-   db.from('payments').select('*').order('id',{ascending:false})]);
+   q('settlements'),q('payments'),
+   db.from('company').select('*').eq('id',1).maybeSingle().then(r=>r,()=>({})),
+   opt('purchases'),opt('consumption'),opt('production'),opt('staff_routes'),opt('expenses')]);
   const bad=[o,c,st,pr,s,cp].find(r=>r.error);
   if(bad)throw new Error(bad.error.message+' — is the schema created and reachable?');
-  S={o:o.data.map(rO),c:byName(c.data.map(rC)),st:byName(st.data.map(rSt)),prod:pr.data.map(rPd),s:s.data.map(rS),cp:cp.data.map(rPay)};
-  try{const l=JSON.parse(localStorage.getItem('ay.co')||'null');if(l)Object.assign(CO,l)}catch(e){}
-  try{const cr=await db.from('company').select('*').eq('id',1).maybeSingle();if(cr.data)Object.assign(CO,{name:cr.data.name||CO.name,tag:cr.data.tag||'',addr:cr.data.addr||'',phone:cr.data.phone||'',email:cr.data.email||'',gst:cr.data.gst||'',fssai:cr.data.fssai??CO.fssai,bank:cr.data.bank??CO.bank,branch:cr.data.branch??CO.branch,acno:cr.data.acno??CO.acno,ifsc:cr.data.ifsc??CO.ifsc,qr:cr.data.qr??CO.qr})}catch(e){}
-  MISS=[];const L=async t=>{const r=await db.from(t).select('*').order('id',{ascending:false});if(r.error){MISS.push(t);return[]}return r.data};
-  [S.pu,S.cn,S.pn,S.rt,S.ex]=await Promise.all([L('purchases'),L('consumption'),L('production'),L('staff_routes'),L('expenses')]);
-  R();
- }catch(e){$('#app').innerHTML=accBar()+`<div class="card"><b>Could not load data</b><div class="m" style="margin-top:6px">${esc(err(e))}</div><button class="btn" onclick="sync()">Retry</button></div>`}
+  const ex2=[pu,cn,pn,rt,ex];
+  const d={o:o.data,c:c.data,st:st.data,pr:pr.data,s:s.data,cp:cp.data,co:co&&co.data||null,miss:ex2.filter(x=>x.data===null).map(x=>x.t),pu:pu.data||[],cn:cn.data||[],pn:pn.data||[],rt:rt.data||[],ex:ex.data||[]};
+  applyData(d);
+  try{localStorage.setItem('ay.cache',JSON.stringify({me:ME&&ME.phone,d}))}catch(e){}
+  if(!hit||!MF)R();
+ }catch(e){if(!hit)$('#app').innerHTML=accBar()+`<div class="card"><b>Could not load data</b><div class="m" style="margin-top:6px">${esc(err(e))}</div><button class="btn" onclick="sync()">Retry</button></div>`}
 }
 const accBar=()=>`<div class="card ac"><span>Signed in as <b>${esc(ME&&ME.name||ME&&ME.phone||'')}</b></span><span><button class="btn o" onclick="sync()">⟳ Refresh</button><button class="btn d" onclick="out()">Logout</button></span></div>`;
 
-/* MODAL + TOAST */
-let MF=null,TT=null;
+/* MODAL */
+let MF=null;
 function openM(t,fn,wide,cm){MF={t,fn,wide,cm};$('#md').className=(wide?'wide':'')+(cm?' cm':'');$('#md').innerHTML=cm?`<div class="mb"><div class="cmh"><h3>${t}</h3><button class="cx" onclick="closeM()" aria-label="Close">✕</button></div><div class="cmbody">${fn()}</div></div>`:`<div class="mb"><div class="mh"><h3>${t}</h3><button class="btn d" onclick="closeM()">✕ Close</button></div>${fn()}</div>`;$('#md').hidden=false}
 function closeM(){$('#md').hidden=true;$('#md').innerHTML='';$('#md').className='';MF=null}
-function done(m){closeM();toast(m)}
-function toast(m){
- clearTimeout(TT);$('#tst').innerHTML=`<div class="tic">✓</div><div>${esc(m)}</div>`;$('#tst').classList.add('on');
- TT=setTimeout(()=>$('#tst').classList.remove('on'),2800)}
+function done(){closeM()}
 function dlg(o){return new Promise(res=>{
  const d=$('#dlg'),t=o.t||'ok',ic={ok:'✓',warn:'!',ask:'?'}[t];
  d.innerHTML=`<div class="dbox ${t}"><div class="dic">${ic}</div><h3>${esc(o.title||'')}</h3><div class="dmsg">${esc(o.msg||'')}</div><div class="dbt">${o.cancel?`<button class="btn o" id="dno">${o.cancel}</button>`:''}<button class="btn" id="dyes">${o.ok||'OK'}</button></div></div>`;
@@ -298,10 +401,10 @@ function dlg(o){return new Promise(res=>{
 const cfm=(msg,ok)=>dlg({t:'ask',title:'Please confirm',msg,ok:ok||'Yes, continue',cancel:'Cancel'});
 window.alert=m=>{dlg({t:'warn',title:'Please check',msg:String(m)})};
 const newOrder=()=>openM('New invoice',form,1);
-const newColl=()=>openM('Add Collection',()=>collFields(null,'cp'),1,1);
-const newCust=()=>openM('New customer',custForm);
+const newColl=()=>{openM('Add Collection',()=>collFields(null,'cp'),1,1);setTimeout(()=>collBal('cp'),0)};
+const newCust=()=>openM('New customer',custForm,1,1);
 const newStaff=()=>openM('Add staff',()=>staffForm());
-function custForm(){return `<div class="k">Name</div><input id="cn" placeholder="Shop / customer name"><div class="k">Phone</div><input id="cph" placeholder="Phone"><div class="k">Address</div><input id="ca" placeholder="Address"><div class="k">GST number (leave blank for B2C)</div><input id="cgst" maxlength="15" placeholder="15-character GSTIN" style="text-transform:uppercase"><button class="btn" onclick="addC()">Save customer</button>`}
+function custForm(){return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="cn" placeholder="e.g. Vaidya Herbal Store"></div><div><div class="k">Phone</div><input id="cph" inputmode="numeric" maxlength="15" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="cgst" maxlength="15" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="ca" placeholder="Shop address, city, state"></div><div class="m" style="grid-column:span 4">Leave GST blank for a B2C shop. A valid 15-character GSTIN marks the customer B2B and splits tax as CGST / SGST on the invoice.</div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="addC()">Submit</button></div>`}
 function staffForm(x){
  const s=x||{name:'',phone:'',area:'',designation:'',join:''};
  return `<div class="k">Name</div><input id="sn" value="${esc(s.name)}" placeholder="Staff / executive name"><div class="k">Mobile number</div><input id="sph" value="${esc(s.phone)}" inputmode="numeric" placeholder="Phone"><div class="fl"><div><div class="k">Designation</div><input id="sdes" value="${esc(s.designation)}" placeholder="e.g. Delivery executive"></div><div><div class="k">Join date</div><input type="date" id="sjd" value="${esc(String(s.join||'').slice(0,10))}"></div></div><div class="k">Area / route</div><input id="sar" value="${esc(s.area)}" placeholder="Area, locality or route"><button class="btn" onclick="${x?`updS(${x.id})`:'addS()'}">Save staff</button>${x?`<button class="btn d" onclick="delS(${x.id})">Delete</button>`:''}`;
@@ -337,22 +440,23 @@ async function msChange(){
  if(!await cfm(`Change ${ids.length} order(s) to ${MS}?`))return;
  const {error}=await db.from('orders').update({status:MS}).in('id',ids);
  if(error)return fail(error);
- S.o.forEach(o=>{if(sel.has(o.id))o.st=MS});sel.clear();R();toast(ids.length+' order(s) set to '+MS)}
+ S.o.forEach(o=>{if(sel.has(o.id))o.st=MS});sel.clear();R()}
 function ol(){
  const list=vis();
  return `${(odf||odt)?`<div class="m hint">${list.length} invoice(s)${rlab(odf,odt)} · ${fm(sum(list.filter(o=>o.st!='Cancelled').map(tot)))} in range. The cards on top stay all-time.</div>`:''}${list.map(oc).join('')||'<div class="empty">No orders found</div>'}`}
 function oc(o){
  const rt=sum(o.items.map(i=>i.r*i.pr));
- return `<div class="card ost-${o.st}"><div class="it"><input type="checkbox" class="ck" ${sel.has(o.id)?'checked':''} onchange="tg(${o.id},this.checked)" title="Select for multiple print"><div class="av">${esc(o.shop[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(o.shop)}</b><span class="amt">${fm(tot(o))}</span></div><div class="m">${o.no} · ${o.date} · ${esc(o.by)}</div><div class="m">${o.items.map(i=>i.q+'× '+i.p).join(', ')}${rt?` · returns ${fm(rt)}`:''}${o.disc?` · discount ${fm(o.disc)}`:''}${o.taxp?` · GST ${o.taxp}%`:''}${o.due?` · due ${o.due}`:''}</div>
+ return `<div class="card ost-${o.st}"><div class="it"><input type="checkbox" class="ck" ${sel.has(o.id)?'checked':''} onchange="tg(${o.id},this.checked)" title="Select for multiple print"><div class="av">${esc(o.shop[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(o.shop)}</b><span class="amt">${fm(tot(o))}</span></div><div class="m">${o.no} · ${o.date} · ${esc(o.by)}</div><div class="m">${o.items.map(i=>i.q+'× '+i.p).join(', ')}${rt?` · returns ${fm(rt)}`:''}${o.disc?` · discount ${fm(o.disc)}`:''}${gstRates(o).length?` · GST ${gstRates(o).join('% & ')}%`:''}${o.due?` · due ${o.due}`:''}</div>
  <div class="act"><span class="tag ${o.st}">${o.st}</span> ${btag(S.c.find(x=>x.name==o.shop))}<br><select onchange="stt(${o.id},this.value)">${['Pending','Confirmed','Delivered','Cancelled'].map(s=>`<option ${s==o.st?'selected':''}>${s}</option>`)}</select><button class="btn o" onclick="editO(${o.id})">Edit</button><button class="btn o" onclick="inv(${o.id})">Invoice</button><button class="btn d" onclick="del(${o.id})">Delete</button></div></div></div></div>`}
 function form(e){
- const nxt=e?e.no:'AY-'+String(S.o.reduce((m,o)=>Math.max(m,o.id),0)+1).padStart(4,'0');
+ const nxt=e?e.no:'AY-'+String(S.o.reduce((m,o)=>Math.max(m,o.id),0)+1).padStart(4,'0');DG=e?(+e.taxp||0):0;
  return `<div class="ivh"><div><div class="k">Invoice no.</div><div class="ivno">${nxt}</div></div><div class="ivhcol"><div class="k">Invoice date</div><input id="idate" value="${esc(e?e.date:today())}"></div><div class="ivhcol"><div class="k">Status</div><select id="ist">${['Pending','Confirmed','Delivered',...(e?['Cancelled']:[])].map(x=>`<option ${e&&x==e.st?'selected':''}>${x}</option>`).join('')}</select></div></div>`
  +`<div class="fl"><div><div class="k">Bill to (customer / shop)</div><input id="shop" list="cl" value="${esc(e?e.shop:'')}" placeholder="Type or pick customer" oninput="oiCust()"><datalist id="cl">${S.c.map(c=>`<option value="${esc(c.name)}">`).join('')}</datalist><div class="m" id="custinfo"></div></div><div><div class="k">Order for</div><select id="by">${['Office',...S.st.map(x=>x.name),...(e&&e.by!='Office'&&!S.st.some(x=>x.name==e.by)?[e.by]:[])].map(n=>`<option ${e&&n==e.by?'selected':''}>${esc(n)}</option>`).join('')}</select></div></div>`
- +`<div class="tw"><table class="oit"><thead><tr><th class="c">#</th><th>Item</th><th class="n">Box</th><th class="n">Pcs</th><th class="n">Rate</th><th class="n">Amount</th><th class="c"></th></tr></thead><tbody id="oib">${e?e.items.map(i=>oiRow(i)).join(''):oiRow()}</tbody></table></div>`
- +`<datalist id="oip">${S.prod.map(p=>`<option value="${esc(p.name)}">${fm(p.rate)}${p.pcs?' · '+p.pcs+' pcs/box':''} · stock ${nf(made(p.name)-sold(p.name))}</option>`).join('')}</datalist>`
+ +`<div class="tw"><table class="oit"><thead><tr><th class="c">#</th><th>Item</th><th class="n">Box</th><th class="n">Pcs</th><th class="n">Rate</th><th class="n">GST %</th><th class="n">Amount</th><th class="c"></th></tr></thead><tbody id="oib">${e?e.items.map(i=>oiRow(i)).join(''):oiRow()}</tbody></table></div>`
+ +`<datalist id="oip">${S.prod.map(p=>`<option value="${esc(p.name)}">${fm(p.rate)}${p.gst?' · GST '+p.gst+'%':''}${p.pcs?' · '+p.pcs+' pcs/box':''} · stock ${nf(made(p.name)-sold(p.name))}</option>`).join('')}</datalist>`
  +`<button class="btn o" type="button" onclick="oiAdd()">+ Add item</button>`
- +`<div class="oitot"><div class="fl2"><div><div class="k">Discount (₹)</div><input type="number" min="0" id="idisc" value="${e?e.disc:0}" oninput="oiRec()"></div><div><div class="k">GST / tax (%)</div><input type="number" min="0" max="100" id="itaxp" value="${e?e.taxp:0}" oninput="oiRec()"></div></div><div class="tsum"><div class="r1"><span>Subtotal</span><b id="tsub">₹0</b></div><div class="r1"><span>Discount</span><b id="tdisc">−₹0</b></div><div class="r1"><span>GST / tax</span><b id="ttax">₹0</b></div><div class="r1 gt"><span>Grand total</span><b id="tgrand">₹0</b></div></div></div>`
+ +`<div class="m hint">GST % is filled from the product — change it on any line if needed.</div>`
+ +`<div class="oitot"><div class="fl2"><div><div class="k">Discount (₹)</div><input type="number" min="0" id="idisc" value="${e?e.disc:0}" oninput="oiRec()"></div></div><div class="tsum"><div class="r1"><span>Subtotal</span><b id="tsub">₹0</b></div><div class="r1"><span>Discount</span><b id="tdisc">−₹0</b></div><div class="r1"><span>GST / tax</span><b id="ttax">₹0</b></div><div class="r1 gt"><span>Grand total</span><b id="tgrand">₹0</b></div></div></div>`
  +`<div class="fl"><div><div class="k">Payment due (optional)</div><input id="idue" value="${esc(e?e.due:'')}" placeholder="dd/mm/yyyy"></div><div><div class="k">Notes / terms</div><input id="inote" value="${esc(e?e.notes:'')}" placeholder="e.g. 50% advance, balance on delivery"></div></div>`
  +`<button class="btn" type="button" onclick="${e?'upO('+e.id+')':'mk()'}">${e?'Save changes':'Create invoice'}</button>`}
 const ppbOf=n=>{const p=S.prod.find(x=>x.name.toLowerCase()==String(n||'').trim().toLowerCase());return p?+p.pcs||0:0};
@@ -360,22 +464,25 @@ const rowQ=tr=>(+tr.querySelector('.ib').value||0)*ppbOf(tr.querySelector('.ip')
 const bxOf=i=>{if(i.bx!=null)return +i.bx;const b=ppbOf(i.p);return b?Math.floor(i.q/b):0};
 function oiRow(v){
  v=v||{q:1,pr:''};const pb=ppbOf(v.p),bx=v.bx!=null?+v.bx:(pb?Math.floor(v.q/pb):0),pc=v.q-bx*pb;
- return `<tr><td class="c">1</td><td><input class="ip" list="oip" value="${esc(v.p||'')}" placeholder="Item / product name" oninput="oiAuto(this)"></td><td class="n"><input class="ib" type="number" min="0" value="${bx}" oninput="oiRec()"></td><td class="n"><input class="iq" type="number" min="0" value="${pc}" oninput="oiRec()"></td><td class="n"><input class="ipr" type="number" min="0" step="0.01" value="${v.pr}" placeholder="0.00" oninput="oiRate(this)"></td><td class="n ia">₹0</td><td class="c"><button class="ix" type="button" title="Remove this item" onclick="oiDel(this)">✕</button></td></tr>`}
+ return `<tr><td class="c">1</td><td><input class="ip" list="oip" value="${esc(v.p||'')}" placeholder="Item / product name" oninput="oiAuto(this)"></td><td class="n"><input class="ib" type="number" min="0" value="${bx}" oninput="oiRec()"></td><td class="n"><input class="iq" type="number" min="0" value="${pc}" oninput="oiRec()"></td><td class="n"><input class="ipr" type="number" min="0" step="0.01" value="${v.pr}" placeholder="0.00" oninput="oiRate(this)"></td><td class="n"><input class="ig" type="number" min="0" max="100" step="any" value="${v.g!=null&&v.g!==''?v.g:(DG||'')}" placeholder="0" oninput="oiGst(this)"></td><td class="n ia">₹0</td><td class="c"><button class="ix" type="button" title="Remove this item" onclick="oiDel(this)">✕</button></td></tr>`}
 function oiAuto(el){
- const r=el.closest('tr').querySelector('.ipr'),m=S.prod.find(p=>p.name.toLowerCase()==el.value.trim().toLowerCase());
+ const tr=el.closest('tr'),r=tr.querySelector('.ipr'),g=tr.querySelector('.ig'),m=S.prod.find(p=>p.name.toLowerCase()==el.value.trim().toLowerCase());
  if(m&&(!r.value||r.dataset.auto=='1')){r.value=m.rate;r.dataset.auto='1'}
+ if(m&&(!g.value||g.dataset.auto=='1')){g.value=+m.gst||0;g.dataset.auto='1'}
  oiRec()}
 function oiRate(el){el.dataset.auto='';oiRec()}
+function oiGst(el){el.dataset.auto='';oiRec()}
 function oiAdd(){const tb=$('#oib');tb.insertAdjacentHTML('beforeend',oiRow());tb.lastElementChild.querySelector('.ip').focus();oiRec()}
 function oiDel(btn){if($('#oib').children.length<2)return alert('An invoice needs at least one item');btn.closest('tr').remove();oiRec()}
 function oiRec(){
- let sub=0;
+ let sub=0,tax=0;
  document.querySelectorAll('#oib tr').forEach((tr,i)=>{
   tr.children[0].textContent=i+1;
   const a=rowQ(tr)*(+tr.querySelector('.ipr').value||0);
-  tr.querySelector('.ia').textContent=fm(a);sub+=a});
- const d=Math.min(+$('#idisc').value||0,sub),gt=Math.round((sub-d)*(1+(+$('#itaxp').value||0)/100));
- $('#tsub').textContent=fm(sub);$('#tdisc').textContent='−'+fm(d);$('#ttax').textContent=fm(gt-(sub-d));$('#tgrand').textContent=fm(gt)}
+  tr.querySelector('.ia').textContent=fm(a);sub+=a;tax+=a*(+tr.querySelector('.ig').value||0)/100});
+ const d=Math.min(+$('#idisc').value||0,sub);if(sub)tax*=(sub-d)/sub;
+ const gt=Math.round(sub-d+tax);
+ $('#tsub').textContent=fm(sub);$('#tdisc').textContent='−'+fm(d);$('#ttax').textContent=fm(Math.round(tax));$('#tgrand').textContent=fm(gt)}
 function oiCust(){
  const n=$('#shop').value.trim(),c=S.c.find(x=>x.name.toLowerCase()==n.toLowerCase());
  $('#custinfo').innerHTML=c?`${esc(c.phone||'no phone')} ${esc(c.addr||'')} · due <span class="${cbal(c.name)>0?'bad':'ok'}">${fm(cbal(c.name))}</span>`
@@ -390,7 +497,7 @@ async function mk(){
  const need={};items.forEach(i=>{const pr=S.prod.find(x=>x.name.toLowerCase()==i.p.toLowerCase());if(pr)need[pr.name]=(need[pr.name]||0)+i.q});
  const bad=Object.keys(need).map(n=>{const av=made(n)-sold(n);return av<=0?n+': out of stock':need[n]>av?`${n}: only ${nf(av)} in stock, you entered ${nf(need[n])}`:''}).filter(x=>x);
  if(bad.length)return alert('This order cannot be created.\n\n'+bad.join('\n')+'\n\nAdd production in Products & Stock first.');
- const sub=sum(items.map(i=>i.q*i.pr)),disc=Math.min(+$('#idisc').value||0,sub),taxp=+$('#itaxp').value||0;
+ const sub=sum(items.map(i=>i.q*i.pr)),disc=Math.min(+$('#idisc').value||0,sub),taxp=gstAvg(items);
  const {data,error}=await db.from('orders').insert({date,agent:$('#by').value,shop,items,disc,taxp,status:$('#ist').value,due:$('#idue').value.trim(),notes:$('#inote').value.trim()}).select().single();
  if(error)return fail(error);
  S.o.unshift(rO(data));R();done('Invoice '+rO(data).no+' saved for '+data.shop)}
@@ -404,14 +511,14 @@ async function upO(id){
  if(due&&!pd(due))return alert('Payment due must be dd/mm/yyyy or left blank');
  if(!items.length)return alert('Add at least one item with a name and a quantity');
  const old=e.items.slice();items.forEach(i=>{const k=old.findIndex(x=>x.p==i.p);if(k>-1){i.r=Math.min(+old[k].r||0,i.q);old.splice(k,1)}});
- const sub=sum(items.map(i=>i.q*i.pr)),disc=Math.min(+$('#idisc').value||0,sub),taxp=+$('#itaxp').value||0;
+ const sub=sum(items.map(i=>i.q*i.pr)),disc=Math.min(+$('#idisc').value||0,sub),taxp=gstAvg(items);
  const row={date,agent:$('#by').value,shop,items,disc,taxp,status:$('#ist').value,due,notes:$('#inote').value.trim()};
  const {error}=await db.from('orders').update(row).eq('id',id);
  if(error)return fail(error);
  Object.assign(e,{date,by:row.agent,shop,items,disc,taxp,st:row.status,due,notes:row.notes});R();done('Invoice '+e.no+' updated')}
 function oiLines(){
  const out=[];
- document.querySelectorAll('#oib tr').forEach(tr=>out.push({p:tr.querySelector('.ip').value.trim(),q:rowQ(tr),bx:+tr.querySelector('.ib').value||0,pr:+tr.querySelector('.ipr').value||0,r:0}));
+ document.querySelectorAll('#oib tr').forEach(tr=>out.push({p:tr.querySelector('.ip').value.trim(),q:rowQ(tr),bx:+tr.querySelector('.ib').value||0,pr:+tr.querySelector('.ipr').value||0,g:+tr.querySelector('.ig').value||0,r:0}));
  return out}
 async function stt(id,v){
  const {error}=await db.from('orders').update({status:v}).eq('id',id);
@@ -434,19 +541,26 @@ function cx(){
  const card=x=>`<div class="card ost-${x.st}"><div class="top"><b>${fm(x.a)} · ${esc(x.m)}</b><span class="tag ${x.st}">${x.st}</span></div><div class="m">${esc(x.t)} · ${x.d}</div>${x.st=='Pending'?`<button class="btn" onclick="apc('${x.k}',${x.id},'Settled')">Settle</button><button class="btn d" onclick="apc('${x.k}',${x.id},'Cancelled')">Cancel</button>`:''}<button class="btn o" onclick="editColl('${x.k}',${x.id})">Edit</button><button class="btn d" onclick="delColl('${x.k}',${x.id})">Delete</button></div>`;
  return `${(cdf||cdt)?`<div class="m hint">${all.length} entry(ies)${rlab(cdf,cdt)} · ${fm(sum(all.filter(x=>x.k=='cp'&&x.st=='Settled').map(x=>x.a)))} settled from customers in range. The cards on top stay all-time.</div>`:''}<div class="m hint">Pending entries are added to the ledger only once settled.</div>${all.map(card).join('')||`<div class="empty">${k||cdf||cdt||cf!='All'?'Nothing matches this filter':'No collection entries yet'}</div>`}`}
 function collRec(k,id){return (k=='s'?S.s:S.cp).find(x=>x.id==id)}
-function editColl(k,id){const x=collRec(k,id);if(x)openM(k=='s'?'Edit Settlement':'Edit Collection',()=>collFields(x,k),1,1)}
+function editColl(k,id){const x=collRec(k,id);if(x){openM(k=='s'?'Edit Settlement':'Edit Collection',()=>collFields(x,k),1,1);setTimeout(()=>collBal(k),0)}}
 const i2d=i=>{const [y,m,d]=String(i).split('-');return `${d}/${m}/${y}`};
 const d2i=t=>{const m=String(t).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?`${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`:tod()};
 function collFields(x,k){
  const cp=k=='cp',val=x?(cp?x.cust:x.ex):'',L=cp?S.c.map(c=>c.name):[...ST()];if(val&&!L.includes(val))L.unshift(val);
  const sl=(id,o,c)=>`<select id="${id}">${o.map(v=>`<option ${v==c?'selected':''}>${v}</option>`).join('')}</select>`;
+ const cur=x&&x.st=='Settled'?(+x.amt||0)+(cp?+x.dis||0:0):0;
  return `<div class="cg"><div><div class="k rq">Date</div><input type="date" id="cd" value="${x?d2i(x.date):tod()}"></div>`
- +`<div><div class="k rq">${cp?'Customer':'Executive'}</div><select id="cw">${L.map(n=>`<option value="${esc(n)}" ${n==val?'selected':''}>${esc(n)}${cp?' (due '+fm(cbal(n))+')':''}</option>`).join('')||`<option value="">${cp?'Add a customer first':'Add staff first'}</option>`}</select></div>`
- +`<div><div class="k rq">Amount</div><input type="number" min="0" step="any" id="ca" value="${x?x.amt:''}"></div>`
- +(cp?`<div><div class="k">Cash Discount</div><input type="number" min="0" step="any" id="cdi" value="${x&&x.dis?x.dis:''}"></div><div><div class="k">Remarks</div><textarea id="crm" rows="1">${esc(x?x.rem:'')}</textarea></div><div><div class="k">Invoice</div><input id="cinv" value="${esc(x?x.inv:'')}" placeholder="Invoice no."></div>`:'')
+ +`<div><div class="k rq">${cp?'Customer':'Executive'}</div><select id="cw" onchange="collBal('${k}')">${L.map(n=>`<option value="${esc(n)}" ${n==val?'selected':''}>${esc(n)}${cp?' (due '+fm(cbal(n))+')':''}</option>`).join('')||`<option value="">${cp?'Add a customer first':'Add staff first'}</option>`}</select><div class="m" id="cbal" data-add="${cur}" style="margin:-4px 0 0;font-size:12px;line-height:1.4"></div></div>`
+ +`<div><div class="k rq">Amount</div><input type="number" min="0" step="any" id="ca" value="${x?x.amt:''}" oninput="collBal('${k}')"></div>`
+ +(cp?`<div><div class="k">Cash Discount</div><input type="number" min="0" step="any" id="cdi" value="${x&&x.dis?x.dis:''}" oninput="collBal('${k}')"></div><div><div class="k">Remarks</div><textarea id="crm" rows="1">${esc(x?x.rem:'')}</textarea></div><div><div class="k">Invoice</div><input id="cinv" value="${esc(x?x.inv:'')}" placeholder="Invoice no."></div>`:'')
  +`<div><div class="k rq">Payment Mode</div>${sl('cm',['Cash','UPI','Bank'],x?x.mode:'Cash')}</div><div><div class="k rq">Status</div>${sl('cst',['Pending','Settled','Cancelled'],x?x.st:'Pending')}</div>`
  +(cp?`<div><div class="k">Insert Staff</div><select id="cby">${bySel(x?x.by:'')}</select></div>`:'')
  +`</div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveColl('${k}',${x?x.id:'null'})">Submit</button></div>`}
+function collBal(k){
+ const w=$('#cw'),el=$('#cbal');if(!w||!el)return;
+ const n=w.value;if(!n)return el.textContent='';
+ const due=k=='cp'?cbal(n):ebal(n),a=+$('#ca').value||0,d=k=='cp'?(+$('#cdi').value||0):0,cur=+el.dataset.add||0,left=Math.round((due+cur-a-d)*100)/100;
+ const side=v=>{v=Math.round(v*100)/100;return v>0?fm(v)+' due':v<0?fm(-v)+' advance':'Nil'};
+ el.innerHTML=`<div>Balance <b>${side(due)}</b></div>`+((a||d)?`<div>After this entry <b class="${left>0?'bad':'ok'}">${side(left)}</b></div>`:'')}
 async function saveColl(k,id){
  const cp=k=='cp',x=id?collRec(k,id):null;
  const iso=$('#cd').value,w=$('#cw').value,a=+$('#ca').value||0,st=$('#cst').value,mode=$('#cm').value;
@@ -475,7 +589,7 @@ async function apc(k,id,v){
  const x=collRec(k,id);if(!x)return;
  const {error}=await db.from(k=='s'?'settlements':'payments').update({status:v}).eq('id',id);
  if(error)return pyfail(error);
- x.st=v;R();toast(fm(x.amt)+' '+v.toLowerCase())}
+ x.st=v;R()}
 /* CUSTOMERS */
 function Vu(){
  return `<input placeholder="🔍 Search name, phone or address" value="${esc(qc)}" oninput="qc=this.value;$('#ul').innerHTML=ulList()"><div id="ul">${ulList()}</div>`}
@@ -485,8 +599,8 @@ function ulList(){
 function ucard(c){
  const b=cbal(c.name);
  return `<div class="card"><div class="it"><div class="av">${esc(c.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(c.name)}</b><span class="amt ${b>0?'bad':'ok'}">${fm(b)}</span></div><div class="m">${btag(c)} ${esc(c.phone||'No phone')} · ${esc(c.addr||'No address')}${c.gst?' · GSTIN '+esc(c.gst):''}</div><div class="m">${S.o.filter(o=>o.shop==c.name).length} orders</div><button class="btn o" onclick="lt='Customer';le=this.dataset.n;go('ledger')" data-n="${esc(c.name)}">Open ledger</button><button class="btn o" onclick="editC(${c.id})">Edit</button><button class="btn d" onclick="delC(${c.id})">Delete</button></div></div></div>`}
-function custEditForm(c){return `<div class="k">Shop / customer name</div><input id="ecn" value="${esc(c.name)}"><div class="k">Phone</div><input id="ecph" value="${esc(c.phone||'')}"><div class="k">Address</div><input id="eca" value="${esc(c.addr||'')}"><div class="k">GST number (blank = B2C, filled = B2B)</div><input id="ecg" maxlength="15" value="${esc(c.gst||'')}" placeholder="15-character GSTIN" style="text-transform:uppercase"><button class="btn" onclick="updC(${c.id})">Save changes</button><button class="btn d" onclick="delC(${c.id})">Delete customer</button>`}
-function editC(id){const c=S.c.find(x=>x.id==id);if(c)openM('Edit customer',()=>custEditForm(c))}
+function custEditForm(c){return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="ecn" value="${esc(c.name)}"></div><div><div class="k">Phone</div><input id="ecph" inputmode="numeric" maxlength="15" value="${esc(c.phone||'')}" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="ecg" maxlength="15" value="${esc(c.gst||'')}" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="eca" value="${esc(c.addr||'')}" placeholder="Shop address, city, state"></div><div class="m" style="grid-column:span 4">Editing the name also renames it on this customer's invoices and payments.</div></div><div class="cft"><button class="btn d" type="button" style="margin-right:auto" onclick="delC(${c.id})">Delete</button><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="updC(${c.id})">Submit</button></div>`}
+function editC(id){const c=S.c.find(x=>x.id==id);if(c)openM('Edit customer',()=>custEditForm(c),1,1)}
 async function updC(id){
  const c=S.c.find(x=>x.id==id);if(!c)return closeM();
  const n=$('#ecn').value.trim();
@@ -561,20 +675,31 @@ async function delS(id){
  S.st=S.st.filter(y=>y.id!=id);if(lt=='Executive'&&le==x.name)le='';R();done(x.name+' deleted')}
 /* PRODUCTS */
 function nextSerial(){return S.prod.reduce((m,p)=>Math.max(m,+p.serial||0),0)+1}
-const newProd=()=>openM('Add product',()=>prodForm());
+const newProd=()=>{openM('Add product',()=>prodForm());setTimeout(pCalc,0)};
 function prodForm(x){
- const p=x||{serial:nextSerial(),name:'',pcs:'',rate:'',image:'',hsn:'',uom:''};PIMG=p.image||'';
- return `<div class="fl"><div><div class="k">Serial No</div><input type="number" min="1" id="pser" value="${p.serial||''}" placeholder="Auto"></div><div><div class="k">Rate (₹)</div><input type="number" min="0" step="0.01" id="prate" value="${p.rate||''}" placeholder="0.00"></div></div>`
+ const p=x||{serial:nextSerial(),name:'',pcs:'',rate:'',image:'',hsn:'',uom:'',gst:''};PIMG=p.image||'';
+ return `<div class="fl"><div><div class="k">Serial No</div><input type="number" min="1" id="pser" value="${p.serial||''}" placeholder="Auto"></div><div><div class="k" id="prlb">Rate (₹, excl. GST)</div><input type="number" min="0" step="0.01" id="prate" value="${p.rate||''}" placeholder="0.00" oninput="pCalc()"><div class="chips" id="prm" data-m="ex" style="margin:6px 0 0"><button type="button" class="on" data-m="ex" onclick="pMode('ex')">Excl. GST</button><button type="button" data-m="in" onclick="pMode('in')">Incl. GST</button></div></div></div>`
  +`<div class="k">Product name</div><input id="pname" value="${esc(p.name)}" placeholder="e.g. Neem & Tulsi Soap">`
- +`<div class="k">Pcs / box</div><input type="number" min="0" id="ppcs" value="${p.pcs||''}" placeholder="Pieces in one box">`
- +`<div class="fl"><div><div class="k">HSN code</div><input id="phsn" value="${esc(p.hsn||'')}" placeholder="e.g. 34011110"></div><div><div class="k">UOM</div><select id="puom">${[['','PCS'],['KG','KG'],['LTR','LTR'],['BOX','BOX']].map(o=>`<option value="${o[0]}" ${o[0]==(p.uom||'')?'selected':''}>${o[1]}</option>`).join('')}</select></div></div>`
+ +`<div class="fl"><div><div class="k">Pcs / box</div><input type="number" min="0" id="ppcs" value="${p.pcs||''}" placeholder="Pieces in one box"></div><div><div class="k">UOM</div><select id="puom">${[['','PCS'],['KG','KG'],['LTR','LTR'],['BOX','BOX']].map(o=>`<option value="${o[0]}" ${o[0]==(p.uom||'')?'selected':''}>${o[1]}</option>`).join('')}</select></div></div>`
+ +`<div class="fl"><div><div class="k">HSN code</div><input id="phsn" value="${esc(p.hsn||'')}" placeholder="e.g. 34011110"></div><div><div class="k">GST %</div><input type="number" min="0" max="100" step="any" id="pgst" value="${p.gst||''}" placeholder="e.g. 18" oninput="pCalc()"></div></div>`
+ +`<div class="m" id="prcalc" style="display:none;margin:2px 0 10px"></div>`
  +`<div class="k">Product image</div><div class="pimgw"><div id="ppv">${pprev()}</div><div><input type="file" accept="image/*" id="pimg" onchange="pimgPick(this)"><button class="btn d" type="button" onclick="PIMG='';$('#ppv').innerHTML=pprev();$('#pimg').value=''">Remove image</button></div></div>`
  +`<button class="btn" type="button" onclick="${x?`updP(${x.id})`:'addP()'}">Save product</button>${x?`<button class="btn d" type="button" onclick="delP(${x.id})">Delete</button>`:''}`}
-function prodRead(){return {serial:Math.round(+$('#pser').value||0),name:$('#pname').value.trim(),pcs:Math.round(+$('#ppcs').value||0),rate:+$('#prate').value||0,image:PIMG,hsn:$('#phsn').value.trim(),uom:$('#puom').value}}
+const pBasis=()=>$('#prm').dataset.m;
+const pRates=()=>{const raw=+$('#prate').value||0,g=+$('#pgst').value||0,inc=pBasis()=='in';return {raw,g,ex:inc&&g?raw/(1+g/100):raw,inc:inc?raw:raw*(1+g/100)}};
+function pMode(m){const w=$('#prm');w.dataset.m=m;w.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m==m));$('#prlb').textContent='Rate (₹, '+(m=='in'?'incl.':'excl.')+' GST)';pCalc()}
+const fm2=n=>'₹'+(+n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+function pCalc(){
+ const e=$('#prcalc');if(!e)return;
+ const r=pRates();
+ e.style.display=r.raw>0?'block':'none';
+ e.innerHTML=r.raw>0?`Excl. GST <b>${fm2(r.ex)}</b> · GST ${r.g}% · Incl. GST <b>${fm2(r.inc)}</b>`:'';
+}
+function prodRead(){const r=pRates();return {serial:Math.round(+$('#pser').value||0),name:$('#pname').value.trim(),pcs:Math.round(+$('#ppcs').value||0),rate:Math.round(r.ex*100)/100,image:PIMG,hsn:$('#phsn').value.trim(),uom:$('#puom').value,gst:r.g}}
 const pprev=()=>PIMG?`<img class="pth big" src="${esc(PIMG)}" alt="">`:`<div class="pth big pph">🧴</div>`;
 const pth=p=>p.image?`<img class="pth" src="${esc(p.image)}" alt="">`:`<div class="pth pph">🧴</div>`;
 const pp=(v,x)=>{const r={...v};['image','hsn','uom'].forEach(k=>{if(!v[k]&&!(x&&x[k]))delete r[k]});return r};
-function pfail(e){if(/image|hsn|uom/i.test(err(e)))return alert('The products table needs new columns. Run this once in Supabase > SQL Editor:\n\nalter table products add column if not exists image text, add column if not exists hsn text, add column if not exists uom text;\n\nThen save the product again.');return fail(e)}
+function pfail(e){if(/image|hsn|uom|gst/i.test(err(e)))return alert('The products table needs new columns. Run this once in Supabase > SQL Editor:\n\nalter table products add column if not exists image text, add column if not exists hsn text, add column if not exists uom text, add column if not exists gst numeric;\n\nThen save the product again.');return fail(e)}
 function pimgPick(inp){
  const file=inp.files&&inp.files[0];if(!file)return;
  if(!/^image\//.test(file.type)){inp.value='';return alert('Please choose an image file')}
@@ -586,11 +711,12 @@ function pimgPick(inp){
    PIMG=cv.toDataURL('image/jpeg',0.82);$('#ppv').innerHTML=pprev()};
   im.onerror=()=>alert('Could not read that image');im.src=fr.result};
  fr.readAsDataURL(file)}
-function editP(id){const x=S.prod.find(p=>p.id==id);if(x)openM('Edit product',()=>prodForm(x))}
+function editP(id){const x=S.prod.find(p=>p.id==id);if(x){openM('Edit product',()=>prodForm(x));setTimeout(pCalc,0)}}
 async function addP(){
  const v=prodRead();
  if(!v.name)return alert('Enter the product name');
  if(!(v.rate>0))return alert('Enter a rate above 0 — that is what invoices pick up');
+ if(v.gst<0||v.gst>100)return alert('Enter a GST % between 0 and 100');
  if(S.prod.some(p=>p.name.toLowerCase()==v.name.toLowerCase()))return alert('A product with that name already exists');
  const {data,error}=await db.from('products').insert(pp(v)).select().single();
  if(error)return pfail(error);
@@ -600,6 +726,7 @@ async function updP(id){
  const v=prodRead();
  if(!v.name)return alert('Enter the product name');
  if(!(v.rate>0))return alert('Enter a rate above 0');
+ if(v.gst<0||v.gst>100)return alert('Enter a GST % between 0 and 100');
  if(S.prod.some(p=>p.id!=id&&p.name.toLowerCase()==v.name.toLowerCase()))return alert('Another product already uses that name');
  const {error}=await db.from('products').update(pp(v,x)).eq('id',id);
  if(error)return pfail(error);
@@ -614,8 +741,8 @@ async function delP(id){
 function Vp(){
  const r=S.prod.map(p=>{const m=made(p.name),o=sold(p.name);return {p,m,o,st:m-o}});
  return sqlHint()+`<div class="kp">${kp('Products',S.prod.length)}${kp('Units in stock',nf(sum(r.map(x=>x.st))))}${kp('Stock value',fm(Math.round(sum(r.map(x=>x.st*x.p.rate)))))}${kp('Out of stock',r.filter(x=>x.st<=0).length,'bad')}</div>`
- +`<div class="card"><div class="tw"><table><tr><th class="n">Serial No</th><th>Image</th><th>Product Name</th><th class="n">Pcs/Box</th><th class="n">Rate</th><th class="n">Produced</th><th class="n">Sold</th><th class="n">In stock</th><th>Actions</th></tr>${r.map(x=>`<tr><td class="n">${x.p.serial||'—'}</td><td>${pth(x.p)}</td><td>${esc(x.p.name)}</td><td class="n">${x.p.pcs||'—'}</td><td class="n">${fm(x.p.rate)}</td><td class="n">${nf(x.m)}</td><td class="n">${nf(x.o)}</td><td class="n"><b class="${x.st<=0?'bad':'ok'}">${nf(x.st)}</b></td><td><button class="btn o" onclick="editP(${x.p.id})">Edit</button><button class="btn d" onclick="delP(${x.p.id})">Delete</button></td></tr>`).join('')||empty(9,'No products yet — add your first item')}</table></div><div class="m" style="margin-top:8px">In stock = produced − sold on invoices (cancelled orders excluded, returns added back). Enter opening stock with “+ Add production”; use a minus quantity for damage or adjustment. Invoices already created keep the name and rate they were billed with.</div></div>`
- +`<h4>Production / stock-in history</h4><div class="card"><div class="tw"><table><tr><th>Date</th><th>Product</th><th class="n">Qty</th><th>Notes</th><th></th></tr>${S.pn.map(x=>`<tr><td>${dm(x.date)||esc(x.date)}</td><td>${esc(x.product)}</td><td class="n">${nf(x.qty)}</td><td>${esc(x.notes||'')}</td>${dbtn('production',x.id,'pn')}</tr>`).join('')||empty(5,'No production entries yet')}</table></div></div>`}
+ +`<div class="card"><div class="tw"><table><tr><th class="n">Serial No</th><th>Image</th><th>Product Name</th><th class="n">Pcs/Box</th><th class="n">Rate (excl.)</th><th class="n">GST %</th><th class="n">Rate (incl.)</th><th class="n">Produced</th><th class="n">Sold</th><th class="n">In stock</th><th>Actions</th></tr>${r.map(x=>`<tr><td class="n">${x.p.serial||'—'}</td><td>${pth(x.p)}</td><td>${esc(x.p.name)}</td><td class="n">${x.p.pcs||'—'}</td><td class="n">${fm2(x.p.rate)}</td><td class="n">${x.p.gst||0}%</td><td class="n">${fm2(x.p.rate*(1+(+x.p.gst||0)/100))}</td><td class="n">${nf(x.m)}</td><td class="n">${nf(x.o)}</td><td class="n"><b class="${x.st<=0?'bad':'ok'}">${nf(x.st)}</b></td><td><button class="btn o" onclick="editP(${x.p.id})">Edit</button><button class="btn d" onclick="delP(${x.p.id})">Delete</button></td></tr>`).join('')||empty(11,'No products yet — add your first item')}</table></div><div class="m" style="margin-top:8px">In stock = produced − sold on invoices (cancelled orders excluded, returns added back). Enter opening stock with “+ Add production”; use a minus quantity for damage or adjustment. Invoices already created keep the name and rate they were billed with.</div></div>`
+ +`<h4>Production / stock-in history</h4><div class="card"><div class="tw"><table><tr><th>Date</th><th>Product</th><th class="n">Qty</th><th>Notes</th><th></th></tr>${S.pn.map(x=>`<tr><td>${dm(x.date)||esc(x.date)}</td><td>${esc(x.product)}</td><td class="n">${nf(x.qty)}</td><td>${esc(x.notes||'')}</td><td><button class="btn o" onclick="editPn(${x.id})">Edit</button><button class="btn d" onclick="delRow('production',${x.id},'pn')">Delete</button></td></tr>`).join('')||empty(5,'No production entries yet')}</table></div></div>`}
 /* LEDGER */
 function rows(){
  let r=[];
@@ -646,11 +773,16 @@ function lp(){
  $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2><div style="color:#555">${lt} ledger · ${esc(le)} · ${today()}${(ldf||ldt)?' · '+rlab(ldf,ldt):''}</div>${ltable(w.r,w.open)}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
 /* PURCHASE / STOCK / RAW MATERIAL */
 const SQLN=`create table if not exists purchases(id bigint generated always as identity primary key,date text,supplier text,material text,unit text,qty numeric,rate numeric,notes text);
-create table if not exists consumption(id bigint generated always as identity primary key,date text,material text,unit text,qty numeric,notes text);
+create table if not exists consumption(id bigint generated always as identity primary key,date text,material text,unit text,qty numeric,rate numeric,notes text);
+alter table consumption add column if not exists rate numeric;
 create table if not exists production(id bigint generated always as identity primary key,date text,product text,qty numeric,notes text);
 create table if not exists staff_routes(id bigint generated always as identity primary key,date text,staff text,route text,notes text);
 create table if not exists expenses(id bigint generated always as identity primary key,date text,category text,description text,amount numeric,mode text);`;
 const nf=n=>(+n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+const qkg=n=>(+n||0).toLocaleString('en-IN',{minimumFractionDigits:3,maximumFractionDigits:3});
+const qfmt=(q,u)=>/^kg$/i.test(String(u||'').trim())?qkg(q)+' kg':nf(q)+(u?' '+esc(u):'');
+const gU=/^(g|gm|gms|grm|gram|grams)$/i;
+function kgRow(r){return gU.test(String(r.unit||'').trim())?{...r,unit:'kg',qty:+((+r.qty||0)/1000).toFixed(6),rate:+((+r.rate||0)*1000).toFixed(4)}:r}
 const tod=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const sqlHint=()=>MISS.length?`<div class="card"><b>One-time setup</b><div class="m">Missing tables: ${MISS.join(', ')}. Run this once in Supabase &gt; SQL Editor (give them the same access policy as your other tables), then tap Refresh.</div><pre class="sqlb">${esc(SQLN)}</pre></div>`:'';
 const sold=n=>sum(live().map(o=>sum(o.items.filter(i=>i.p==n).map(i=>i.q-i.r))));
@@ -668,7 +800,7 @@ async function delRow(t,id,key){
  if(!await cfm('Delete this entry?'))return;
  const {error}=await db.from(t).delete().eq('id',id);
  if(error)return fail(error);
- S[key]=S[key].filter(x=>x.id!=id);R();toast('Entry deleted')}
+ S[key]=S[key].filter(x=>x.id!=id);R()}
 const dbtn=(t,id,k)=>`<td><button class="btn d" onclick="delRow('${t}',${id},'${k}')">Delete</button></td>`;
 const empty=(n,t)=>`<tr><td colspan="${n}" class="empty">${t}</td></tr>`;
 /* purchase */
@@ -676,16 +808,37 @@ function Vbuy(){
  return sqlHint()+`<div class="kp">${kp('Purchases',S.pu.length)}${kp('Total spent',fm(Math.round(sum(S.pu.map(p=>p.qty*p.rate)))))}${kp('Suppliers',new Set(S.pu.map(p=>p.supplier).filter(x=>x)).size)}${kp('Raw materials',mats().length)}</div><input placeholder="🔍 Search supplier, material or date" value="${esc(qb)}" oninput="qb=this.value;$('#bl').innerHTML=bl()"><div class="card"><div class="tw" id="bl">${bl()}</div></div>`}
 function bl(){
  const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date));
- return `<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th></th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${nf(p.qty)} ${esc(p.unit||'')}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td><button class="btn o" onclick="editBuy(${p.id})">Edit</button><button class="btn d" onclick="delRow('purchases',${p.id},'pu')">Delete</button></td></tr>`).join('')||empty(7,'No purchases yet')}</table>`}
-const newBuy=()=>openM('Add purchase',()=>buyForm());
-const editBuy=id=>{const x=S.pu.find(p=>p.id==id);if(x)openM('Edit purchase',()=>buyForm(x))};
+ return `<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th></th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td><button class="btn o" onclick="editBuy(${p.id})">Edit</button><button class="btn d" onclick="delRow('purchases',${p.id},'pu')">Delete</button></td></tr>`).join('')||empty(7,'No purchases yet')}</table>`}
+const newBuy=()=>openM('Add purchase',()=>buyForm(),1,1);
+const editBuy=id=>{const x=S.pu.find(p=>p.id==id);if(x)openM('Edit purchase',()=>buyForm(x),1,1)};
 function buyForm(x){
- const U=['kg','Pcs','Ltr'],cur=x?(U.find(a=>a.toLowerCase()==String(x.unit||'').toLowerCase())||x.unit||'kg'):'kg',opts=U.includes(cur)?U:[...U,cur];
+ const U=[['kg','kg'],['g','g (gram)'],['Pcs','Pcs'],['Ltr','Ltr']];
+ const rawU=x?String(x.unit||'kg').toLowerCase():'',found=U.find(a=>a[0].toLowerCase()==rawU);
+ const cur=found?found[0]:(x?String(x.unit||'kg'):'g'),opts=U.some(a=>a[0]==cur)?U:[...U,[cur,cur]];
+ const kg=cur=='kg'||cur=='g';
  const sup=[...new Set(S.pu.map(p=>p.supplier).filter(v=>v))];
- return `<div class="fl"><div><div class="k">Date</div><input type="date" id="bd" value="${x?esc(x.date):tod()}"></div><div><div class="k">Supplier</div><input id="bs" list="bsl" value="${esc(x?x.supplier:'')}" placeholder="Supplier name"><datalist id="bsl">${sup.map(v=>`<option value="${esc(v)}">`).join('')}</datalist></div></div><div class="k">Raw material</div><input id="bm" list="bml" value="${esc(x?x.material:'')}" placeholder="e.g. Coconut oil" oninput="buAuto()"><datalist id="bml">${mats().map(m=>`<option value="${esc(m.name)}">`).join('')}</datalist><div class="fl"><div><div class="k">Quantity</div><input type="number" min="0" step="any" id="bq" value="${x?x.qty:''}"></div><div><div class="k">Unit</div><select id="bu">${opts.map(u=>`<option ${u==cur?'selected':''}>${esc(u)}</option>`).join('')}</select></div></div><div class="k">Rate (₹ per unit)</div><input type="number" min="0" step="any" id="br" value="${x?x.rate:''}"><div class="k">Notes</div><input id="bn" value="${esc(x?x.notes:'')}" placeholder="Bill no, remarks (optional)"><button class="btn" onclick="saveBuy(${x?x.id:'null'})">${x?'Save changes':'Save purchase'}</button>`}
-function buAuto(){const m=mats().find(x=>x.name.toLowerCase()==$('#bm').value.trim().toLowerCase());if(!m||!m.unit)return;const o=[...$('#bu').options].find(o=>o.value.toLowerCase()==m.unit.toLowerCase());if(o)$('#bu').value=o.value}
+ return `<div class="cg"><div><div class="k rq">Date</div><input type="date" id="bd" value="${x?esc(x.date):tod()}"></div>`
+ +`<div><div class="k">Supplier</div><input id="bs" list="bsl" value="${esc(x?x.supplier:'')}" placeholder="Supplier name"><datalist id="bsl">${sup.map(v=>`<option value="${esc(v)}">`).join('')}</datalist></div>`
+ +`<div><div class="k rq">Raw material</div><input id="bm" list="bml" value="${esc(x?x.material:'')}" placeholder="e.g. Coconut oil" oninput="buAuto()"><datalist id="bml">${mats().map(m=>`<option value="${esc(m.name)}">`).join('')}</datalist></div>`
+ +`<div><div class="k rq" id="bql">Quantity${cur=='g'?' (grams)':''}</div><input type="number" min="0" step="any" id="bq" value="${x?x.qty:''}" oninput="buAmt()"><div class="m" id="bqh" style="margin:-2px 0 0"></div></div>`
+ +`<div><div class="k rq">Unit</div><select id="bu" data-u="${esc(cur)}" onchange="buUnit()">${opts.map(a=>`<option value="${esc(a[0])}" ${a[0]==cur?'selected':''}>${esc(a[1])}</option>`).join('')}</select></div>`
+ +`<div><div class="k rq" id="brl">Rate (₹ per ${kg?'kg':'unit'})</div><input type="number" min="0" step="any" id="br" value="${x?x.rate:''}" oninput="buAmt()"></div>`
+ +`<div><div class="k">Amount</div><input id="ba" readonly tabindex="-1" value="${x?fm(Math.round(x.qty*x.rate)):''}" placeholder="auto"></div>`
+ +`<div><div class="k">Notes</div><input id="bn" value="${esc(x?x.notes:'')}" placeholder="Bill no, remarks (optional)"></div></div>`
+ +`<div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveBuy(${x?x.id:'null'})">Submit</button></div>`}
+const buQ=()=>{const q=+$('#bq').value||0;return $('#bu').value=='g'?+(q/1000).toFixed(6):q};
+function buUnit(){
+ const sel=$('#bu'),u=sel.value,old=sel.dataset.u||u,kg=u=='kg'||u=='g',q=+$('#bq').value||0;
+ if(q&&old!=u&&(old=='kg'||old=='g')&&(u=='kg'||u=='g'))$('#bq').value=+(u=='g'?q*1000:q/1000).toFixed(6);
+ sel.dataset.u=u;
+ $('#bql').textContent='Quantity'+(u=='g'?' (grams)':'');
+ $('#brl').textContent='Rate (₹ per '+(kg?'kg':'unit')+')';
+ buAmt()}
+function buAmt(){const q=buQ(),a=q*(+$('#br').value||0);$('#ba').value=a>0?fm(Math.round(a)):'';const h=$('#bqh');if(h)h.textContent=$('#bu').value=='g'&&q>0?'= '+qkg(q)+' kg':''}
+function buAuto(){const m=mats().find(x=>x.name.toLowerCase()==$('#bm').value.trim().toLowerCase());if(!m||!m.unit)return;const u=String(m.unit).toLowerCase();if(u=='kg')return;const o=[...$('#bu').options].find(o=>o.value.toLowerCase()==u);if(o){$('#bu').value=o.value;buUnit()}}
 async function saveBuy(id){
- const v={date:$('#bd').value,supplier:$('#bs').value.trim(),material:$('#bm').value.trim(),unit:$('#bu').value,qty:+$('#bq').value||0,rate:+$('#br').value||0,notes:$('#bn').value.trim()};
+ const u=$('#bu').value;
+ const v={date:$('#bd').value,supplier:$('#bs').value.trim(),material:$('#bm').value.trim(),unit:u=='g'?'kg':u,qty:buQ(),rate:+$('#br').value||0,notes:$('#bn').value.trim()};
  if(!v.date)return alert('Pick the purchase date');if(!v.material)return alert('Enter the raw material');
  if(!(v.qty>0))return alert('Enter a quantity above 0');if(!(v.rate>=0)||$('#br').value==='')return alert('Enter the rate');
  if(id){const {error}=await db.from('purchases').update(v).eq('id',id);if(error)return fail(error);
@@ -699,11 +852,11 @@ function Vexp(){
 function xl(){
  const k=qe.toLowerCase(),r=S.ex.filter(e=>hit(k,e.category,e.description,e.date));
  return `<table><tr><th>Date</th><th>Category</th><th>Description</th><th>Mode</th><th class="n">Amount</th><th></th></tr>${r.map(e=>`<tr><td>${dm(e.date)||esc(e.date)}</td><td>${esc(e.category)}</td><td>${esc(e.description||'')}</td><td>${esc(e.mode||'')}</td><td class="n">${fm(e.amount)}</td><td><button class="btn o" onclick="editExp(${e.id})">Edit</button><button class="btn d" onclick="delRow('expenses',${e.id},'ex')">Delete</button></td></tr>`).join('')||empty(6,'No expenses yet')}</table>`}
-const newExp=()=>openM('Add expense',()=>expForm());
-const editExp=id=>{const x=S.ex.find(e=>e.id==id);if(x)openM('Edit expense',()=>expForm(x))};
+const newExp=()=>openM('Add expense',()=>expForm(),1,1);
+const editExp=id=>{const x=S.ex.find(e=>e.id==id);if(x)openM('Edit expense',()=>expForm(x),1,1)};
 function expForm(x){
  const cats=[...new Set(['Salary','Rent','Electricity','Transport','Packaging','Marketing','Repairs','Miscellaneous',...S.ex.map(e=>e.category).filter(v=>v)])];
- return `<div class="fl"><div><div class="k">Date</div><input type="date" id="xd" value="${x?esc(x.date):tod()}"></div><div><div class="k">Amount (₹)</div><input type="number" min="0" step="any" id="xa" value="${x?x.amount:''}"></div></div><div class="k">Category</div><input id="xc" list="xcl" value="${esc(x?x.category:'')}" placeholder="e.g. Transport"><datalist id="xcl">${cats.map(c=>`<option value="${esc(c)}">`).join('')}</datalist><div class="k">Payment mode</div><select id="xm">${['Cash','UPI','Bank'].map(m=>`<option ${x&&x.mode==m?'selected':''}>${m}</option>`).join('')}</select><div class="k">Description</div><input id="xn" value="${esc(x?x.description:'')}" placeholder="What was it for? (optional)"><button class="btn" onclick="saveExp(${x?x.id:'null'})">${x?'Save changes':'Save expense'}</button>`}
+ return `<div class="cg"><div><div class="k rq">Date</div><input type="date" id="xd" value="${x?esc(x.date):tod()}"></div><div><div class="k rq">Amount (₹)</div><input type="number" min="0" step="any" id="xa" value="${x?x.amount:''}" placeholder="0.00"></div><div><div class="k rq">Category</div><input id="xc" list="xcl" value="${esc(x?x.category:'')}" placeholder="e.g. Transport"><datalist id="xcl">${cats.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div><div><div class="k rq">Payment mode</div><select id="xm">${['Cash','UPI','Bank'].map(m=>`<option ${x&&x.mode==m?'selected':''}>${m}</option>`).join('')}</select></div><div style="grid-column:span 4"><div class="k">Description</div><input id="xn" value="${esc(x?x.description:'')}" placeholder="What was it for? (optional)"></div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveExp(${x?x.id:'null'})">Submit</button></div>`}
 async function saveExp(id){
  const v={date:$('#xd').value,category:$('#xc').value.trim(),amount:+$('#xa').value||0,mode:$('#xm').value,description:$('#xn').value.trim()};
  if(!v.date)return alert('Pick the date');if(!v.category)return alert('Enter the category');if(!(v.amount>0))return alert('Enter an amount above 0');
@@ -716,20 +869,52 @@ async function addPn(){
  const v={date:$('#pnd').value,product:$('#pnp').value,qty:+$('#pnq').value||0,notes:$('#pnn').value.trim()};
  if(!v.date)return alert('Pick the date');if(!v.qty)return alert('Enter a quantity (minus for adjustment)');
  if(await ins('production',v,'pn')){R();done('Stock updated — '+v.product)}}
+const editPn=id=>{const x=S.pn.find(e=>e.id==id);if(!x)return;
+ openM('Edit production / stock-in',()=>{const names=[...new Set([...S.prod.map(p=>p.name),x.product])];
+  return `<div class="k">Product</div><select id="pnp">${names.map(n=>`<option ${n==x.product?'selected':''}>${esc(n)}</option>`).join('')}</select><div class="fl"><div><div class="k">Date</div><input type="date" id="pnd" value="${esc(x.date)}"></div><div><div class="k">Quantity</div><input type="number" step="any" id="pnq" value="${x.qty}"></div></div><div class="k">Notes</div><input id="pnn" value="${esc(x.notes||'')}" placeholder="Batch no, opening stock… (optional)"><button class="btn" onclick="savePn(${x.id})">Save</button>`})};
+async function savePn(id){
+ const v={date:$('#pnd').value,product:$('#pnp').value,qty:+$('#pnq').value||0,notes:$('#pnn').value.trim()};
+ if(!v.date)return alert('Pick the date');if(!v.qty)return alert('Enter a quantity (minus for adjustment)');
+ const {error}=await db.from('production').update(v).eq('id',id);if(error)return fail(error);
+ Object.assign(S.pn.find(e=>e.id==id),v);R();done()}
 /* raw material */
 function Vraw(){
- const m=mats(),av=x=>x.pq?x.pc/x.pq:0;
- return sqlHint()+`<div class="kp">${kp('Materials',m.length)}${kp('Consumption entries',S.cn.length)}${kp('Stock value',fm(Math.round(sum(m.map(x=>(x.pq-x.cq)*av(x))))))}${kp('Low / out',m.filter(x=>x.pq-x.cq<=0).length,'bad')}</div>`
- +`<div class="card"><h3>Raw material stock</h3><div class="tw"><table><tr><th>Material</th><th class="n">Purchased</th><th class="n">Consumed</th><th class="n">In stock</th><th class="n">Avg rate</th><th class="n">Value</th></tr>${m.map(x=>`<tr><td>${esc(x.name)}</td><td class="n">${nf(x.pq)} ${esc(x.unit)}</td><td class="n">${nf(x.cq)} ${esc(x.unit)}</td><td class="n"><b class="${x.pq-x.cq<=0?'bad':'ok'}">${nf(x.pq-x.cq)} ${esc(x.unit)}</b></td><td class="n">${fm(Math.round(av(x)*100)/100)}</td><td class="n">${fm(Math.round((x.pq-x.cq)*av(x)))}</td></tr>`).join('')||empty(6,'No raw materials yet — add a purchase first')}</table></div></div>`
- +`<h4>Consumption history</h4><div class="card"><div class="tw"><table><tr><th>Date</th><th>Material</th><th class="n">Qty</th><th>Used for</th><th></th></tr>${S.cn.map(c=>`<tr><td>${dm(c.date)||esc(c.date)}</td><td>${esc(c.material)}</td><td class="n">${nf(c.qty)} ${esc(c.unit||'')}</td><td>${esc(c.notes||'')}</td>${dbtn('consumption',c.id,'cn')}</tr>`).join('')||empty(5,'No consumption entries yet')}</table></div></div>`}
-const newCn=()=>openM('Add raw material consumption',()=>mats().length?`<div class="k">Raw material</div><select id="cnm">${mats().map(x=>`<option value="${esc(x.name)}">${esc(x.name)} (stock ${nf(x.pq-x.cq)} ${esc(x.unit)})</option>`).join('')}</select><div class="fl"><div><div class="k">Date</div><input type="date" id="cnd" value="${tod()}"></div><div><div class="k">Quantity used</div><input type="number" min="0" step="any" id="cnq"></div></div><div class="k">Used for</div><input id="cnn" placeholder="e.g. Neem soap batch 12 (optional)"><button class="btn" onclick="addCn()">Save consumption</button>`:'<div class="empty">Add a purchase first so there is raw material to consume</div>');
+ const m=mats(),av=x=>x.pq?x.pc/x.pq:0,rm={};m.forEach(x=>rm[x.name.toLowerCase()]=av(x));
+ const cr=c=>+c.rate>0?+c.rate:(rm[String(c.material||'').toLowerCase()]||0);
+ const cval=sum(S.cn.map(c=>(+c.qty||0)*cr(c)));
+ return sqlHint()+`<div class="kp">${kp('Materials',m.length)}${kp('Consumption entries',S.cn.length)}${kp('Consumed value',fm(Math.round(cval)))}${kp('Stock value',fm(Math.round(sum(m.map(x=>(x.pq-x.cq)*av(x))))))}${kp('Low / out',m.filter(x=>x.pq-x.cq<=0).length,'bad')}</div>`
+ +`<div class="card"><h3>Raw material stock</h3><div class="tw"><table><tr><th>Material</th><th class="n">Purchased</th><th class="n">Consumed</th><th class="n">In stock</th><th class="n">Avg rate</th><th class="n">Value</th></tr>${m.map(x=>`<tr><td>${esc(x.name)}</td><td class="n">${qfmt(x.pq,x.unit)}</td><td class="n">${qfmt(x.cq,x.unit)}</td><td class="n"><b class="${x.pq-x.cq<=0?'bad':'ok'}">${qfmt(x.pq-x.cq,x.unit)}</b></td><td class="n">${fm(Math.round(av(x)*100)/100)}</td><td class="n">${fm(Math.round((x.pq-x.cq)*av(x)))}</td></tr>`).join('')||empty(6,'No raw materials yet — add a purchase first')}</table></div></div>`
+ +`<h4>Consumption history <span class="m">· total ${fm(Math.round(cval))}</span></h4><div class="card"><div class="tw"><table><tr><th>Date</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th>Used for</th><th></th></tr>${S.cn.map(c=>{const r=cr(c);return `<tr><td>${dm(c.date)||esc(c.date)}</td><td>${esc(c.material)}</td><td class="n">${qfmt(c.qty,c.unit)}</td><td class="n">${fm(Math.round(r*100)/100)}</td><td class="n">${fm(Math.round((+c.qty||0)*r))}</td><td>${esc(c.notes||'')}</td>${dbtn('consumption',c.id,'cn')}</tr>`}).join('')||empty(7,'No consumption entries yet')}</table></div></div>`}
+const cnAvg=m=>m&&m.pq?Math.round(m.pc/m.pq*100)/100:0;
+const cnUnits=m=>String(m&&m.unit||'').toLowerCase()=='kg'?['g','kg']:[String(m&&m.unit||'')];
+const cnQ=()=>{const q=+$('#cnq').value||0;return $('#cnu').value=='g'?+(q/1000).toFixed(6):q};
+const newCn=()=>openM('Add raw material consumption',()=>{const m=mats(),u0=cnUnits(m[0]);return m.length?`<div class="cg"><div style="grid-column:span 2"><div class="k rq">Raw material</div><select id="cnm" onchange="cnAuto()">${m.map(x=>`<option value="${esc(x.name)}">${esc(x.name)} (stock ${qfmt(x.pq-x.cq,x.unit)})</option>`).join('')}</select></div><div><div class="k rq">Date</div><input type="date" id="cnd" value="${tod()}"></div><div><div class="k rq">Quantity used</div><div class="fl2"><input type="number" min="0" step="any" id="cnq" oninput="cnAmt()" placeholder="0"><select id="cnu" data-u="${esc(u0[0])}" onchange="cnUnit()" style="margin:0">${u0.map(u=>`<option>${esc(u)}</option>`).join('')}</select></div><div class="m" id="cnh"></div></div><div><div class="k rq" id="cnrl">Rate (₹ per ${String(m[0]&&m[0].unit).toLowerCase()=='kg'?'kg':'unit'})</div><input type="number" min="0" step="any" id="cnr" value="${cnAvg(m[0])}" oninput="cnAmt()"></div><div><div class="k">Amount</div><input id="cna" readonly tabindex="-1" placeholder="auto"></div><div style="grid-column:span 2"><div class="k">Used for</div><input id="cnn" placeholder="e.g. Neem soap batch 12 (optional)"></div><div class="m" style="grid-column:span 4">Rate is filled from the average purchase rate — change it if this batch cost something different. For kg materials, type grams — 250 g is saved as 0.250 kg.</div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="addCn()">Submit</button></div>`:'<div class="empty">Add a purchase first so there is raw material to consume</div>'},1,1);
+function cnAuto(){
+ const m=mats().find(x=>x.name==$('#cnm').value);if(!m)return;
+ const sel=$('#cnu'),opts=cnUnits(m),prev=sel.value;
+ sel.innerHTML=opts.map(u=>`<option ${u==prev?'selected':''}>${esc(u)}</option>`).join('');
+ if(!opts.includes(prev))sel.value=opts[0];
+ sel.dataset.u=sel.value;
+ $('#cnrl').textContent='Rate (₹ per '+(String(m.unit).toLowerCase()=='kg'?'kg':'unit')+')';
+ $('#cnr').value=cnAvg(m);cnAmt()}
+function cnUnit(){
+ const sel=$('#cnu'),u=sel.value,old=sel.dataset.u||u,q=+$('#cnq').value||0;
+ if(q&&old!=u&&(old=='kg'||old=='g')&&(u=='kg'||u=='g'))$('#cnq').value=+(u=='g'?q*1000:q/1000).toFixed(6);
+ sel.dataset.u=u;cnAmt()}
+function cnAmt(){const q=cnQ(),a=q*(+$('#cnr').value||0);$('#cna').value=a>0?fm(Math.round(a)):'';$('#cnh').textContent=$('#cnu').value=='g'&&q>0?'= '+qkg(q)+' kg':''}
 async function addCn(){
- const m=mats().find(x=>x.name==$('#cnm').value),q=+$('#cnq').value||0;
- if(!m)return;if(!$('#cnd').value)return alert('Pick the date');if(!(q>0))return alert('Enter a quantity above 0');
- if(q>m.pq-m.cq&&!await cfm(`Only ${nf(m.pq-m.cq)} ${m.unit} in stock. Record ${nf(q)} anyway?`))return;
- if(await ins('consumption',{date:$('#cnd').value,material:m.name,unit:m.unit,qty:q,notes:$('#cnn').value.trim()},'cn')){R();done('Consumption saved — '+m.name)}}
+ const m=mats().find(x=>x.name==$('#cnm').value),raw=+$('#cnq').value||0,rate=+$('#cnr').value||0;
+ if(!m)return;if(!$('#cnd').value)return alert('Pick the date');if(!(raw>0))return alert('Enter a quantity above 0');if(rate<0)return alert('Enter a valid rate');
+ const q=cnQ();
+ if(q>m.pq-m.cq&&!await cfm(`Only ${qfmt(m.pq-m.cq,m.unit)} in stock. Record ${qfmt(q,m.unit)} anyway?`))return;
+ const row={date:$('#cnd').value,material:m.name,unit:m.unit,qty:q,rate,notes:$('#cnn').value.trim()};
+ const {data,error}=await db.from('consumption').insert(row).select().single();
+ if(error){const msg=err(error);
+  if(/rate/i.test(msg))return alert("The consumption table needs the price column. Run this once in Supabase > SQL Editor:\n\nalter table consumption add column if not exists rate numeric;\n\nThen save again.");
+  return alert((MISS.includes('consumption')?'This table does not exist yet. Run the setup SQL shown at the top of the tab in Supabase first.\n\n':'Could not save: ')+msg)}
+ S.cn.unshift(data);R();done('Consumption saved — '+m.name+' · '+fm(Math.round(q*rate)))}
 /* STAFF ROUTE CALENDAR */
-const PAL=['#2f7d3a','#3b82c4','#d49b2c','#8b5cc4','#d1495b','#00897b','#ef6c00','#6d4c41'];
+const PAL=['#2563eb','#0891b2','#d49b2c','#8b5cc4','#d1495b','#00897b','#ef6c00','#6d4c41'];
 const scol=n=>PAL[Math.max(0,S.st.findIndex(x=>x.name==n))%PAL.length];
 const iso2=(y,m,d)=>`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 function calGo(n){let m=RC.m+n,y=RC.y;if(m<0){m=11;y--}if(m>11){m=0;y++}RC.m=m;RC.y=y;R()}
@@ -737,11 +922,11 @@ function Vcal(){
  const {y,m,s:f}=RC,first=new Date(y,m,1),days=new Date(y,m+1,0).getDate(),lead=(first.getDay()+6)%7,pre=iso2(y,m,1).slice(0,7),by={};
  S.rt.filter(r=>(f=='All'||r.staff==f)&&String(r.date).slice(0,7)==pre).forEach(r=>{const d=+String(r.date).slice(8,10);(by[d]=by[d]||[]).push(r)});
  let cells='';for(let i=0;i<lead;i++)cells+='<div class="cd off"></div>';
- for(let d=1;d<=days;d++){const k=iso2(y,m,d),a=by[d]||[],dw=new Date(y,m,d).getDay(),sc=f=='All'?S.st:S.st.filter(x=>x.name==f),off=sc.filter(x=>weekOff(x.name)==dw),allOff=sc.length>0&&off.length==sc.length;
-  cells+=`<div class="cd ${k==tod()?'td':''} ${allOff?'wo':''}" onclick="dayRt('${k}')"><b>${d}</b>${allOff?'<span class="rc off">Week off</span>':off.map(x=>`<span class="rc off">Off · ${esc(x.name.split(' ')[0])}</span>`).join('')}${a.slice(0,3).map(r=>`<span class="rc" style="background:${scol(r.staff)}" title="${esc(r.staff)} · ${esc(r.route||'')}">${esc(r.staff.split(' ')[0])} · ${esc(r.route||'—')}</span>`).join('')}${a.length>3?`<span class="m">+${a.length-3} more</span>`:''}</div>`}
- return sqlHint()+`<div class="card"><div class="calh"><button class="btn o" onclick="calGo(-1)">‹</button><h3>${first.toLocaleString('en-IN',{month:'long',year:'numeric'})}</h3><button class="btn o" onclick="calGo(1)">›</button><button class="btn o" onclick="RC.y=new Date().getFullYear();RC.m=new Date().getMonth();R()">Today</button><button class="btn o" onclick="woModal()">Week off</button><select class="msel" onchange="RC.s=this.value;R()"><option>All</option>${S.st.map(x=>`<option ${x.name==f?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div><div class="cal">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="ch">${d}</div>`).join('')}${cells}</div><div>${S.st.map(x=>`<span class="lg"><i style="background:${scol(x.name)}"></i>${esc(x.name)}</span>`).join('')}</div><div class="m" style="margin-top:8px">Tap a day to see or change who is on which route. Hatched days are the weekly off day; change it with Week off.</div></div>`}
+ for(let d=1;d<=days;d++){const k=iso2(y,m,d),a=by[d]||[],dw=new Date(y,m,d).getDay(),sc=f=='All'?S.st:S.st.filter(x=>x.name==f),off=sc.filter(x=>isOff(x.name,k)),kept=sc.filter(x=>weekOff(x.name)==dw&&!isOff(x.name,k)),allOff=sc.length>0&&off.length==sc.length;
+  cells+=`<div class="cd ${k==tod()?'td':''} ${allOff?'wo':''}" onclick="dayRt('${k}')"><b>${d}</b>${allOff?'<span class="rc off">Week off</span>':off.map(x=>`<span class="rc off">Off · ${esc(x.name.split(' ')[0])}</span>`).join('')}${kept.map(x=>`<span class="rc" style="background:#d99a1c;color:#2a1b00">Working · ${esc(x.name.split(' ')[0])}</span>`).join('')}${a.slice(0,3).map(r=>`<span class="rc" style="background:${scol(r.staff)}" title="${esc(r.staff)} · ${esc(r.route||'')}">${esc(r.staff.split(' ')[0])} · ${esc(r.route||'—')}</span>`).join('')}${a.length>3?`<span class="m">+${a.length-3} more</span>`:''}</div>`}
+ return sqlHint()+`<div class="card"><div class="calh"><button class="btn o" onclick="calGo(-1)">‹</button><h3>${first.toLocaleString('en-IN',{month:'long',year:'numeric'})}</h3><button class="btn o" onclick="calGo(1)">›</button><button class="btn o" onclick="RC.y=new Date().getFullYear();RC.m=new Date().getMonth();R()">Today</button><button class="btn o" onclick="woModal()">Week off</button><select class="msel" onchange="RC.s=this.value;R()"><option>All</option>${S.st.map(x=>`<option ${x.name==f?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div><div class="cal">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="ch">${d}</div>`).join('')}${cells}</div><div>${S.st.map(x=>`<span class="lg"><i style="background:${scol(x.name)}"></i>${esc(x.name)}</span>`).join('')}</div><div class="m" style="margin-top:8px">Tap a day to see or change who is on which route. Hatched days are the weekly off day; change it with Week off. To work on an off day, tap it and choose Cancel week off — for that day or every week till year end.</div></div>`}
 const newRt=()=>openM('Assign route',()=>rtAssign(tod()));
-function dayRt(k){openM(dm(k)||k,()=>{const l=S.rt.filter(r=>r.date==k);return (l.map(r=>`<div class="card"><div class="top"><b>${esc(r.staff)}</b><span class="m">${esc(r.route||'—')}</span></div>${r.notes?`<div class="m">${esc(r.notes)}</div>`:''}<button class="btn d" onclick="delRt(${r.id},'${k}')">Remove</button></div>`).join('')||'<div class="empty">No routes assigned for this day</div>')+'<h4>Assign route</h4>'+rtAssign(k)})}
+function dayRt(k){openM(dm(k)||k,()=>{const l=S.rt.filter(r=>r.date==k);return (l.map(r=>`<div class="card"><div class="top"><b>${esc(r.staff)}</b><span class="m">${esc(r.route||'—')}</span></div>${r.notes?`<div class="m">${esc(r.notes)}</div>`:''}<button class="btn d" onclick="delRt(${r.id},'${k}')">Remove</button></div>`).join('')||'<div class="empty">No routes assigned for this day</div>')+wocBox(k)+'<h4>Assign route</h4>'+rtAssign(k)})}
 function rtAssign(k){
  if(!S.st.length)return '<div class="empty">Add staff first</div>';
  return `<div class="k">Staff</div><select id="rts" onchange="rtFill()">${S.st.map(x=>`<option>${esc(x.name)}</option>`).join('')}</select><div class="fl"><div><div class="k">Date</div><input type="date" id="rtd" value="${k}"></div><div><div class="k">Route</div><input id="rtr" value="${esc(S.st[0].area||'')}" placeholder="e.g. Othayi" oninput="this.dataset.t=1"></div></div><div class="k">Repeat</div><select id="rtp"><option value="once">Only this day</option><option value="week">Every week till month end</option><option value="day">Every day till month end</option></select><div class="k">Notes</div><input id="rtn" placeholder="Optional"><button class="btn" onclick="addRt()">Save route</button>`}
@@ -750,7 +935,7 @@ async function addRt(){
  const st=$('#rts').value,route=$('#rtr').value.trim(),notes=$('#rtn').value.trim(),d0=$('#rtd').value,rep=$('#rtp').value;
  if(!d0)return alert('Pick a date');if(!route)return alert('Enter the route');
  const dates=[d0];
- if(rep!='once'){const[y,m,d]=d0.split('-').map(Number),last=new Date(y,m,0).getDate(),step=rep=='week'?7:1;for(let x=d+step;x<=last;x+=step)if(weekOff(st)!=new Date(y,m-1,x).getDay())dates.push(`${y}-${String(m).padStart(2,'0')}-${String(x).padStart(2,'0')}`)}
+ if(rep!='once'){const[y,m,d]=d0.split('-').map(Number),last=new Date(y,m,0).getDate(),step=rep=='week'?7:1;for(let x=d+step;x<=last;x+=step)if(!isOff(st,`${y}-${String(m).padStart(2,'0')}-${String(x).padStart(2,'0')}`))dates.push(`${y}-${String(m).padStart(2,'0')}-${String(x).padStart(2,'0')}`)}
  const rows=dates.filter(x=>!S.rt.some(r=>r.date==x&&r.staff==st&&r.route==route)).map(x=>({date:x,staff:st,route,notes}));
  if(!rows.length)return alert('That route is already assigned on those days');
  const {data,error}=await db.from('staff_routes').insert(rows).select();
@@ -762,6 +947,25 @@ async function delRt(id,k){
  if(error)return fail(error);
  S.rt=S.rt.filter(r=>r.id!=id);R();dayRt(k)}
 const WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const dowOf=k=>{const[y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d).getDay()};
+const wocCancelled=(n,k)=>S.rt.some(x=>x.date=='woc-'+k&&x.staff==n);
+const isOff=(n,k)=>weekOff(n)==dowOf(k)&&!wocCancelled(n,k);
+function wocBox(k){
+ const l=S.st.filter(x=>weekOff(x.name)==dowOf(k));if(!l.length)return '';
+ return '<h4>Week off</h4>'+l.map(x=>{const c=wocCancelled(x.name,k);return `<div class="card"><div class="top"><b>${esc(x.name)}</b><span class="tag ${c?'Approved':'Pending'}">${c?'Week off cancelled':'Week off'}</span></div><button class="btn ${c?'o':'d'}" onclick="wocAsk('${k}',${S.st.indexOf(x)},${c?0:1})">${c?'Restore week off':'Cancel week off'}</button></div>`}).join('')}
+function wocAsk(k,i,cancel){const x=S.st[i];
+ openM(cancel?'Cancel week off':'Restore week off',()=>`<div class="m" style="margin-bottom:8px"><b>${esc(x.name)}</b> · ${WD[dowOf(k)]}, ${dm(k)||k}</div><div class="k">Apply to</div><select id="wocs"><option value="one">Only this day</option><option value="year">Every ${WD[dowOf(k)]} till year end</option></select><button class="btn" onclick="wocSave('${k}',${i},${cancel})">${cancel?'Cancel week off':'Restore week off'}</button><button class="btn o" onclick="dayRt('${k}')">Back</button>`)}
+async function wocSave(k,i,cancel){
+ const x=S.st[i],[y,m,d]=k.split('-').map(Number),keys=[k];
+ if($('#wocs').value=='year')for(let n=1;;n++){const t=new Date(y,m-1,d+7*n);if(t.getFullYear()!=y)break;keys.push(iso2(y,t.getMonth(),t.getDate()))}
+ const ids=keys.map(z=>'woc-'+z);
+ if(cancel){
+  const rows=ids.filter(z=>!S.rt.some(r=>r.date==z&&r.staff==x.name)).map(z=>({date:z,staff:x.name,route:'cancel',notes:''}));
+  if(rows.length){const {data,error}=await db.from('staff_routes').insert(rows).select();if(error)return fail(error);S.rt.unshift(...data)}
+ }else{
+  const {error}=await db.from('staff_routes').delete().eq('staff',x.name).in('date',ids);if(error)return fail(error);
+  S.rt=S.rt.filter(r=>!(r.staff==x.name&&ids.includes(r.date)))}
+ R();dayRt(k)}
 const weekOff=n=>{const r=S.rt.find(x=>x.date=='weekoff'&&x.staff==n);return r?+r.route:0};
 function woModal(){openM('Weekly off day',()=>{
  if(!S.st.length)return '<div class="empty">Add staff first</div>';
@@ -834,7 +1038,7 @@ async function saveCo(){
  Object.assign(CO,v);try{localStorage.setItem('ay.co',JSON.stringify(v))}catch(e){}
  const {error}=await db.from('company').upsert({id:1,...v});
  if(error)return alert('Saved on this device only. To keep it in the cloud too, run this once in the Supabase SQL Editor:\n\ncreate table if not exists company(id int primary key,name text,tag text,addr text,phone text,email text,gst text);\nalter table company add column if not exists fssai text, add column if not exists bank text, add column if not exists branch text, add column if not exists acno text, add column if not exists ifsc text, add column if not exists qr text;\n\nand give it the same access policy as your other tables.');
- toast('Company information saved')}
+}
 /* PROFIT & LOSS + BALANCE SHEET */
 function rawVal(asOf){
  const m={};
@@ -889,24 +1093,25 @@ const STN={'01':'Jammu & Kashmir','02':'Himachal Pradesh','03':'Punjab','04':'Ch
 const money=n=>(+n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
 const balTxt=n=>{n=Math.round(n*100)/100;return n>0?money(n)+' Dr':n<0?money(-n)+' Cr':'0 Cr'};
 function invSheet(o,btn){
- const c=S.c.find(x=>x.name==o.shop),b2b=!!(c&&c.gst),ty=b2b?'B2B':'B2C',tp=+o.taxp||0;
+ const c=S.c.find(x=>x.name==o.shop),b2b=!!(c&&c.gst),ty=b2b?'B2B':'B2C';
  const rt=sum(o.items.map(i=>i.r*i.pr)),g=gross(o),d=Math.min(+o.disc||0,g),t=tot(o)-(g-d),hb=o.items.some(i=>bxOf(i)>0);
  const A=dnum(o.date),L=S.o.filter(x=>x.shop==o.shop&&x.st!='Pending'&&x.st!='Cancelled'),P=S.cp.filter(x=>x.cust==o.shop&&x.st=='Settled');
  const prev=sum(L.filter(x=>dnum(x.date)<A).map(tot))-sum(P.filter(x=>dnum(x.date)<A).map(x=>x.amt+(x.dis||0)));
  const sales=[[ty+' SALE - '+o.no,tot(o)],...L.filter(x=>dnum(x.date)==A&&x.id!=o.id).map(x=>[ty+' SALE - '+x.no,tot(x)])];
  const rc=P.filter(x=>dnum(x.date)==A).flatMap(x=>[['Receipt - '+x.id,x.amt],...(x.dis?[['Cash discount - '+x.id,x.dis]]:[])]);
  const net=prev+sum(sales.map(v=>v[1]))-sum(rc.map(v=>v[1]));
- const kv=(k,v,b)=>`<div class="kv${b?' b':''}"><span>${k}</span><span>${v}</span></div>`;
+ const kv=(k,v,b)=>`<div class="kv${b?' '+b:''}"><span>${k}</span><span>${v}</span></div>`;
  const cols=hb?12:11;
- const rows=o.items.map((i,n)=>{const pr=S.prod.find(x=>x.name==i.p)||{},tx=i.q*i.pr;return `<tr><td class="c">${n+1}</td><td>${esc(pr.hsn||'')}</td><td>${esc(i.p)}</td><td class="r">${i.q}</td>${hb?`<td class="r">${bxOf(i)||''}</td>`:''}<td class="c">${esc(pr.uom||'PCS')}</td><td class="r">${money(i.pr)}</td><td class="r">${money(i.pr*(1+tp/100))}</td><td class="r">0.00</td><td class="r">${money(tx)}</td><td class="c">${tp}</td><td class="r">${money(tx*(1+tp/100))}</td></tr>`}).join('');
+ const rows=o.items.map((i,n)=>{const pr=S.prod.find(x=>x.name==i.p)||{},tx=i.q*i.pr,gp=lineGst(i,o);return `<tr><td class="c">${n+1}</td><td>${esc(pr.hsn||'')}</td><td>${esc(i.p)}</td><td class="r">${i.q}</td>${hb?`<td class="r">${bxOf(i)||''}</td>`:''}<td class="c">${esc(pr.uom||'PCS')}</td><td class="r">${money(i.pr)}</td><td class="r">${money(i.pr*(1+gp/100))}</td><td class="r">0.00</td><td class="r">${money(tx)}</td><td class="c">${gp}</td><td class="r">${money(tx*(1+gp/100))}</td></tr>`}).join('');
  const now=new Date(),pdt=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+' Time: '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true}).toUpperCase();
- return `<div class="sheet tx"><div class="bx"><div class="hd1"><h2>${esc(CO.name)}</h2>${CO.addr?`<div>${esc(CO.addr)}</div>`:''}${CO.phone?`<div>PH: ${esc(CO.phone)}</div>`:''}${CO.email?`<div>Email: ${esc(CO.email)}</div>`:''}</div>${CO.gst?`<div class="gs">GSTIN: ${esc(CO.gst)}</div>`:''}`
- +`<div class="two"><div>${CO.fssai?`<div>FSSAI LICENSE NO : ${esc(CO.fssai)}</div>`:''}<div><b><u>Details of Receiver(Billed to)</u></b></div><div>Name: ${esc(o.shop)}</div><div>Address: ${esc(c?c.addr:'')}</div><div>State: ${esc(c&&c.gst?STN[c.gst.slice(0,2)]||'':'')}</div><div>Mobile: ${esc(c?c.phone:'')}</div>${c&&c.gst?`<div>GSTIN No: ${esc(c.gst)}</div>`:''}</div>`
- +`<div><div><b><u>TAX INVOICE</u></b></div><div>Invoice No : ${esc(o.no)}</div><div>Invoice Date : ${esc(o.date)}</div><div>Invoice Type : ${ty} SALE</div><div>Sales Man : ${esc(o.by)}</div><div>Remarks : ${esc(o.notes||'')}</div>${o.due?`<div>Payment Due : ${esc(o.due)}</div>`:''}</div></div>`
- +`<table class="itx"><thead><tr><th>s no</th><th>HSN</th><th>Product</th><th>Qty</th>${hb?'<th>Box</th>':''}<th>UOM</th><th>Rate<br>(Excl Tax)</th><th>Rate<br>(Incl Tax)</th><th>Disc<br>%</th><th>Taxable<br>Amount</th><th>Gst<br>%</th><th>Amount</th></tr></thead><tbody>${rows}<tr class="sp">${'<td></td>'.repeat(cols)}</tr></tbody><tfoot><tr><td colspan="3"></td><td class="r">${sum(o.items.map(i=>i.q))}</td><td colspan="${cols-5}"></td><td class="r">${money(sum(o.items.map(i=>i.q*i.pr*(1+tp/100))))}</td></tr></tfoot></table>`
- +`<div class="bt"><div class="bl"><div><b><u>Amount In Words</u></b></div><div>(${words(tot(o))})</div><div class="bk"><div><div><b><u>Bank Details</u></b></div>${CO.bank?`<div>Bank Name : ${esc(CO.bank)}</div>`:''}${CO.branch?`<div>Branch : ${esc(CO.branch)}</div>`:''}${CO.acno?`<div>A/c No : ${esc(CO.acno)}</div>`:''}${CO.ifsc?`<div>IFSC : ${esc(CO.ifsc)}</div>`:''}</div>${CO.qr?`<div class="qr"><img src="${esc(CO.qr)}" alt=""><div>Scan&amp;Pay</div></div>`:''}</div></div>`
- +`<div class="br">${rt?kv('Less: Returns','−'+money(rt)):''}${kv('Gross Value',money(g))}${kv('Total CGST',money(t/2))}${kv('Total SGST',money(t/2))}${kv('Total GST',money(t))}${kv('Bill Discount',money(d))}${kv('Grand Total',money(tot(o)),1)}${kv('Previous Day Balance',balTxt(prev))}<div class="kv b"><span><u>Today's Vouchers :</u></span></div>${[...sales,...rc].map(v=>kv(esc(v[0]),money(v[1]))).join('')}${kv('Net Amount',balTxt(net),1)}</div></div>`
- +`<div class="sg"><div>For, ${esc(CO.name)}</div><div class="as">Authorised Signatory</div></div></div><div class="pdt">Printed Date: ${pdt}</div>`
+ return `<div class="sheet tx"><div class="bx"><div class="hd1"><div class="brand"><div class="mark">${esc((CO.name||'A').trim().charAt(0).toUpperCase())}</div><div><h2>${esc(CO.name)}</h2>${CO.tag?`<div class="tagl">${esc(CO.tag)}</div>`:''}</div></div><div class="hco">${CO.addr?`<div>${esc(CO.addr)}</div>`:''}${CO.phone?`<div>Phone: ${esc(CO.phone)}</div>`:''}${CO.email?`<div>${esc(CO.email)}</div>`:''}${CO.gst?`<div class="gstl">GSTIN: ${esc(CO.gst)}</div>`:''}${CO.fssai?`<div>FSSAI: ${esc(CO.fssai)}</div>`:''}</div></div>`
+ +`<div class="ttl">Tax Invoice</div>`
+ +`<div class="two"><div class="bill"><div class="lbl">Billed to</div><div class="bn">${esc(o.shop)}</div>${c&&c.addr?`<div class="ln">${esc(c.addr)}</div>`:''}${c&&c.gst?`<div class="ln">State: ${esc(STN[c.gst.slice(0,2)]||'')}</div>`:''}${c&&c.phone?`<div class="ln">Mobile: ${esc(c.phone)}</div>`:''}${c&&c.gst?`<div class="ln">GSTIN: ${esc(c.gst)}</div>`:''}</div><div class="meta"><div><span>Invoice no.</span><b>${esc(o.no)}</b></div><div><span>Date</span><b>${esc(o.date)}</b></div><div><span>Type</span><b>${ty} Sale</b></div><div><span>Sales man</span><b>${esc(o.by)}</b></div>${o.due?`<div><span>Payment due</span><b>${esc(o.due)}</b></div>`:''}${o.notes?`<div><span>Remarks</span><b>${esc(o.notes)}</b></div>`:''}</div></div>`
+ +`<table class="itx"><thead><tr><th class="c">S.no</th><th>HSN</th><th>Product</th><th class="r">Qty</th>${hb?'<th class="r">Box</th>':''}<th class="c">UOM</th><th class="r">Rate<br>(excl. tax)</th><th class="r">Rate<br>(incl. tax)</th><th class="r">Disc %</th><th class="r">Taxable<br>amount</th><th class="r">GST %</th><th class="r">Amount</th></tr></thead><tbody>${rows}<tr class="sp">${'<td></td>'.repeat(cols)}</tr></tbody><tfoot><tr><td colspan="3"></td><td class="r">${sum(o.items.map(i=>i.q))}</td><td colspan="${cols-5}"></td><td class="r">${money(sum(o.items.map(i=>i.q*i.pr*(1+lineGst(i,o)/100))))}</td></tr></tfoot></table>`
+ +`<div class="bt"><div class="bl"><div class="lbl">Amount in words</div><div class="words">Rupees ${words(tot(o))} only</div>${(CO.bank||CO.branch||CO.acno||CO.ifsc)?`<div class="bank"><div class="lbl">Bank details</div>${CO.bank?`<div>Bank: <b>${esc(CO.bank)}</b></div>`:''}${CO.branch?`<div>Branch: ${esc(CO.branch)}</div>`:''}${CO.acno?`<div>A/c no: <b>${esc(CO.acno)}</b></div>`:''}${CO.ifsc?`<div>IFSC: ${esc(CO.ifsc)}</div>`:''}</div>`:''}${CO.qr?`<div class="qrbox"><img src="${esc(CO.qr)}" alt=""><div>Scan &amp; pay</div></div>`:''}</div>`
+ +`<div class="br">${rt?kv('Less: Returns','−'+money(rt)):''}${kv('Gross value',money(g))}${kv('Total CGST',money(t/2))}${kv('Total SGST',money(t/2))}${kv('Total GST',money(t))}${kv('Bill discount',money(d))}${kv('Grand total',money(tot(o)),'gt')}${kv('Previous day balance',balTxt(prev))}<div class="vhead">Today's vouchers</div>${[...sales,...rc].map(v=>kv(esc(v[0]),money(v[1]))).join('')}${kv('Net amount',balTxt(net),'dn')}</div></div>`
+ +`<div class="sg"><div class="thx">Thank you for your business</div><div class="sign"><div class="for">For, ${esc(CO.name)}</div><div class="as">Authorised Signatory</div></div></div>`
+ +`<div class="pdt">Printed on ${pdt}</div></div>`
  +(btn?`<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button>`:'')+`</div>`}
 function words(n){
  n=Math.round(+n||0);if(!n)return 'Zero';
