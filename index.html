@@ -23,7 +23,7 @@ input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--b)
 .hint{margin:0 2px 9px}
 .it{display:flex;gap:12px;align-items:flex-start}.av{flex:none;width:40px;height:40px;border-radius:50%;background:var(--s);color:var(--g);display:grid;place-items:center;font-weight:700}.f1{flex:1;min-width:0}
 .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.m{color:var(--m);font-size:13px}.amt{font-weight:700;white-space:nowrap}
-.tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;background:var(--s);white-space:nowrap}.Pending{color:var(--y)}.Approved,.Delivered,.Confirmed{color:var(--g)}.Rejected,.Cancelled{color:var(--r)}.bad{color:var(--r)}.ok{color:var(--g)}
+.tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;background:var(--s);white-space:nowrap}.Pending{color:var(--y)}.Approved,.Settled,.Delivered,.Confirmed{color:var(--g)}.Rejected,.Cancelled{color:var(--r)}.bad{color:var(--r)}.ok{color:var(--g)}
 .act select{width:auto;margin:6px 6px 0 0;padding:8px}.empty{text-align:center;color:var(--m);padding:26px 0}
 .ac{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;font-size:13px;color:var(--m)}.ac .btn{margin:0;padding:6px 11px;font-size:13px}
 .tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--b);white-space:nowrap}th{color:var(--m);font-size:12px}td.n,th.n{text-align:right}.tw .btn{margin:2px;padding:6px 10px;font-size:12px}
@@ -100,22 +100,49 @@ input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--b)
 .shk{animation:shk .38s}
 @media(min-width:820px){.lgb{padding:30px 32px 24px}}
 #shell[hidden]{display:none}
-@media print{#shell,#md,#lg,#tst{display:none!important}#inv{position:static;padding:0;background:#fff}.np{display:none}}
+@media print{#shell,#md,#lg,#tst{display:none!important}#inv{position:static;padding:0;background:#fff}#inv .np,.np{display:none!important}#inv .sheet{break-after:page;page-break-after:always;box-shadow:none;border-radius:0;margin:0 auto}#inv .sheet:last-of-type{break-after:auto;page-break-after:auto}}
+.ck{width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:var(--g);cursor:pointer;padding:0}
+.sbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px}.sbar .sall{display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}.sbar .m{margin-left:auto}.sbb .btn{margin:0 0 0 6px}
+.pth{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--s);display:block}.pph{display:grid;place-items:center;font-size:20px}.pth.big{width:84px;height:84px;border-radius:14px;font-size:30px}
+.pimgw{display:flex;gap:14px;align-items:center;margin-bottom:8px}.pimgw>div:last-child{flex:1;min-width:0}
+#inv .sheet+.sheet{margin-top:16px}#inv .ivbar{max-width:680px;margin:0 auto 12px;display:flex;align-items:center;gap:10px}#inv .ivbar .btn{margin:0}#inv .ivbar b{margin-right:auto}
+
+/* PRO THEME */
+:root{--g:#1f7a3d;--g2:#14532d;--sh:0 1px 2px #0f2a1a0f,0 8px 24px #0f2a1a10}
+body{font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+.hd{background:radial-gradient(120% 170% at 0 0,#24913f 0,#14532d 58%,#0d3b20 100%);padding:30px 24px 60px;border-radius:0 0 28px 28px;box-shadow:0 10px 30px #0d3b2033}
+.hd h1{font-size:26px;font-weight:700;letter-spacing:-.015em}.hd p{opacity:.8}
+main{margin-top:-38px}
+.card{border-radius:18px;transition:box-shadow .2s}.card:hover{box-shadow:0 2px 4px #0f2a1a12,0 14px 32px #0f2a1a1a}
+.kp .card{border-left:4px solid var(--g);border-radius:14px}.kp .card .v{font-size:23px;font-weight:700;letter-spacing:-.01em}.kp .card:nth-child(2){border-left-color:#d49b2c}.kp .card:nth-child(3){border-left-color:#3b82c4}.kp .card:nth-child(4){border-left-color:#8b5cc4}
+.k{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+th{background:var(--s);color:var(--g);text-transform:uppercase;letter-spacing:.05em;font-size:11px}th:first-child{border-radius:8px 0 0 8px}th:last-child{border-radius:0 8px 8px 0}
+tr:hover td{background:#2f7d3a0d}
+.btn{border-radius:10px;box-shadow:0 1px 2px #0f2a1a22;transition:filter .15s,transform .15s}.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.btn.o,.btn.d{box-shadow:none}.hd .btn{box-shadow:0 4px 14px #0003}
+.av{background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;box-shadow:0 4px 10px #14532d33}
+.tag{border-radius:20px;padding:4px 11px}
+.chips button{box-shadow:0 1px 2px #0f2a1a0d}
+input,select{border-radius:11px;padding:11px 13px}
+.tbh td{background:var(--s);font-weight:700;color:var(--g)}.tbs td{font-weight:700;border-top:2px solid var(--b)}.tbg td{font-weight:800;font-size:15px;border-top:2px solid var(--g);border-bottom:0}
+@media(min-width:820px){aside{background:linear-gradient(180deg,#14532d,#0b2f19);color:#fff;border:0;box-shadow:4px 0 24px #0d3b2024}.brand{color:#fff;font-size:21px}.brand small{color:#a9cfb4}#nav button{color:#c6e0cd}#nav button:hover{background:#ffffff14}#nav button.on{background:#ffffff1f;color:#fff;font-weight:600;box-shadow:inset 3px 0 0 #8de29f}}
+@media(max-width:819px){#nav{overflow-x:auto}#nav button{min-width:62px}.hd{border-radius:0 0 22px 22px}}
+.sqlb{white-space:pre-wrap;background:var(--s);padding:10px 12px;border-radius:10px;font-size:12px;overflow-x:auto;margin:8px 0 0}.msel{width:auto!important;margin:0 0 0 6px!important;padding:8px 10px!important;display:inline-block}
+@media(min-width:820px){aside{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#ffffff45 transparent}aside::-webkit-scrollbar{width:6px}aside::-webkit-scrollbar-thumb{background:#ffffff45;border-radius:6px}}
+.calh{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}.calh h3{flex:1;text-align:center;margin:0;min-width:140px}.calh .btn{margin:0}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.ch{text-align:center;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--g);padding:4px 0}
+.cd{min-height:84px;border:1px solid var(--b);border-radius:10px;padding:4px;cursor:pointer;overflow:hidden;background:var(--c,transparent)}.cd:hover{border-color:var(--g);box-shadow:0 2px 8px #0f2a1a1a}.cd.off{border:0;cursor:default;box-shadow:none}.cd.td{outline:2px solid var(--g)}.cd>b{font-size:12px}
+.rc{display:block;color:#fff;font-size:10px;line-height:1.3;padding:2px 5px;border-radius:6px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lg{display:inline-flex;align-items:center;gap:6px;margin:8px 14px 0 0;font-size:12px}.lg i{width:10px;height:10px;border-radius:50%;display:inline-block}
+@media(max-width:600px){.cd{min-height:62px;padding:2px}.rc{font-size:9px;padding:1px 3px}.cal{gap:3px}}
+.cd.wo{background:repeating-linear-gradient(45deg,transparent 0 6px,#8a8f8c22 6px 12px)}.rc.off{background:#8a948f}
+.oit .ib,.oit .ipr{width:78px;text-align:right}
 </style></head><body>
 <div id="lg"><div class="lgb" id="lgb">
  <div class="lgtop"></div><div class="lgmark">🌿</div><h2>Ayurgra</h2><p id="lgsub">Office panel · sign in to continue</p>
- <div class="seg"><span class="knob"></span><button type="button" id="t1" class="on" onclick="mode('in')">Login</button><button type="button" id="t2" onclick="mode('up')">Create account</button></div>
  <form onsubmit="return doSubmit(event)" autocomplete="on">
   <div class="k">Mobile number</div>
   <label class="fld"><span class="fi">📱</span><input id="ph" inputmode="numeric" maxlength="10" autocomplete="username" placeholder="10-digit mobile number"></label>
   <div class="k">Password</div>
   <label class="fld"><span class="fi">🔒</span><input id="pw" type="password" autocomplete="current-password" placeholder="Password"><button type="button" class="eye" id="eye" onclick="peye()">👁</button></label>
-  <div id="nmw" hidden>
-   <div class="k">Your name</div>
-   <label class="fld"><span class="fi">🧑</span><input id="nm" autocomplete="name" placeholder="Name shown on the panel"></label>
-   <div class="k">Confirm password</div>
-   <label class="fld"><span class="fi">🔑</span><input id="pw2" type="password" autocomplete="new-password" placeholder="Repeat the password"></label>
-  </div>
   <div id="lge"></div>
   <button class="btn lg" id="lgo" type="submit">Login</button>
  </form>
@@ -136,9 +163,10 @@ const sum=a=>a.reduce((x,y)=>x+y,0);
 const gross=o=>sum(o.items.map(i=>(i.q-i.r)*i.pr));
 const tot=o=>{const g=gross(o),d=Math.min(+o.disc||0,g);return Math.round((g-d)*(1+(+o.taxp||0)/100))};
 const live=()=>S.o.filter(o=>o.st!='Cancelled');
-const ebal=e=>sum(live().filter(o=>o.by==e).map(tot))-sum(S.s.filter(s=>s.ex==e&&s.st=='Approved').map(s=>s.amt));
+const led=()=>S.o.filter(o=>o.st!='Pending'&&o.st!='Cancelled');
+const ebal=e=>sum(led().filter(o=>o.by==e).map(tot))-sum(S.s.filter(s=>s.ex==e&&s.st=='Settled').map(s=>s.amt));
 const epend=e=>sum(S.s.filter(s=>s.ex==e&&s.st=='Pending').map(s=>s.amt));
-const cbal=n=>sum(live().filter(o=>o.shop==n).map(tot))-sum(S.cp.filter(p=>p.cust==n).map(p=>p.amt));
+const cbal=n=>sum(led().filter(o=>o.shop==n).map(tot))-sum(S.cp.filter(p=>p.cust==n&&p.st=='Settled').map(p=>p.amt));
 const today=()=>new Date().toLocaleDateString('en-IN');
 const pd=s=>{const[d,m,y]=String(s).split('/');return new Date(y,m-1,d).getTime()||0};
 const dnum=s=>{const i=String(s||'').match(/^(\d{4})-(\d\d)-(\d\d)/),p=String(s||'').split('/');return i?Date.UTC(+i[1],+i[2]-1,+i[3])/864e5:p.length==3?Date.UTC(+p[2],+p[1]-1,+p[0])/864e5:0};
@@ -150,29 +178,23 @@ const err=e=>e&&e.message?e.message:'unexpected error';
 async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 const rO=r=>({id:r.id,no:r.no||'AY-'+String(r.id).padStart(4,'0'),date:r.date,by:r.agent,shop:r.shop,items:r.items||[],st:r.status,disc:+(r.disc||0),taxp:+(r.taxp||0),due:r.due||'',notes:r.notes||''});
 const rC=r=>({id:r.id,name:r.name,phone:r.phone||'',addr:r.addr||''});
-const rSt=r=>({id:r.id,name:r.name,phone:r.phone||'',area:r.area||''});
-const rS=r=>({id:r.id,ex:r.ex,amt:+r.amount,mode:r.mode,date:r.date,st:r.status});
-const rPay=r=>({id:r.id,cust:r.cust,amt:+r.amount,mode:r.mode,date:r.date});
-const rPd=r=>({id:r.id,serial:+(r.serial||0),name:r.name,pcs:+(r.pcs||0),rate:+(r.rate||0)});
+const rSt=r=>({id:r.id,name:r.name,phone:r.phone||'',area:r.area||'',designation:r.designation||'',join:r.join_date||''});
+const rS=r=>({id:r.id,ex:r.ex,amt:+r.amount,mode:r.mode,date:r.date,st:{Approved:'Settled',Rejected:'Cancelled'}[r.status]||r.status});
+const rPay=r=>({id:r.id,cust:r.cust,amt:+r.amount,mode:r.mode,date:r.date,by:r.collected_by||'',st:{Approved:'Settled',Received:'Settled',Rejected:'Cancelled'}[r.status]||r.status||'Settled'});
+const rPd=r=>({id:r.id,serial:+(r.serial||0),name:r.name,pcs:+(r.pcs||0),rate:+(r.rate||0),image:r.image||''});
 const ST=()=>S.st.map(x=>x.name);
 const byName=a=>a.sort((x,y)=>x.name.localeCompare(y.name));
 
-let S={o:[],s:[],cp:[],c:[],st:[],prod:[]},ME=null,LMODE='in';
+let S={o:[],s:[],cp:[],c:[],st:[],prod:[],pu:[],cn:[],pn:[],rt:[]},ME=null,LMODE='in';
+let RC={y:new Date().getFullYear(),m:new Date().getMonth(),s:'All'},cf='All',sel=new Set(),PIMG='',MS='Confirmed',MISS=[],qb='';
+let CO={name:'Ayurgra Herbal Soap',tag:'Ayurvedic & herbal products',addr:'',phone:'',email:'',gst:''};
 let tab='orders',f='All',q='',qc='',qs='',qk='',lq='',lt='Customer',le='';
 let odf='',odt='',cdf='',cdt='',ldf='',ldt='';
-const T=[['orders','📦','Orders'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','🧑‍💼','Staff'],['prod','🧴','Products'],['ledger','📒','Ledger']];
-const H={orders:['Orders','Create and manage orders'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],prod:['Products','Catalogue used on invoices'],ledger:['Ledger','Statement with running balance']};
-const ACT={orders:['+ New order','newOrder'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],prod:['+ Add product','newProd']};
+const T=[['orders','📦','Orders'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','🧑‍💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['tb','⚖️','Trial Balance'],['company','🏢','Company']];
+const H={orders:['Orders','Create and manage orders'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],tb:['Trial Balance','Customer and executive closing balances'],company:['Company','Details printed on every invoice']};
+const ACT={orders:['+ New order','newOrder'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],cal:['+ Assign route','newRt'],prod:['+ Add product','newProd'],buy:['+ Add purchase','newBuy'],raw:['+ Add consumption','newCn']};
 
 /* LOGIN */
-function mode(m){
- LMODE=m;$('#lgb').classList.toggle('up',m=='up');
- $('#t1').className=m=='in'?'on':'';$('#t2').className=m=='up'?'on':'';
- $('#nmw').hidden=m!='up';$('#lgo').textContent=m=='up'?'Create account':'Login';
- $('#pw').autocomplete=m=='up'?'new-password':'current-password';
- $('#lgsub').textContent=m=='up'?'New here? Register your number to get started':'Office panel · sign in to continue';
- $('#lge').textContent='';
-}
 function peye(){const i=$('#pw');i.type=i.type=='password'?'text':'password';$('#eye').textContent=i.type=='password'?'👁':'🙈'}
 function lerr(msg){
  $('#lge').innerHTML=`<span class="ei">⚠</span>${esc(msg)}`;
@@ -183,27 +205,14 @@ async function doAuth(){
  const ph=$('#ph').value.replace(/\D/g,''),pw=$('#pw').value;
  if(ph.length!=10)return lerr('Enter the full 10-digit mobile number.');
  if(!pw)return lerr('Enter a password.');
- if(LMODE=='up'){
-  if(pw.length<4)return lerr('Use at least 4 characters for the password.');
-  if(pw!=$('#pw2').value)return lerr('The two passwords do not match.');
- }
  $('#lgo').disabled=true;$('#lge').innerHTML='<span class="wt">Please wait…</span>';
- try{LMODE=='up'?await signup(ph,pw):await signin(ph,pw)}
+ try{await signin(ph,pw)}
  catch(e){lerr(err(e));$('#lgo').disabled=false}
-}
-async function signup(ph,pw){
- const {data:du}=await db.from('accounts').select('id').eq('phone',ph).maybeSingle();
- if(du)throw new Error('This number is already registered. Switch to Login.');
- const name=$('#nm').value.trim();
- const salt=[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,'0')).join('');
- const {error}=await db.from('accounts').insert({phone:ph,name,salt,pw_hash:await sha(salt+':'+ph+':'+pw)});
- if(error)throw new Error('Could not create account: '+error.message);
- await enter({phone:ph,name});
 }
 async function signin(ph,pw){
  const {data,error}=await db.from('accounts').select('*').eq('phone',ph).maybeSingle();
  if(error)throw new Error('Could not reach the database: '+error.message);
- if(!data)throw new Error('No account uses that number. Tap Create account.');
+ if(!data)throw new Error('No account uses that number. Ask the admin to add you.');
  if(await sha(data.salt+':'+ph+':'+pw)!==data.pw_hash)throw new Error('Wrong password.');
  await enter({phone:ph,name:data.name});
 }
@@ -232,6 +241,10 @@ async function sync(){
   const bad=[o,c,st,pr,s,cp].find(r=>r.error);
   if(bad)throw new Error(bad.error.message+' — is the schema created and reachable?');
   S={o:o.data.map(rO),c:byName(c.data.map(rC)),st:byName(st.data.map(rSt)),prod:pr.data.map(rPd),s:s.data.map(rS),cp:cp.data.map(rPay)};
+  try{const l=JSON.parse(localStorage.getItem('ay.co')||'null');if(l)Object.assign(CO,l)}catch(e){}
+  try{const cr=await db.from('company').select('*').eq('id',1).maybeSingle();if(cr.data)Object.assign(CO,{name:cr.data.name||CO.name,tag:cr.data.tag||'',addr:cr.data.addr||'',phone:cr.data.phone||'',email:cr.data.email||'',gst:cr.data.gst||''})}catch(e){}
+  MISS=[];const L=async t=>{const r=await db.from(t).select('*').order('id',{ascending:false});if(r.error){MISS.push(t);return[]}return r.data};
+  [S.pu,S.cn,S.pn,S.rt]=await Promise.all([L('purchases'),L('consumption'),L('production'),L('staff_routes')]);
   R();
  }catch(e){$('#app').innerHTML=accBar()+`<div class="card"><b>Could not load data</b><div class="m" style="margin-top:6px">${esc(err(e))}</div><button class="btn" onclick="sync()">Retry</button></div>`}
 }
@@ -249,19 +262,19 @@ const newOrder=()=>openM('New invoice',form,1);
 const newColl=()=>openM('Add collection',collForm);
 const newCust=()=>openM('New customer',custForm);
 const newStaff=()=>openM('Add staff',()=>staffForm());
-function collForm(){return `<div class="k">Customer</div><select id="pc">${S.c.length?S.c.map(c=>`<option value="${esc(c.name)}">${esc(c.name)} (due ${fm(cbal(c.name))})</option>`).join(''):'<option value="">Add a customer first</option>'}</select><div class="k">Amount</div><input type="number" min="1" id="pa" placeholder="Amount"><div class="k">Mode</div><select id="pm"><option>Cash</option><option>UPI</option><option>Bank</option></select><div class="k">Date (dd/mm/yyyy)</div><input id="pdt" value="${today()}"><button class="btn" onclick="cpay()">Save collection</button>`}
+function collForm(){return `<div class="k">Customer</div><select id="pc">${S.c.length?S.c.map(c=>`<option value="${esc(c.name)}">${esc(c.name)} (due ${fm(cbal(c.name))})</option>`).join(''):'<option value="">Add a customer first</option>'}</select><div class="k">Amount</div><input type="number" min="1" id="pa" placeholder="Amount"><div class="k">Mode</div><select id="pm"><option>Cash</option><option>UPI</option><option>Bank</option></select><div class="k">Date (dd/mm/yyyy)</div><input id="pdt" value="${today()}"><div class="k">Collected by (staff)</div><select id="pby">${bySel('')}</select><div class="k">Status</div><select id="pst"><option>Settled</option><option>Pending</option><option>Cancelled</option></select><button class="btn" onclick="cpay()">Save collection</button>`}
 function custForm(){return `<div class="k">Name</div><input id="cn" placeholder="Shop / customer name"><div class="k">Phone</div><input id="cph" placeholder="Phone"><div class="k">Address</div><input id="ca" placeholder="Address"><button class="btn" onclick="addC()">Save customer</button>`}
 function staffForm(x){
- const s=x||{name:'',phone:'',area:''};
- return `<div class="k">Name</div><input id="sn" value="${esc(s.name)}" placeholder="Staff / executive name"><div class="k">Mobile number</div><input id="sph" value="${esc(s.phone)}" inputmode="numeric" placeholder="Phone"><div class="k">Area / route</div><input id="sar" value="${esc(s.area)}" placeholder="Area, locality or route"><button class="btn" onclick="${x?`updS(${x.id})`:'addS()'}">Save staff</button>${x?`<button class="btn d" onclick="delS(${x.id})">Delete</button>`:''}`;
+ const s=x||{name:'',phone:'',area:'',designation:'',join:''};
+ return `<div class="k">Name</div><input id="sn" value="${esc(s.name)}" placeholder="Staff / executive name"><div class="k">Mobile number</div><input id="sph" value="${esc(s.phone)}" inputmode="numeric" placeholder="Phone"><div class="fl"><div><div class="k">Designation</div><input id="sdes" value="${esc(s.designation)}" placeholder="e.g. Delivery executive"></div><div><div class="k">Join date</div><input type="date" id="sjd" value="${esc(String(s.join||'').slice(0,10))}"></div></div><div class="k">Area / route</div><input id="sar" value="${esc(s.area)}" placeholder="Area, locality or route"><button class="btn" onclick="${x?`updS(${x.id})`:'addS()'}">Save staff</button>${x?`<button class="btn d" onclick="delS(${x.id})">Delete</button>`:''}`;
 }
 function fail(a){return alert('Could not save — you are probably offline or the table is missing. '+err(a))}
 function go(t){tab=t;R();scrollTo(0,0)}
 function R(){
  $('#nav').innerHTML=T.map(t=>`<button class="${t[0]==tab?'on':''}" onclick="go('${t[0]}')"><i>${t[1]}</i>${t[2]}</button>`).join('');
  const a=ACT[tab];
- $('#hd').innerHTML=`<div><h1>${H[tab][0]}</h1><p>${H[tab][1]}</p></div>`+(a?`<button class="btn" onclick="${a[1]}()">${a[0]}</button>`:'');
- $('#app').innerHTML=accBar()+({orders:Vo,collect:Vc,cust:Vu,staff:Vs,prod:Vp,ledger:Vl})[tab]();
+ $('#hd').innerHTML=`<div><h1>${H[tab][0]}</h1><p>${H[tab][1]}</p></div>`+(a?`<div><button class="btn" onclick="${a[1]}()">${a[0]}</button>${tab=='prod'?'<button class="btn" style="margin-left:8px" onclick="newPn()">+ Add production</button>':''}</div>`:'');
+ $('#app').innerHTML=accBar()+({orders:Vo,collect:Vc,cust:Vu,staff:Vs,cal:Vcal,prod:Vp,buy:Vbuy,raw:Vraw,ledger:Vl,tb:Vtb,company:Vco})[tab]();
 }
 const kp=(k,v,c)=>`<div class="card"><div class="k">${k}</div><div class="v ${c||''}">${v}</div></div>`;
 const dr=(a,b,ca,cb,cl)=>`<div class="dr"><div><div class="k">Date from</div><input type="date" value="${a}" onchange="${ca}=this.value;R()"></div><div><div class="k">Date to</div><input type="date" value="${b}" onchange="${cb}=this.value;R()"></div>${a||b?`<button class="btn o" type="button" onclick="${cl}">Clear dates</button>`:''}</div>`;
@@ -271,28 +284,44 @@ function Vo(){
  return `<div class="kp">${kp('Orders',S.o.length)}${kp('Sales',fm(sum(live().map(tot))))}${kp('Pending orders',S.o.filter(o=>o.st=='Pending').length,'')}${kp('Awaiting approval',fm(sum(ST().map(epend))),'bad')}</div>`
  +`<div class="chips">${['All','Pending','Confirmed','Delivered','Cancelled'].map(s=>`<button class="${s==f?'on':''}" onclick="f='${s}';R()">${s}</button>`).join('')}</div>`
  +dr(odf,odt,'odf','odt',clr('odf','odt'))
- +`<input placeholder="🔍 Search shop, order no, executive" value="${esc(q)}" oninput="q=this.value;$('#ol').innerHTML=ol()"><div id="ol">${ol()}</div>`}
+ +`<input placeholder="🔍 Search shop, order no, executive" value="${esc(q)}" oninput="q=this.value;ru()"><div id="sb">${sbar()}</div><div id="ol">${ol()}</div>`}
+function vis(){const k=q.toLowerCase(),inR=rng(odf,odt);return S.o.filter(o=>(f=='All'||o.st==f)&&inR(o.date)&&hit(k,o.shop,o.no,o.by,o.date))}
+function ru(){$('#ol').innerHTML=ol();$('#sb').innerHTML=sbar()}
+function tg(id,on){on?sel.add(id):sel.delete(id);$('#sb').innerHTML=sbar()}
+function selAll(on){vis().forEach(o=>on?sel.add(o.id):sel.delete(o.id));ru()}
+function sbar(){
+ const v=vis();if(!v.length)return '';
+ const n=v.filter(o=>sel.has(o.id)).length;
+ return `<div class="card sbar"><label class="sall"><input type="checkbox" class="ck" ${n&&n==v.length?'checked':''} onchange="selAll(this.checked)"> Select all (${v.length})</label><span class="m">${sel.size} selected</span><span class="sbb"><button class="btn" type="button" ${sel.size?'':'disabled'} onclick="invMulti()">🖨 Print selected${sel.size?' ('+sel.size+')':''}</button>${sel.size?`<select class="msel" onchange="MS=this.value">${['Pending','Confirmed','Delivered','Cancelled'].map(x=>`<option ${x==MS?'selected':''}>${x}</option>`).join('')}</select><button class="btn o" type="button" onclick="msChange()">Change status</button><button class="btn d" type="button" onclick="sel.clear();ru()">Clear</button>`:''}</span></div>`}
+async function msChange(){
+ const ids=[...sel];if(!ids.length)return alert('Tick at least one order first');
+ if(!confirm(`Change ${ids.length} order(s) to ${MS}?`))return;
+ const {error}=await db.from('orders').update({status:MS}).in('id',ids);
+ if(error)return fail(error);
+ S.o.forEach(o=>{if(sel.has(o.id))o.st=MS});sel.clear();R();toast(ids.length+' order(s) set to '+MS)}
 function ol(){
- const k=q.toLowerCase(),inR=rng(odf,odt);
- const list=S.o.filter(o=>(f=='All'||o.st==f)&&inR(o.date)&&hit(k,o.shop,o.no,o.by,o.date));
+ const list=vis();
  return `${(odf||odt)?`<div class="m hint">${list.length} invoice(s)${rlab(odf,odt)} · ${fm(sum(list.filter(o=>o.st!='Cancelled').map(tot)))} in range. The cards on top stay all-time.</div>`:''}${list.map(oc).join('')||'<div class="empty">No orders found</div>'}`}
 function oc(o){
  const rt=sum(o.items.map(i=>i.r*i.pr));
- return `<div class="card"><div class="it"><div class="av">${esc(o.shop[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(o.shop)}</b><span class="amt">${fm(tot(o))}</span></div><div class="m">${o.no} · ${o.date} · ${esc(o.by)}</div><div class="m">${o.items.map(i=>i.q+'× '+i.p).join(', ')}${rt?` · returns ${fm(rt)}`:''}${o.disc?` · discount ${fm(o.disc)}`:''}${o.taxp?` · GST ${o.taxp}%`:''}${o.due?` · due ${o.due}`:''}</div>
- <div class="act"><span class="tag ${o.st}">${o.st}</span><br><select onchange="stt(${o.id},this.value)">${['Pending','Confirmed','Delivered','Cancelled'].map(s=>`<option ${s==o.st?'selected':''}>${s}</option>`)}</select><button class="btn o" onclick="inv(${o.id})">Invoice</button><button class="btn d" onclick="del(${o.id})">Delete</button></div></div></div></div>`}
-function form(){
- const nxt='AY-'+String(S.o.reduce((m,o)=>Math.max(m,o.id),0)+1).padStart(4,'0');
- return `<div class="ivh"><div><div class="k">Invoice no.</div><div class="ivno">${nxt}</div></div><div class="ivhcol"><div class="k">Invoice date</div><input id="idate" value="${today()}"></div><div class="ivhcol"><div class="k">Status</div><select id="ist"><option>Pending</option><option>Confirmed</option><option>Delivered</option></select></div></div>`
- +`<div class="fl"><div><div class="k">Bill to (customer / shop)</div><input id="shop" list="cl" placeholder="Type or pick customer" oninput="oiCust()"><datalist id="cl">${S.c.map(c=>`<option value="${esc(c.name)}">`).join('')}</datalist><div class="m" id="custinfo"></div></div><div><div class="k">Order for</div><select id="by"><option>Office</option>${S.st.map(x=>`<option>${esc(x.name)}</option>`).join('')}</select></div></div>`
- +`<div class="tw"><table class="oit"><thead><tr><th class="c">#</th><th>Item</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th class="c"></th></tr></thead><tbody id="oib">${oiRow()}</tbody></table></div>`
+ return `<div class="card"><div class="it"><input type="checkbox" class="ck" ${sel.has(o.id)?'checked':''} onchange="tg(${o.id},this.checked)" title="Select for multiple print"><div class="av">${esc(o.shop[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(o.shop)}</b><span class="amt">${fm(tot(o))}</span></div><div class="m">${o.no} · ${o.date} · ${esc(o.by)}</div><div class="m">${o.items.map(i=>i.q+'× '+i.p).join(', ')}${rt?` · returns ${fm(rt)}`:''}${o.disc?` · discount ${fm(o.disc)}`:''}${o.taxp?` · GST ${o.taxp}%`:''}${o.due?` · due ${o.due}`:''}</div>
+ <div class="act"><span class="tag ${o.st}">${o.st}</span><br><select onchange="stt(${o.id},this.value)">${['Pending','Confirmed','Delivered','Cancelled'].map(s=>`<option ${s==o.st?'selected':''}>${s}</option>`)}</select><button class="btn o" onclick="editO(${o.id})">Edit</button><button class="btn o" onclick="inv(${o.id})">Invoice</button><button class="btn d" onclick="del(${o.id})">Delete</button></div></div></div></div>`}
+function form(e){
+ const nxt=e?e.no:'AY-'+String(S.o.reduce((m,o)=>Math.max(m,o.id),0)+1).padStart(4,'0');
+ return `<div class="ivh"><div><div class="k">Invoice no.</div><div class="ivno">${nxt}</div></div><div class="ivhcol"><div class="k">Invoice date</div><input id="idate" value="${esc(e?e.date:today())}"></div><div class="ivhcol"><div class="k">Status</div><select id="ist">${['Pending','Confirmed','Delivered',...(e?['Cancelled']:[])].map(x=>`<option ${e&&x==e.st?'selected':''}>${x}</option>`).join('')}</select></div></div>`
+ +`<div class="fl"><div><div class="k">Bill to (customer / shop)</div><input id="shop" list="cl" value="${esc(e?e.shop:'')}" placeholder="Type or pick customer" oninput="oiCust()"><datalist id="cl">${S.c.map(c=>`<option value="${esc(c.name)}">`).join('')}</datalist><div class="m" id="custinfo"></div></div><div><div class="k">Order for</div><select id="by">${['Office',...S.st.map(x=>x.name),...(e&&e.by!='Office'&&!S.st.some(x=>x.name==e.by)?[e.by]:[])].map(n=>`<option ${e&&n==e.by?'selected':''}>${esc(n)}</option>`).join('')}</select></div></div>`
+ +`<div class="tw"><table class="oit"><thead><tr><th class="c">#</th><th>Item</th><th class="n">Box</th><th class="n">Pcs</th><th class="n">Rate</th><th class="n">Amount</th><th class="c"></th></tr></thead><tbody id="oib">${e?e.items.map(i=>oiRow(i)).join(''):oiRow()}</tbody></table></div>`
  +`<datalist id="oip">${S.prod.map(p=>`<option value="${esc(p.name)}">${fm(p.rate)}${p.pcs?' · '+p.pcs+' pcs/box':''}</option>`).join('')}</datalist>`
  +`<button class="btn o" type="button" onclick="oiAdd()">+ Add item</button>`
- +`<div class="oitot"><div class="fl2"><div><div class="k">Discount (₹)</div><input type="number" min="0" id="idisc" value="0" oninput="oiRec()"></div><div><div class="k">GST / tax (%)</div><input type="number" min="0" max="100" id="itaxp" value="0" oninput="oiRec()"></div></div><div class="tsum"><div class="r1"><span>Subtotal</span><b id="tsub">₹0</b></div><div class="r1"><span>Discount</span><b id="tdisc">−₹0</b></div><div class="r1"><span>GST / tax</span><b id="ttax">₹0</b></div><div class="r1 gt"><span>Grand total</span><b id="tgrand">₹0</b></div></div></div>`
- +`<div class="fl"><div><div class="k">Payment due (optional)</div><input id="idue" placeholder="dd/mm/yyyy"></div><div><div class="k">Notes / terms</div><input id="inote" placeholder="e.g. 50% advance, balance on delivery"></div></div>`
- +`<button class="btn" type="button" onclick="mk()">Create invoice</button>`}
+ +`<div class="oitot"><div class="fl2"><div><div class="k">Discount (₹)</div><input type="number" min="0" id="idisc" value="${e?e.disc:0}" oninput="oiRec()"></div><div><div class="k">GST / tax (%)</div><input type="number" min="0" max="100" id="itaxp" value="${e?e.taxp:0}" oninput="oiRec()"></div></div><div class="tsum"><div class="r1"><span>Subtotal</span><b id="tsub">₹0</b></div><div class="r1"><span>Discount</span><b id="tdisc">−₹0</b></div><div class="r1"><span>GST / tax</span><b id="ttax">₹0</b></div><div class="r1 gt"><span>Grand total</span><b id="tgrand">₹0</b></div></div></div>`
+ +`<div class="fl"><div><div class="k">Payment due (optional)</div><input id="idue" value="${esc(e?e.due:'')}" placeholder="dd/mm/yyyy"></div><div><div class="k">Notes / terms</div><input id="inote" value="${esc(e?e.notes:'')}" placeholder="e.g. 50% advance, balance on delivery"></div></div>`
+ +`<button class="btn" type="button" onclick="${e?'upO('+e.id+')':'mk()'}">${e?'Save changes':'Create invoice'}</button>`}
+const ppbOf=n=>{const p=S.prod.find(x=>x.name.toLowerCase()==String(n||'').trim().toLowerCase());return p?+p.pcs||0:0};
+const rowQ=tr=>(+tr.querySelector('.ib').value||0)*ppbOf(tr.querySelector('.ip').value)+(+tr.querySelector('.iq').value||0);
+const bxOf=i=>{if(i.bx!=null)return +i.bx;const b=ppbOf(i.p);return b?Math.floor(i.q/b):0};
 function oiRow(v){
- v=v||{q:1,pr:''};
- return `<tr><td class="c">1</td><td><input class="ip" list="oip" value="${esc(v.p||'')}" placeholder="Item / product name" oninput="oiAuto(this)"></td><td class="n"><input class="iq" type="number" min="1" value="${v.q}" oninput="oiRec()"></td><td class="n"><input class="ipr" type="number" min="0" step="0.01" value="${v.pr}" placeholder="0.00" oninput="oiRate(this)"></td><td class="n ia">₹0</td><td class="c"><button class="ix" type="button" title="Remove this item" onclick="oiDel(this)">✕</button></td></tr>`}
+ v=v||{q:1,pr:''};const pb=ppbOf(v.p),bx=v.bx!=null?+v.bx:(pb?Math.floor(v.q/pb):0),pc=v.q-bx*pb;
+ return `<tr><td class="c">1</td><td><input class="ip" list="oip" value="${esc(v.p||'')}" placeholder="Item / product name" oninput="oiAuto(this)"></td><td class="n"><input class="ib" type="number" min="0" value="${bx}" oninput="oiRec()"></td><td class="n"><input class="iq" type="number" min="0" value="${pc}" oninput="oiRec()"></td><td class="n"><input class="ipr" type="number" min="0" step="0.01" value="${v.pr}" placeholder="0.00" oninput="oiRate(this)"></td><td class="n ia">₹0</td><td class="c"><button class="ix" type="button" title="Remove this item" onclick="oiDel(this)">✕</button></td></tr>`}
 function oiAuto(el){
  const r=el.closest('tr').querySelector('.ipr'),m=S.prod.find(p=>p.name.toLowerCase()==el.value.trim().toLowerCase());
  if(m&&(!r.value||r.dataset.auto=='1')){r.value=m.rate;r.dataset.auto='1'}
@@ -304,7 +333,7 @@ function oiRec(){
  let sub=0;
  document.querySelectorAll('#oib tr').forEach((tr,i)=>{
   tr.children[0].textContent=i+1;
-  const a=(+tr.querySelector('.iq').value||0)*(+tr.querySelector('.ipr').value||0);
+  const a=rowQ(tr)*(+tr.querySelector('.ipr').value||0);
   tr.querySelector('.ia').textContent=fm(a);sub+=a});
  const d=Math.min(+$('#idisc').value||0,sub),gt=Math.round((sub-d)*(1+(+$('#itaxp').value||0)/100));
  $('#tsub').textContent=fm(sub);$('#tdisc').textContent='−'+fm(d);$('#ttax').textContent=fm(gt-(sub-d));$('#tgrand').textContent=fm(gt)}
@@ -323,9 +352,24 @@ async function mk(){
  const {data,error}=await db.from('orders').insert({date,agent:$('#by').value,shop,items,disc,taxp,status:$('#ist').value,due:$('#idue').value.trim(),notes:$('#inote').value.trim()}).select().single();
  if(error)return fail(error);
  S.o.unshift(rO(data));R();done('Invoice '+rO(data).no+' saved for '+data.shop)}
+function editO(id){const e=S.o.find(x=>x.id==id);if(!e)return;openM('Edit invoice '+e.no,()=>form(e),1);setTimeout(()=>{oiRec();oiCust()},0)}
+async function upO(id){
+ const e=S.o.find(x=>x.id==id);if(!e)return closeM();
+ const shop=$('#shop').value.trim(),date=$('#idate').value.trim()||today(),due=$('#idue').value.trim();
+ const items=oiLines().filter(i=>i.p&&i.q>0);
+ if(!shop)return alert('Enter the customer name');
+ if(!pd(date))return alert('Use the invoice date format dd/mm/yyyy');
+ if(due&&!pd(due))return alert('Payment due must be dd/mm/yyyy or left blank');
+ if(!items.length)return alert('Add at least one item with a name and a quantity');
+ const old=e.items.slice();items.forEach(i=>{const k=old.findIndex(x=>x.p==i.p);if(k>-1){i.r=Math.min(+old[k].r||0,i.q);old.splice(k,1)}});
+ const sub=sum(items.map(i=>i.q*i.pr)),disc=Math.min(+$('#idisc').value||0,sub),taxp=+$('#itaxp').value||0;
+ const row={date,agent:$('#by').value,shop,items,disc,taxp,status:$('#ist').value,due,notes:$('#inote').value.trim()};
+ const {error}=await db.from('orders').update(row).eq('id',id);
+ if(error)return fail(error);
+ Object.assign(e,{date,by:row.agent,shop,items,disc,taxp,st:row.status,due,notes:row.notes});R();done('Invoice '+e.no+' updated')}
 function oiLines(){
  const out=[];
- document.querySelectorAll('#oib tr').forEach(tr=>out.push({p:tr.querySelector('.ip').value.trim(),q:+tr.querySelector('.iq').value||0,pr:+tr.querySelector('.ipr').value||0,r:0}));
+ document.querySelectorAll('#oib tr').forEach(tr=>out.push({p:tr.querySelector('.ip').value.trim(),q:rowQ(tr),bx:+tr.querySelector('.ib').value||0,pr:+tr.querySelector('.ipr').value||0,r:0}));
  return out}
 async function stt(id,v){
  const {error}=await db.from('orders').update({status:v}).eq('id',id);
@@ -335,20 +379,23 @@ async function del(id){
  if(!confirm('Delete this order?'))return;
  const {error}=await db.from('orders').delete().eq('id',id);
  if(error)return fail(error);
- S.o=S.o.filter(x=>x.id!=id);R();done('Order deleted')}
+ S.o=S.o.filter(x=>x.id!=id);sel.delete(id);R();done('Order deleted')}
 /* COLLECTION */
 function Vc(){
  const p=S.s.filter(s=>s.st=='Pending');
- return `<div class="kp">${kp('Awaiting approval',fm(sum(p.map(s=>s.amt))),'bad')}${kp('Executive dues',fm(sum(ST().map(ebal))))}${kp('Customer payments',fm(sum(S.cp.map(x=>x.amt))),'ok')}${kp('Customer dues',fm(sum(S.c.map(c=>cbal(c.name)))))}</div>
- ${dr(cdf,cdt,'cdf','cdt',clr('cdf','cdt'))}
+ return `<div class="kp">${kp('Awaiting approval',fm(sum(p.map(s=>s.amt))),'bad')}${kp('Executive dues',fm(sum(ST().map(ebal))))}${kp('Customer payments',fm(sum(S.cp.filter(x=>x.st=='Settled').map(x=>x.amt))),'ok')}${kp('Customer dues',fm(sum(S.c.map(c=>cbal(c.name)))))}</div>
+ <div class="chips">${['All','Pending','Settled','Cancelled'].map(x=>`<button class="${x==cf?'on':''}" onclick="cf='${x}';R()">${x}</button>`).join('')}</div>${dr(cdf,cdt,'cdf','cdt',clr('cdf','cdt'))}
  <input placeholder="🔍 Search customer, executive, amount, mode or date" value="${esc(qk)}" oninput="qk=this.value;$('#cx').innerHTML=cx()"><div id="cx">${cx()}</div>`}
 function cx(){
  const k=qk.toLowerCase().trim(),inR=rng(cdf,cdt);
- const p=S.s.filter(s=>s.st=='Pending'&&inR(s.date)&&hit(k,s.ex,s.amt,s.mode,s.date));
- const hist=[...S.s.filter(s=>s.st!='Pending'&&inR(s.date)).map(s=>({id:s.id,k:'s',t:s.ex+' · settlement',a:s.amt,m:s.mode,d:s.date,st:s.st,w:s.ex})),...S.cp.filter(x=>inR(x.date)).map(x=>({id:x.id,k:'cp',t:x.cust+' · customer payment',a:x.amt,m:x.mode,d:x.date,st:'Received',w:x.cust}))].filter(x=>hit(k,x.w,x.a,x.m,x.d)).sort((a,b)=>b.id-a.id);
- return `${(cdf||cdt)?`<div class="m hint">${p.length+hist.length} entry(ies)${rlab(cdf,cdt)} · ${fm(sum(hist.filter(x=>x.k=='cp').map(x=>x.a)))} collected from customers in range. The cards on top stay all-time.</div>`:''}
- <h4>Executive settlements to approve${k?' matching '+esc(qk):''}</h4>${p.map(s=>`<div class="card"><div class="top"><b>${fm(s.amt)} · ${s.mode}</b><span class="tag Pending">Pending</span></div><div class="m">${esc(s.ex)} · ${s.date}</div><button class="btn" onclick="ap(${s.id},'Approved')">Approve</button><button class="btn d" onclick="ap(${s.id},'Rejected')">Reject</button><button class="btn o" onclick="editColl('s',${s.id})">Edit</button><button class="btn d" onclick="delColl('s',${s.id})">Delete</button></div>`).join('')||`<div class="empty">${k||cdf||cdt?'No settlement matches this filter':'Nothing waiting for approval'}</div>`}
- <h4>History${k?' matching '+esc(qk):''}</h4>${hist.map(x=>`<div class="card"><div class="top"><b>${fm(x.a)} · ${x.m}</b><span class="tag ${x.st}">${x.st}</span></div><div class="m">${esc(x.t)} · ${x.d}</div><button class="btn o" onclick="editColl('${x.k}',${x.id})">Edit</button><button class="btn d" onclick="delColl('${x.k}',${x.id})">Delete</button></div>`).join('')||`<div class="empty">${k||cdf||cdt?'No collection matches this filter':'No history'}</div>`}`}
+ const all=[...S.s.map(x=>({id:x.id,k:'s',t:x.ex+' · executive settlement',a:x.amt,m:x.mode,d:x.date,st:x.st,w:x.ex})),...S.cp.map(x=>({id:x.id,k:'cp',t:x.cust+' · customer payment'+(x.by?' · collected by '+x.by:''),a:x.amt,m:x.mode,d:x.date,st:x.st,w:x.cust+' '+x.by}))].filter(x=>(cf=='All'||x.st==cf)&&inR(x.d)&&hit(k,x.w,x.a,x.m,x.d)).sort((a,b)=>b.id-a.id);
+ const P=all.filter(x=>x.st=='Pending'),H=all.filter(x=>x.st!='Pending');
+ const ed=x=>`<button class="btn o" onclick="editColl('${x.k}',${x.id})">Edit</button><button class="btn d" onclick="delColl('${x.k}',${x.id})">Delete</button>`;
+ const card=(x,b)=>`<div class="card"><div class="top"><b>${fm(x.a)} · ${esc(x.m)}</b><span class="tag ${x.st}">${x.st}</span></div><div class="m">${esc(x.t)} · ${x.d}</div>${b||''}${ed(x)}</div>`;
+ const none=t=>`<div class="empty">${k||cdf||cdt||cf!='All'?'Nothing matches this filter':t}</div>`;
+ return `${(cdf||cdt)?`<div class="m hint">${all.length} entry(ies)${rlab(cdf,cdt)} · ${fm(sum(all.filter(x=>x.k=='cp'&&x.st=='Settled').map(x=>x.a)))} settled from customers in range. The cards on top stay all-time.</div>`:''}
+ <h4>Pending — added to the ledger only once settled</h4>${P.map(x=>card(x,`<button class="btn" onclick="apc('${x.k}',${x.id},'Settled')">Settle</button><button class="btn d" onclick="apc('${x.k}',${x.id},'Cancelled')">Cancel</button>`)).join('')||none('Nothing pending')}
+ <h4>Settled &amp; cancelled</h4>${H.map(x=>card(x)).join('')||none('No history')}`}
 function collRec(k,id){return (k=='s'?S.s:S.cp).find(x=>x.id==id)}
 function editColl(k,id){if(collRec(k,id))openM(k=='s'?'Edit settlement':'Edit collection',()=>collEditForm(k,id))}
 function collEditForm(k,id){
@@ -357,18 +404,19 @@ function collEditForm(k,id){
  return `<div class="k">${k=='s'?'Executive':'Customer'}</div><select id="ew">${who.map(n=>`<option ${n==val?'selected':''}>${esc(n)}</option>`).join('')}</select>`
  +`<div class="k">Amount</div><input type="number" min="1" id="eam" value="${x.amt}">`
  +`<div class="k">Mode</div><select id="em">${['Cash','UPI','Bank'].map(m=>`<option ${m==x.mode?'selected':''}>${m}</option>`).join('')}</select>`
+ +(k=='cp'?`<div class="k">Collected by (staff)</div><select id="eby">${bySel(x.by)}</select>`:'')
  +`<div class="k">Date (dd/mm/yyyy)</div><input id="ed" value="${esc(x.date)}">`
- +(k=='s'?`<div class="k">Status</div><select id="es">${['Pending','Approved','Rejected'].map(s=>`<option ${s==x.st?'selected':''}>${s}</option>`).join('')}</select>`:'')
+ +`<div class="k">Status</div><select id="es">${['Pending','Settled','Cancelled'].map(s=>`<option ${s==x.st?'selected':''}>${s}</option>`).join('')}</select>`
  +`<button class="btn" onclick="updColl('${k}',${id})">Save changes</button><button class="btn d" onclick="delColl('${k}',${id})">Delete</button>`}
 async function updColl(k,id){
  const x=collRec(k,id);if(!x)return closeM();
  const w=$('#ew').value,a=+$('#eam').value,d=$('#ed').value.trim()||today();
  if(!w||!(a>0))return alert('Pick '+(k=='s'?'an executive':'a customer')+' and enter an amount');
  if(!pd(d))return alert('Use the date format dd/mm/yyyy');
- const row=k=='s'?{ex:w,amount:a,mode:$('#em').value,date:d,status:$('#es').value}:{cust:w,amount:a,mode:$('#em').value,date:d};
+ const by=k=='s'?'':$('#eby').value,st=$('#es').value,row=k=='s'?{ex:w,amount:a,mode:$('#em').value,date:d,status:st}:{cust:w,amount:a,mode:$('#em').value,date:d};if(k!='s'&&(st!='Settled'||x.st!='Settled'))row.status=st;if(k!='s'&&(by||x.by))row.collected_by=by||null;
  const {error}=await db.from(k=='s'?'settlements':'payments').update(row).eq('id',id);
- if(error)return fail(error);
- if(k=='s'){x.ex=w;x.st=row.status}else x.cust=w;
+ if(error)return pyfail(error);
+ if(k=='s')x.ex=w;else{x.cust=w;x.by=by}x.st=st;
  x.amt=a;x.mode=row.mode;x.date=d;R();done('Entry updated')}
 async function delColl(k,id){
  const x=collRec(k,id);if(!x)return;
@@ -377,16 +425,19 @@ async function delColl(k,id){
  if(error)return fail(error);
  if(k=='s')S.s=S.s.filter(p=>p.id!=id);else S.cp=S.cp.filter(p=>p.id!=id);
  R();done('Entry deleted')}
-async function ap(id,v){
- const {error}=await db.from('settlements').update({status:v}).eq('id',id);
- if(error)return fail(error);
- S.s.find(x=>x.id==id).st=v;R()}
+const bySel=v=>['',...S.st.map(x=>x.name),...(v&&!S.st.some(x=>x.name==v)?[v]:[])].map(n=>`<option value="${esc(n)}" ${n==v?'selected':''}>${n?esc(n):'— not set —'}</option>`).join('');
+function pyfail(e){if(/collected_by/i.test(err(e)))return alert('The payments table needs a collected_by column. Run this once in Supabase > SQL Editor:\n\nalter table payments add column collected_by text;\n\nThen try again.');if(/status/i.test(err(e)))return alert('The payments table needs a status column. Run this once in Supabase > SQL Editor:\n\nalter table payments add column status text default \'Settled\';\n\nThen try again.');return fail(e)}
+async function apc(k,id,v){
+ const x=collRec(k,id);if(!x)return;
+ const {error}=await db.from(k=='s'?'settlements':'payments').update({status:v}).eq('id',id);
+ if(error)return pyfail(error);
+ x.st=v;R();toast(fm(x.amt)+' '+v.toLowerCase())}
 async function cpay(){
- const c=$('#pc').value,a=+$('#pa').value,d=$('#pdt').value.trim()||today();
+ const c=$('#pc').value,a=+$('#pa').value,d=$('#pdt').value.trim()||today(),st=$('#pst').value;
  if(!c||!(a>0))return alert('Choose customer and enter amount');
  if(!pd(d))return alert('Use the date format dd/mm/yyyy');
- const {data,error}=await db.from('payments').insert({cust:c,amount:a,mode:$('#pm').value,date:d}).select().single();
- if(error)return fail(error);
+ const {data,error}=await db.from('payments').insert({cust:c,amount:a,mode:$('#pm').value,date:d,...(st!='Settled'?{status:st}:{}),...($('#pby').value?{collected_by:$('#pby').value}:{})}).select().single();
+ if(error)return pyfail(error);
  S.cp.unshift(rPay(data));R();done('Collection of '+fm(rPay(data).amt)+' saved')}
 /* CUSTOMERS */
 function Vu(){
@@ -430,19 +481,21 @@ async function addC(){
  S.c.push(rC(data));byName(S.c);R();done(n+' added to customers')}
 /* STAFF */
 function Vs(){
- return `<div class="kp">${kp('Staff',S.st.length)}${kp('Executive dues',fm(sum(ST().map(ebal))))}${kp('Awaiting approval',fm(sum(ST().map(epend))),'bad')}${kp('Settled',fm(sum(S.s.filter(x=>x.st=='Approved').map(x=>x.amt))),'ok')}</div><input placeholder="🔍 Search name, phone or area" value="${esc(qs)}" oninput="qs=this.value;$('#sl').innerHTML=slList()"><div id="sl">${slList()}</div>`}
+ return `<div class="kp">${kp('Staff',S.st.length)}${kp('Executive dues',fm(sum(ST().map(ebal))))}${kp('Awaiting approval',fm(sum(ST().map(epend))),'bad')}${kp('Settled',fm(sum(S.s.filter(x=>x.st=='Settled').map(x=>x.amt))),'ok')}</div><input placeholder="🔍 Search name, phone, designation or area" value="${esc(qs)}" oninput="qs=this.value;$('#sl').innerHTML=slList()"><div id="sl">${slList()}</div>`}
 function slList(){
  const k=qs.toLowerCase().trim();
- return S.st.filter(x=>hit(k,x.name,x.phone,x.area)).map(scard).join('')||`<div class="empty">${k?'No staff matches that search':'No staff yet — add your first executive'}</div>`}
+ return S.st.filter(x=>hit(k,x.name,x.phone,x.area,x.designation)).map(scard).join('')||`<div class="empty">${k?'No staff matches that search':'No staff yet — add your first executive'}</div>`}
 function scard(x){
  const d=ebal(x.name),n=live().filter(o=>o.by==x.name).length,p=epend(x.name);
- return `<div class="card"><div class="it"><div class="av">${esc(x.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(x.name)}</b><span class="amt ${d>0?'bad':'ok'}">${fm(d)}</span></div><div class="m">${esc(x.phone||'No phone')} · ${esc(x.area||'No area')}</div><div class="m">${n} order(s)${p?` · <span class="bad">${fm(p)} awaiting approval</span>`:''}</div><button class="btn o" onclick="lt='Executive';le=this.dataset.n;go('ledger')" data-n="${esc(x.name)}">Open ledger</button><button class="btn o" onclick="editS(${x.id})">Edit</button><button class="btn d" onclick="delS(${x.id})">Delete</button></div></div></div>`}
+ return `<div class="card"><div class="it"><div class="av">${esc(x.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(x.name)}</b><span class="amt ${d>0?'bad':'ok'}">${fm(d)}</span></div>${x.designation||x.join?`<div class="m"><b>${esc(x.designation||'')}</b>${x.designation&&x.join?' · ':''}${x.join?'Joined '+dm(String(x.join).slice(0,10)):''}</div>`:''}<div class="m">${esc(x.phone||'No phone')} · ${esc(x.area||'No area')}</div><div class="m">${n} order(s)${p?` · <span class="bad">${fm(p)} awaiting approval</span>`:''}</div><button class="btn o" onclick="lt='Executive';le=this.dataset.n;go('ledger')" data-n="${esc(x.name)}">Open ledger</button><button class="btn o" onclick="editS(${x.id})">Edit</button><button class="btn d" onclick="delS(${x.id})">Delete</button></div></div></div>`}
+function sxr(x){const d=$('#sdes').value.trim(),j=$('#sjd').value,o={};if(d||(x&&x.designation))o.designation=d;if(j||(x&&x.join))o.join_date=j||null;return o}
+function sfail(e){if(/designation|join_date/i.test(err(e)))return alert('The staff table needs two new columns. Run this once in Supabase > SQL Editor:\n\nalter table staff add column designation text, add column join_date date;\n\nThen save again.');return fail(e)}
 function editS(id){const x=S.st.find(y=>y.id==id);if(x)openM('Edit staff',()=>staffForm(x))}
 async function addS(){
  const n=$('#sn').value.trim();if(!n)return alert('Enter name');
  if(ST().some(v=>v.toLowerCase()==n.toLowerCase()))return alert('A staff member with that name already exists');
- const {data,error}=await db.from('staff').insert({name:n,phone:$('#sph').value.trim(),area:$('#sar').value.trim()}).select().single();
- if(error)return fail(error);
+ const {data,error}=await db.from('staff').insert({name:n,phone:$('#sph').value.trim(),area:$('#sar').value.trim(),...sxr()}).select().single();
+ if(error)return sfail(error);
  S.st.push(rSt(data));byName(S.st);R();done(n+' added to staff')}
 async function updS(id){
  const x=S.st.find(y=>y.id==id);if(!x)return closeM();
@@ -450,8 +503,8 @@ async function updS(id){
  if(!n)return alert('Enter name');
  if(n.toLowerCase()!=x.name.toLowerCase()&&ST().some(v=>v.toLowerCase()==n.toLowerCase()))return alert('Another staff member already uses that name');
  const old=x.name,phone=$('#sph').value.trim(),area=$('#sar').value.trim();
- const {error}=await db.from('staff').update({name:n,phone,area}).eq('id',id);
- if(error)return fail(error);
+ const {error}=await db.from('staff').update({name:n,phone,area,...sxr(x)}).eq('id',id);
+ if(error)return sfail(error);
  if(old!=n){
   const [a,b]=await Promise.all([db.from('orders').update({agent:n}).eq('agent',old),db.from('settlements').update({ex:n}).eq('ex',old)]);
   if(a.error||b.error)alert('Saved, but the old name is still on some records: '+(a.error||b.error).message);
@@ -459,7 +512,7 @@ async function updS(id){
   S.s.forEach(s=>{if(s.ex==old)s.ex=n});
   if(lt=='Executive'&&le==old)le=n;
  }
- x.name=n;x.phone=phone;x.area=area;byName(S.st);R();done('Staff updated')}
+ x.name=n;x.phone=phone;x.area=area;x.designation=$('#sdes').value.trim();x.join=$('#sjd').value;byName(S.st);R();done('Staff updated')}
 async function delS(id){
  const x=S.st.find(y=>y.id==id);if(!x)return;
  const n=live().filter(o=>o.by==x.name).length,p=S.s.filter(s=>s.ex==x.name).length;
@@ -471,20 +524,36 @@ async function delS(id){
 function nextSerial(){return S.prod.reduce((m,p)=>Math.max(m,+p.serial||0),0)+1}
 const newProd=()=>openM('Add product',()=>prodForm());
 function prodForm(x){
- const p=x||{serial:nextSerial(),name:'',pcs:'',rate:''};
+ const p=x||{serial:nextSerial(),name:'',pcs:'',rate:'',image:''};PIMG=p.image||'';
  return `<div class="fl"><div><div class="k">Serial No</div><input type="number" min="1" id="pser" value="${p.serial||''}" placeholder="Auto"></div><div><div class="k">Rate (₹)</div><input type="number" min="0" step="0.01" id="prate" value="${p.rate||''}" placeholder="0.00"></div></div>`
  +`<div class="k">Product name</div><input id="pname" value="${esc(p.name)}" placeholder="e.g. Neem & Tulsi Soap">`
  +`<div class="k">Pcs / box</div><input type="number" min="0" id="ppcs" value="${p.pcs||''}" placeholder="Pieces in one box">`
+ +`<div class="k">Product image</div><div class="pimgw"><div id="ppv">${pprev()}</div><div><input type="file" accept="image/*" id="pimg" onchange="pimgPick(this)"><button class="btn d" type="button" onclick="PIMG='';$('#ppv').innerHTML=pprev();$('#pimg').value=''">Remove image</button></div></div>`
  +`<button class="btn" type="button" onclick="${x?`updP(${x.id})`:'addP()'}">Save product</button>${x?`<button class="btn d" type="button" onclick="delP(${x.id})">Delete</button>`:''}`}
-function prodRead(){return {serial:Math.round(+$('#pser').value||0),name:$('#pname').value.trim(),pcs:Math.round(+$('#ppcs').value||0),rate:+$('#prate').value||0}}
+function prodRead(){return {serial:Math.round(+$('#pser').value||0),name:$('#pname').value.trim(),pcs:Math.round(+$('#ppcs').value||0),rate:+$('#prate').value||0,image:PIMG}}
+const pprev=()=>PIMG?`<img class="pth big" src="${esc(PIMG)}" alt="">`:`<div class="pth big pph">🧴</div>`;
+const pth=p=>p.image?`<img class="pth" src="${esc(p.image)}" alt="">`:`<div class="pth pph">🧴</div>`;
+const pp=(v,x)=>{if(v.image||(x&&x.image))return v;const {image,...r}=v;return r};
+function pfail(e){if(/image/i.test(err(e)))return alert('The products table has no "image" column yet.\n\nOpen Supabase > SQL Editor and run:\n\nalter table products add column image text;\n\nThen save the product again.');return fail(e)}
+function pimgPick(inp){
+ const file=inp.files&&inp.files[0];if(!file)return;
+ if(!/^image\//.test(file.type)){inp.value='';return alert('Please choose an image file')}
+ const fr=new FileReader();
+ fr.onload=()=>{const im=new Image();
+  im.onload=()=>{const k=Math.min(1,500/Math.max(im.width,im.height)),cv=document.createElement('canvas');
+   cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);
+   const cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);
+   PIMG=cv.toDataURL('image/jpeg',0.82);$('#ppv').innerHTML=pprev()};
+  im.onerror=()=>alert('Could not read that image');im.src=fr.result};
+ fr.readAsDataURL(file)}
 function editP(id){const x=S.prod.find(p=>p.id==id);if(x)openM('Edit product',()=>prodForm(x))}
 async function addP(){
  const v=prodRead();
  if(!v.name)return alert('Enter the product name');
  if(!(v.rate>0))return alert('Enter a rate above 0 — that is what invoices pick up');
  if(S.prod.some(p=>p.name.toLowerCase()==v.name.toLowerCase()))return alert('A product with that name already exists');
- const {data,error}=await db.from('products').insert(v).select().single();
- if(error)return fail(error);
+ const {data,error}=await db.from('products').insert(pp(v)).select().single();
+ if(error)return pfail(error);
  S.prod.push(rPd(data));R();done(v.name+' added to products')}
 async function updP(id){
  const x=S.prod.find(p=>p.id==id);if(!x)return closeM();
@@ -492,8 +561,8 @@ async function updP(id){
  if(!v.name)return alert('Enter the product name');
  if(!(v.rate>0))return alert('Enter a rate above 0');
  if(S.prod.some(p=>p.id!=id&&p.name.toLowerCase()==v.name.toLowerCase()))return alert('Another product already uses that name');
- const {error}=await db.from('products').update(v).eq('id',id);
- if(error)return fail(error);
+ const {error}=await db.from('products').update(pp(v,x)).eq('id',id);
+ if(error)return pfail(error);
  Object.assign(x,v);R();done('Product updated')}
 async function delP(id){
  const x=S.prod.find(p=>p.id==id);if(!x)return;
@@ -503,14 +572,15 @@ async function delP(id){
  if(error)return fail(error);
  S.prod=S.prod.filter(p=>p.id!=id);R();done(x.name+' deleted')}
 function Vp(){
- const rs=S.prod.map(p=>p.rate);
- return `<div class="kp">${kp('Products',S.prod.length)}${kp('With box size',S.prod.filter(p=>p.pcs>0).length)}${kp('Lowest rate',rs.length?fm(Math.min(...rs)):'—')}${kp('Highest rate',rs.length?fm(Math.max(...rs)):'—')}</div>`
- +`<div class="card"><div class="tw"><table><tr><th class="n">Serial No</th><th>Product Name</th><th class="n">Pcs/Box</th><th class="n">Rate</th><th>Actions</th></tr>${S.prod.map(p=>`<tr><td class="n">${p.serial||'—'}</td><td>${esc(p.name)}</td><td class="n">${p.pcs||'—'}</td><td class="n">${fm(p.rate)}</td><td><button class="btn o" onclick="editP(${p.id})">Edit</button><button class="btn d" onclick="delP(${p.id})">Delete</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">No products yet — add your first item</td></tr>'}</table></div><div class="m" style="margin-top:8px">Invoices already created keep the name and rate they were billed with, so editing here only changes future entries.</div></div>`}
+ const r=S.prod.map(p=>{const m=made(p.name),o=sold(p.name);return {p,m,o,st:m-o}});
+ return sqlHint()+`<div class="kp">${kp('Products',S.prod.length)}${kp('Units in stock',nf(sum(r.map(x=>x.st))))}${kp('Stock value',fm(Math.round(sum(r.map(x=>x.st*x.p.rate)))))}${kp('Out of stock',r.filter(x=>x.st<=0).length,'bad')}</div>`
+ +`<div class="card"><div class="tw"><table><tr><th class="n">Serial No</th><th>Image</th><th>Product Name</th><th class="n">Pcs/Box</th><th class="n">Rate</th><th class="n">Produced</th><th class="n">Sold</th><th class="n">In stock</th><th>Actions</th></tr>${r.map(x=>`<tr><td class="n">${x.p.serial||'—'}</td><td>${pth(x.p)}</td><td>${esc(x.p.name)}</td><td class="n">${x.p.pcs||'—'}</td><td class="n">${fm(x.p.rate)}</td><td class="n">${nf(x.m)}</td><td class="n">${nf(x.o)}</td><td class="n"><b class="${x.st<=0?'bad':'ok'}">${nf(x.st)}</b></td><td><button class="btn o" onclick="editP(${x.p.id})">Edit</button><button class="btn d" onclick="delP(${x.p.id})">Delete</button></td></tr>`).join('')||empty(9,'No products yet — add your first item')}</table></div><div class="m" style="margin-top:8px">In stock = produced − sold on invoices (cancelled orders excluded, returns added back). Enter opening stock with “+ Add production”; use a minus quantity for damage or adjustment. Invoices already created keep the name and rate they were billed with.</div></div>`
+ +`<h4>Production / stock-in history</h4><div class="card"><div class="tw"><table><tr><th>Date</th><th>Product</th><th class="n">Qty</th><th>Notes</th><th></th></tr>${S.pn.map(x=>`<tr><td>${dm(x.date)||esc(x.date)}</td><td>${esc(x.product)}</td><td class="n">${nf(x.qty)}</td><td>${esc(x.notes||'')}</td>${dbtn('production',x.id,'pn')}</tr>`).join('')||empty(5,'No production entries yet')}</table></div></div>`}
 /* LEDGER */
 function rows(){
  let r=[];
- if(lt=='Customer'){live().filter(o=>o.shop==le).forEach(o=>r.push({d:o.date,t:'Invoice '+o.no,dr:tot(o),cr:0,k:0,id:o.id}));S.cp.filter(p=>p.cust==le).forEach(p=>r.push({d:p.date,t:'Payment ('+p.mode+')',dr:0,cr:p.amt,k:1,id:p.id}))}
- else{live().filter(o=>o.by==le).forEach(o=>r.push({d:o.date,t:'Invoice '+o.no+' · '+o.shop,dr:tot(o),cr:0,id:o.id,k:0}));S.s.filter(s=>s.ex==le&&s.st=='Approved').forEach(s=>r.push({d:s.date,t:'Settlement ('+s.mode+')',dr:0,cr:s.amt,k:1,id:s.id}))}
+ if(lt=='Customer'){led().filter(o=>o.shop==le).forEach(o=>r.push({d:o.date,t:'Invoice '+o.no,dr:tot(o),cr:0,k:0,id:o.id}));S.cp.filter(p=>p.cust==le&&p.st=='Settled').forEach(p=>r.push({d:p.date,t:'Payment ('+p.mode+')',dr:0,cr:p.amt,k:1,id:p.id}))}
+ else{led().filter(o=>o.by==le).forEach(o=>r.push({d:o.date,t:'Invoice '+o.no+' · '+o.shop,dr:tot(o),cr:0,id:o.id,k:0}));S.s.filter(s=>s.ex==le&&s.st=='Settled').forEach(s=>r.push({d:s.date,t:'Settlement ('+s.mode+')',dr:0,cr:s.amt,k:1,id:s.id}))}
  r.sort((a,b)=>dnum(a.d)-dnum(b.d)||a.k-b.k||a.id-b.id);let b=0;r.forEach(x=>{b+=x.dr-x.cr;x.b=b});return r}
 function ltable(r,open){
  open=open||0;
@@ -533,24 +603,155 @@ function lbox(){
  return `<select onchange="le=this.value;lq='';R()">${list.map(n=>`<option value="${esc(n)}" ${n==le?'selected':''}>${esc(n)}</option>`).join('')||`<option value="">${k?'No '+(lt=='Customer'?'customer':'staff')+' matches “'+esc(lq)+'”':'No '+(lt=='Customer'?'customers':'staff')+' yet'}</option>`}</select>${ltable(w.r,w.open)}${w.r.length?`<button class="btn o" onclick="lp()">Print ledger</button>`:''}`}
 function lp(){
  const w=lr();
- $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">Ayurgra Herbal Soap</h2><div style="color:#555">${lt} ledger · ${esc(le)} · ${today()}${(ldf||ldt)?' · '+rlab(ldf,ldt):''}</div>${ltable(w.r,w.open)}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
+ $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2><div style="color:#555">${lt} ledger · ${esc(le)} · ${today()}${(ldf||ldt)?' · '+rlab(ldf,ldt):''}</div>${ltable(w.r,w.open)}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
+/* PURCHASE / STOCK / RAW MATERIAL */
+const SQLN=`create table if not exists purchases(id bigint generated always as identity primary key,date text,supplier text,material text,unit text,qty numeric,rate numeric,notes text);
+create table if not exists consumption(id bigint generated always as identity primary key,date text,material text,unit text,qty numeric,notes text);
+create table if not exists production(id bigint generated always as identity primary key,date text,product text,qty numeric,notes text);
+create table if not exists staff_routes(id bigint generated always as identity primary key,date text,staff text,route text,notes text);`;
+const nf=n=>(+n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+const tod=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const sqlHint=()=>MISS.length?`<div class="card"><b>One-time setup</b><div class="m">Missing tables: ${MISS.join(', ')}. Run this once in Supabase &gt; SQL Editor (give them the same access policy as your other tables), then tap Refresh.</div><pre class="sqlb">${esc(SQLN)}</pre></div>`:'';
+const sold=n=>sum(live().map(o=>sum(o.items.filter(i=>i.p==n).map(i=>i.q-i.r))));
+const made=n=>sum(S.pn.filter(x=>x.product==n).map(x=>+x.qty));
+function mats(){
+ const m={},g=(n,u)=>m[n.toLowerCase()]||(m[n.toLowerCase()]={name:n,unit:u||'',pq:0,pc:0,cq:0});
+ [...S.pu].reverse().forEach(p=>{const x=g(p.material,p.unit);x.name=p.material;if(p.unit)x.unit=p.unit;x.pq+=+p.qty;x.pc+=p.qty*p.rate});
+ S.cn.forEach(c=>{g(c.material,c.unit).cq+=+c.qty});
+ return Object.values(m).sort((a,b)=>a.name.localeCompare(b.name))}
+async function ins(t,row,key){
+ const {data,error}=await db.from(t).insert(row).select().single();
+ if(error){alert((MISS.includes(t)?'This table does not exist yet. Run the setup SQL shown at the top of the tab in Supabase first.\n\n':'Could not save: ')+err(error));return null}
+ S[key].unshift(data);return data}
+async function delRow(t,id,key){
+ if(!confirm('Delete this entry?'))return;
+ const {error}=await db.from(t).delete().eq('id',id);
+ if(error)return fail(error);
+ S[key]=S[key].filter(x=>x.id!=id);R();toast('Entry deleted')}
+const dbtn=(t,id,k)=>`<td><button class="btn d" onclick="delRow('${t}',${id},'${k}')">Delete</button></td>`;
+const empty=(n,t)=>`<tr><td colspan="${n}" class="empty">${t}</td></tr>`;
+/* purchase */
+function Vbuy(){
+ return sqlHint()+`<div class="kp">${kp('Purchases',S.pu.length)}${kp('Total spent',fm(Math.round(sum(S.pu.map(p=>p.qty*p.rate)))))}${kp('Suppliers',new Set(S.pu.map(p=>p.supplier).filter(x=>x)).size)}${kp('Raw materials',mats().length)}</div><input placeholder="🔍 Search supplier, material or date" value="${esc(qb)}" oninput="qb=this.value;$('#bl').innerHTML=bl()"><div class="card"><div class="tw" id="bl">${bl()}</div></div>`}
+function bl(){
+ const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date));
+ return `<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th></th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${nf(p.qty)} ${esc(p.unit||'')}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td>${dbtn('purchases',p.id,'pu')}</tr>`).join('')||empty(7,'No purchases yet')}</table>`}
+const newBuy=()=>openM('Add purchase',()=>`<div class="fl"><div><div class="k">Date</div><input type="date" id="bd" value="${tod()}"></div><div><div class="k">Supplier</div><input id="bs" list="bsl" placeholder="Supplier name"><datalist id="bsl">${[...new Set(S.pu.map(p=>p.supplier).filter(x=>x))].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></div></div><div class="k">Raw material</div><input id="bm" list="bml" placeholder="e.g. Coconut oil" oninput="buAuto()"><datalist id="bml">${mats().map(m=>`<option value="${esc(m.name)}">`).join('')}</datalist><div class="fl"><div><div class="k">Quantity</div><input type="number" min="0" step="any" id="bq"></div><div><div class="k">Unit</div><input id="bu" placeholder="kg / L / pcs"></div></div><div class="k">Rate (₹ per unit)</div><input type="number" min="0" step="any" id="br"><div class="k">Notes</div><input id="bn" placeholder="Bill no, remarks (optional)"><button class="btn" onclick="addBuy()">Save purchase</button>`);
+function buAuto(){const m=mats().find(x=>x.name.toLowerCase()==$('#bm').value.trim().toLowerCase());if(m&&m.unit&&!$('#bu').value)$('#bu').value=m.unit}
+async function addBuy(){
+ const v={date:$('#bd').value,supplier:$('#bs').value.trim(),material:$('#bm').value.trim(),unit:$('#bu').value.trim(),qty:+$('#bq').value||0,rate:+$('#br').value||0,notes:$('#bn').value.trim()};
+ if(!v.date)return alert('Pick the purchase date');if(!v.material)return alert('Enter the raw material');
+ if(!(v.qty>0))return alert('Enter a quantity above 0');if(!(v.rate>=0)||$('#br').value==='')return alert('Enter the rate');
+ if(await ins('purchases',v,'pu')){R();done('Purchase saved — '+v.material)}}
+/* product stock */
+const newPn=()=>openM('Add production',()=>S.prod.length?`<div class="k">Product</div><select id="pnp">${S.prod.map(p=>`<option>${esc(p.name)}</option>`).join('')}</select><div class="fl"><div><div class="k">Date</div><input type="date" id="pnd" value="${tod()}"></div><div><div class="k">Quantity</div><input type="number" step="any" id="pnq" placeholder="Units made"></div></div><div class="k">Notes</div><input id="pnn" placeholder="Batch no, opening stock… (optional)"><button class="btn" onclick="addPn()">Save</button>`:'<div class="empty">Add a product first</div>');
+async function addPn(){
+ const v={date:$('#pnd').value,product:$('#pnp').value,qty:+$('#pnq').value||0,notes:$('#pnn').value.trim()};
+ if(!v.date)return alert('Pick the date');if(!v.qty)return alert('Enter a quantity (minus for adjustment)');
+ if(await ins('production',v,'pn')){R();done('Stock updated — '+v.product)}}
+/* raw material */
+function Vraw(){
+ const m=mats(),av=x=>x.pq?x.pc/x.pq:0;
+ return sqlHint()+`<div class="kp">${kp('Materials',m.length)}${kp('Consumption entries',S.cn.length)}${kp('Stock value',fm(Math.round(sum(m.map(x=>(x.pq-x.cq)*av(x))))))}${kp('Low / out',m.filter(x=>x.pq-x.cq<=0).length,'bad')}</div>`
+ +`<div class="card"><h3>Raw material stock</h3><div class="tw"><table><tr><th>Material</th><th class="n">Purchased</th><th class="n">Consumed</th><th class="n">In stock</th><th class="n">Avg rate</th><th class="n">Value</th></tr>${m.map(x=>`<tr><td>${esc(x.name)}</td><td class="n">${nf(x.pq)} ${esc(x.unit)}</td><td class="n">${nf(x.cq)} ${esc(x.unit)}</td><td class="n"><b class="${x.pq-x.cq<=0?'bad':'ok'}">${nf(x.pq-x.cq)} ${esc(x.unit)}</b></td><td class="n">${fm(Math.round(av(x)*100)/100)}</td><td class="n">${fm(Math.round((x.pq-x.cq)*av(x)))}</td></tr>`).join('')||empty(6,'No raw materials yet — add a purchase first')}</table></div></div>`
+ +`<h4>Consumption history</h4><div class="card"><div class="tw"><table><tr><th>Date</th><th>Material</th><th class="n">Qty</th><th>Used for</th><th></th></tr>${S.cn.map(c=>`<tr><td>${dm(c.date)||esc(c.date)}</td><td>${esc(c.material)}</td><td class="n">${nf(c.qty)} ${esc(c.unit||'')}</td><td>${esc(c.notes||'')}</td>${dbtn('consumption',c.id,'cn')}</tr>`).join('')||empty(5,'No consumption entries yet')}</table></div></div>`}
+const newCn=()=>openM('Add raw material consumption',()=>mats().length?`<div class="k">Raw material</div><select id="cnm">${mats().map(x=>`<option value="${esc(x.name)}">${esc(x.name)} (stock ${nf(x.pq-x.cq)} ${esc(x.unit)})</option>`).join('')}</select><div class="fl"><div><div class="k">Date</div><input type="date" id="cnd" value="${tod()}"></div><div><div class="k">Quantity used</div><input type="number" min="0" step="any" id="cnq"></div></div><div class="k">Used for</div><input id="cnn" placeholder="e.g. Neem soap batch 12 (optional)"><button class="btn" onclick="addCn()">Save consumption</button>`:'<div class="empty">Add a purchase first so there is raw material to consume</div>');
+async function addCn(){
+ const m=mats().find(x=>x.name==$('#cnm').value),q=+$('#cnq').value||0;
+ if(!m)return;if(!$('#cnd').value)return alert('Pick the date');if(!(q>0))return alert('Enter a quantity above 0');
+ if(q>m.pq-m.cq&&!confirm(`Only ${nf(m.pq-m.cq)} ${m.unit} in stock. Record ${nf(q)} anyway?`))return;
+ if(await ins('consumption',{date:$('#cnd').value,material:m.name,unit:m.unit,qty:q,notes:$('#cnn').value.trim()},'cn')){R();done('Consumption saved — '+m.name)}}
+/* STAFF ROUTE CALENDAR */
+const PAL=['#2f7d3a','#3b82c4','#d49b2c','#8b5cc4','#d1495b','#00897b','#ef6c00','#6d4c41'];
+const scol=n=>PAL[Math.max(0,S.st.findIndex(x=>x.name==n))%PAL.length];
+const iso2=(y,m,d)=>`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+function calGo(n){let m=RC.m+n,y=RC.y;if(m<0){m=11;y--}if(m>11){m=0;y++}RC.m=m;RC.y=y;R()}
+function Vcal(){
+ const {y,m,s:f}=RC,first=new Date(y,m,1),days=new Date(y,m+1,0).getDate(),lead=(first.getDay()+6)%7,pre=iso2(y,m,1).slice(0,7),by={};
+ S.rt.filter(r=>(f=='All'||r.staff==f)&&String(r.date).slice(0,7)==pre).forEach(r=>{const d=+String(r.date).slice(8,10);(by[d]=by[d]||[]).push(r)});
+ let cells='';for(let i=0;i<lead;i++)cells+='<div class="cd off"></div>';
+ for(let d=1;d<=days;d++){const k=iso2(y,m,d),a=by[d]||[],dw=new Date(y,m,d).getDay(),sc=f=='All'?S.st:S.st.filter(x=>x.name==f),off=sc.filter(x=>weekOff(x.name)==dw),allOff=sc.length>0&&off.length==sc.length;
+  cells+=`<div class="cd ${k==tod()?'td':''} ${allOff?'wo':''}" onclick="dayRt('${k}')"><b>${d}</b>${allOff?'<span class="rc off">Week off</span>':off.map(x=>`<span class="rc off">Off · ${esc(x.name.split(' ')[0])}</span>`).join('')}${a.slice(0,3).map(r=>`<span class="rc" style="background:${scol(r.staff)}" title="${esc(r.staff)} · ${esc(r.route||'')}">${esc(r.staff.split(' ')[0])} · ${esc(r.route||'—')}</span>`).join('')}${a.length>3?`<span class="m">+${a.length-3} more</span>`:''}</div>`}
+ return sqlHint()+`<div class="card"><div class="calh"><button class="btn o" onclick="calGo(-1)">‹</button><h3>${first.toLocaleString('en-IN',{month:'long',year:'numeric'})}</h3><button class="btn o" onclick="calGo(1)">›</button><button class="btn o" onclick="RC.y=new Date().getFullYear();RC.m=new Date().getMonth();R()">Today</button><button class="btn o" onclick="woModal()">Week off</button><select class="msel" onchange="RC.s=this.value;R()"><option>All</option>${S.st.map(x=>`<option ${x.name==f?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div><div class="cal">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="ch">${d}</div>`).join('')}${cells}</div><div>${S.st.map(x=>`<span class="lg"><i style="background:${scol(x.name)}"></i>${esc(x.name)}</span>`).join('')}</div><div class="m" style="margin-top:8px">Tap a day to see or change who is on which route. Hatched days are the weekly off day; change it with Week off.</div></div>`}
+const newRt=()=>openM('Assign route',()=>rtAssign(tod()));
+function dayRt(k){openM(dm(k)||k,()=>{const l=S.rt.filter(r=>r.date==k);return (l.map(r=>`<div class="card"><div class="top"><b>${esc(r.staff)}</b><span class="m">${esc(r.route||'—')}</span></div>${r.notes?`<div class="m">${esc(r.notes)}</div>`:''}<button class="btn d" onclick="delRt(${r.id},'${k}')">Remove</button></div>`).join('')||'<div class="empty">No routes assigned for this day</div>')+'<h4>Assign route</h4>'+rtAssign(k)})}
+function rtAssign(k){
+ if(!S.st.length)return '<div class="empty">Add staff first</div>';
+ return `<div class="k">Staff</div><select id="rts" onchange="rtFill()">${S.st.map(x=>`<option>${esc(x.name)}</option>`).join('')}</select><div class="fl"><div><div class="k">Date</div><input type="date" id="rtd" value="${k}"></div><div><div class="k">Route</div><input id="rtr" value="${esc(S.st[0].area||'')}" placeholder="e.g. Othayi" oninput="this.dataset.t=1"></div></div><div class="k">Repeat</div><select id="rtp"><option value="once">Only this day</option><option value="week">Every week till month end</option><option value="day">Every day till month end</option></select><div class="k">Notes</div><input id="rtn" placeholder="Optional"><button class="btn" onclick="addRt()">Save route</button>`}
+function rtFill(){const x=S.st.find(v=>v.name==$('#rts').value),r=$('#rtr');if(x&&x.area&&!r.dataset.t)r.value=x.area}
+async function addRt(){
+ const st=$('#rts').value,route=$('#rtr').value.trim(),notes=$('#rtn').value.trim(),d0=$('#rtd').value,rep=$('#rtp').value;
+ if(!d0)return alert('Pick a date');if(!route)return alert('Enter the route');
+ const dates=[d0];
+ if(rep!='once'){const[y,m,d]=d0.split('-').map(Number),last=new Date(y,m,0).getDate(),step=rep=='week'?7:1;for(let x=d+step;x<=last;x+=step)if(weekOff(st)!=new Date(y,m-1,x).getDay())dates.push(`${y}-${String(m).padStart(2,'0')}-${String(x).padStart(2,'0')}`)}
+ const rows=dates.filter(x=>!S.rt.some(r=>r.date==x&&r.staff==st&&r.route==route)).map(x=>({date:x,staff:st,route,notes}));
+ if(!rows.length)return alert('That route is already assigned on those days');
+ const {data,error}=await db.from('staff_routes').insert(rows).select();
+ if(error){alert((MISS.includes('staff_routes')?'Create the staff_routes table first (the SQL is shown at the top of this tab).\n\n':'Could not save: ')+err(error));return}
+ S.rt.unshift(...data);RC.y=+d0.slice(0,4);RC.m=+d0.slice(5,7)-1;R();done(rows.length+' day(s) assigned to '+st)}
+async function delRt(id,k){
+ if(!confirm('Remove this route assignment?'))return;
+ const {error}=await db.from('staff_routes').delete().eq('id',id);
+ if(error)return fail(error);
+ S.rt=S.rt.filter(r=>r.id!=id);R();dayRt(k)}
+const WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const weekOff=n=>{const r=S.rt.find(x=>x.date=='weekoff'&&x.staff==n);return r?+r.route:0};
+function woModal(){openM('Weekly off day',()=>{
+ if(!S.st.length)return '<div class="empty">Add staff first</div>';
+ const o=v=>WD.map((d,i)=>`<option value="${i}" ${i==v?'selected':''}>${d}</option>`).join('');
+ return `<div class="m" style="margin-bottom:8px">Choose each staff member's off day. It shows hatched on the calendar and is skipped when a route is repeated.</div><div class="k">Same day for everyone</div><select onchange="if(this.value!=='')document.querySelectorAll('.wos').forEach(e=>e.value=this.value)"><option value="">— choose to apply to all —</option>${o(-1)}</select>${S.st.map((x,i)=>`<div class="k">${esc(x.name)}</div><select class="wos" id="wo${i}">${o(weekOff(x.name))}</select>`).join('')}<button class="btn" onclick="woSave()">Save week off</button>`})}
+async function woSave(){
+ const rows=S.st.map((x,i)=>({date:'weekoff',staff:x.name,route:$('#wo'+i).value,notes:''}));
+ let r=await db.from('staff_routes').delete().eq('date','weekoff');
+ if(r.error)return alert((MISS.includes('staff_routes')?'Create the staff_routes table first (the SQL is shown at the top of the calendar).\n\n':'Could not save: ')+err(r.error));
+ r=await db.from('staff_routes').insert(rows).select();
+ if(r.error)return alert('Could not save: '+err(r.error));
+ S.rt=S.rt.filter(x=>x.date!='weekoff');S.rt.unshift(...r.data);R();done('Week off saved')}
+/* COMPANY + TRIAL BALANCE */
+const coLines=()=>[CO.addr,[CO.phone,CO.email].filter(x=>x).join(' · '),CO.gst?'GSTIN: '+CO.gst:''].filter(x=>x).map(x=>`<div class="ivsub">${esc(x)}</div>`).join('');
+function Vco(){
+ const f=(id,k,l,ph)=>`<div class="k">${l}</div><input id="${id}" value="${esc(CO[k])}" placeholder="${ph}">`;
+ return `<div class="card"><h3>Company information</h3><div class="m" style="margin-bottom:10px">Printed at the top of every invoice and ledger.</div>${f('co1','name','Company name','Company name')}${f('co2','tag','Tagline','e.g. Ayurvedic & herbal products')}${f('co3','addr','Address','Street, city, PIN')}<div class="fl"><div>${f('co4','phone','Phone','Phone')}</div><div>${f('co5','email','Email','Email')}</div></div>${f('co6','gst','GSTIN','GST number')}<button class="btn" onclick="saveCo()">Save company</button></div>`}
+async function saveCo(){
+ const v={name:$('#co1').value.trim(),tag:$('#co2').value.trim(),addr:$('#co3').value.trim(),phone:$('#co4').value.trim(),email:$('#co5').value.trim(),gst:$('#co6').value.trim()};
+ if(!v.name)return alert('Enter the company name');
+ Object.assign(CO,v);try{localStorage.setItem('ay.co',JSON.stringify(v))}catch(e){}
+ const {error}=await db.from('company').upsert({id:1,...v});
+ if(error)return alert('Saved on this device only. To keep it in the cloud too, run this once in the Supabase SQL Editor:\n\ncreate table company(id int primary key,name text,tag text,addr text,phone text,email text,gst text);\n\nand give it the same access policy as your other tables.');
+ toast('Company information saved')}
+function tbTable(){
+ const c=S.c.map(x=>[x.name,cbal(x.name)]),e=ST().map(n=>[n,ebal(n)]);
+ const D=a=>sum(a.filter(x=>x[1]>0).map(x=>x[1])),C=a=>sum(a.filter(x=>x[1]<0).map(x=>-x[1]));
+ const g=(t,a)=>{const r=a.filter(x=>x[1]!=0);return `<tr class="tbh"><td colspan="3">${t}</td></tr>`+(r.map(x=>`<tr><td>${esc(x[0])}</td><td class="n">${x[1]>0?fm(x[1]):''}</td><td class="n">${x[1]<0?fm(-x[1]):''}</td></tr>`).join('')||'<tr><td colspan="3" class="m">No balances</td></tr>')+`<tr class="tbs"><td>Total ${t}</td><td class="n">${fm(D(r))}</td><td class="n">${fm(C(r))}</td></tr>`};
+ const all=[...c,...e];
+ return `<div class="tw"><table><tr><th>Account</th><th class="n">Debit</th><th class="n">Credit</th></tr>${g('Customers',c)}${g('Executives',e)}<tr class="tbg"><td>Grand total</td><td class="n">${fm(D(all))}</td><td class="n">${fm(C(all))}</td></tr></table></div>`}
+function Vtb(){
+ const all=[...S.c.map(x=>cbal(x.name)),...ST().map(ebal)];
+ return `<div class="kp">${kp('Total debit',fm(sum(all.filter(x=>x>0))))}${kp('Total credit',fm(sum(all.filter(x=>x<0).map(x=>-x))))}${kp('Customers',S.c.length)}${kp('Executives',S.st.length)}</div><div class="card"><h3>Trial balance · as on ${today()}</h3>${tbTable()}<div class="m" style="margin-top:8px">Debit = amount still to receive. Credit = advance or overpaid.</div><button class="btn" onclick="tbPrint()">🖨 Print</button></div>`}
+function tbPrint(){
+ $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin-top:6px">Trial balance · as on ${today()}</div>${tbTable()}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
 /* INVOICE */
-function inv(id){
- const o=S.o.find(x=>x.id==id),c=S.c.find(x=>x.name==o.shop),rt=sum(o.items.map(i=>i.r*i.pr));
+function inv(id){const o=S.o.find(x=>x.id==id);if(!o)return;$('#inv').innerHTML=invSheet(o,1);$('#inv').hidden=false}
+function invMulti(){
+ const l=S.o.filter(o=>sel.has(o.id)).sort((a,b)=>a.id-b.id);
+ if(!l.length)return alert('Tick at least one order first');
+ $('#inv').innerHTML=`<div class="np ivbar"><b>${l.length} invoice${l.length>1?'s':''} · one per page</b><button class="btn" onclick="print()">Print all</button><button class="btn o" onclick="$('#inv').hidden=true">Close</button></div>`+l.map(o=>invSheet(o)).join('');
+ $('#inv').hidden=false;$('#inv').scrollTop=0}
+function invSheet(o,btn){
+ const c=S.c.find(x=>x.name==o.shop),rt=sum(o.items.map(i=>i.r*i.pr)),hb=o.items.some(i=>bxOf(i)>0),cs=hb?4:3;
  const g=gross(o),d=Math.min(+o.disc||0,g),t=tot(o)-(g-d);
- $('#inv').innerHTML=`<div class="sheet"><div class="ivtop"><div><h2>Ayurgra Herbal Soap</h2><div class="ivsub">Ayurvedic &amp; herbal products</div></div><div class="ivmeta"><b>TAX INVOICE</b><div>${o.no}</div><div>${o.date}</div>${o.due?`<div>Due: ${o.due}</div>`:''}</div></div>`
+ return `<div class="sheet"><div class="ivtop"><div><h2>${esc(CO.name)}</h2>${CO.tag?`<div class="ivsub">${esc(CO.tag)}</div>`:''}${coLines()}</div><div class="ivmeta"><b>TAX INVOICE</b><div>${o.no}</div><div>${o.date}</div>${o.due?`<div>Due: ${o.due}</div>`:''}</div></div>`
  +`<div class="ivgrid"><div><div class="k">Bill to</div><b>${esc(o.shop)}</b>${c&&c.phone?`<div>${esc(c.phone)}</div>`:''}${c&&c.addr?`<div>${esc(c.addr)}</div>`:''}</div><div><div class="k">Delivery through</div><b>${esc(o.by)}</b><div>Status: ${o.st}</div></div></div>`
- +`<table><tr><th>Item</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th></tr>${o.items.map(i=>`<tr><td>${esc(i.p)}</td><td class="n">${i.q}</td><td class="n">${fm(i.pr)}</td><td class="n">${fm(i.q*i.pr)}</td></tr>`).join('')}`
- +(rt?`<tr class="ivl"><td colspan="3">Less: returns</td><td class="n">−${fm(rt)}</td></tr>`:'')
- +`<tr class="ivl"><td colspan="3">Subtotal</td><td class="n">${fm(g)}</td></tr>`
- +(d?`<tr class="ivl"><td colspan="3">Less: discount</td><td class="n">−${fm(d)}</td></tr>`:'')
- +(t?`<tr class="ivl"><td colspan="3">Add: GST / tax @ ${o.taxp}%</td><td class="n">${fm(t)}</td></tr>`:'')
- +`<tr class="ivgt"><td colspan="3">Total payable</td><td class="n">${fm(tot(o))}</td></tr></table>`
+ +`<table><tr><th>Item</th>${hb?'<th class="n">Box</th>':''}<th class="n">Pcs</th><th class="n">Rate</th><th class="n">Amount</th></tr>${o.items.map(i=>`<tr><td>${esc(i.p)}</td>${hb?`<td class="n">${bxOf(i)||''}</td>`:''}<td class="n">${i.q}</td><td class="n">${fm(i.pr)}</td><td class="n">${fm(i.q*i.pr)}</td></tr>`).join('')}`
+ +(rt?`<tr class="ivl"><td colspan="${cs}">Less: returns</td><td class="n">−${fm(rt)}</td></tr>`:'')
+ +`<tr class="ivl"><td colspan="${cs}">Subtotal</td><td class="n">${fm(g)}</td></tr>`
+ +(d?`<tr class="ivl"><td colspan="${cs}">Less: discount</td><td class="n">−${fm(d)}</td></tr>`:'')
+ +(t?`<tr class="ivl"><td colspan="${cs}">Add: GST / tax @ ${o.taxp}%</td><td class="n">${fm(t)}</td></tr>`:'')
+ +`<tr class="ivgt"><td colspan="${cs}">Total payable</td><td class="n">${fm(tot(o))}</td></tr></table>`
  +`<div class="ivw">Amount in words: ${words(tot(o))} rupees only</div>`
  +(o.notes?`<div class="ivn"><b>Notes &amp; terms</b><br>${esc(o.notes)}</div>`:'')
- +`<div class="ivfoot">Goods once sold are taken back only as per company policy · Thank you for your business</div><div class="ivsign"><div>Customer signature</div><div>For Ayurgra Herbal Soap</div></div>`
- +`<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;
- $('#inv').hidden=false}
+ +`<div class="ivfoot">Goods once sold are taken back only as per company policy · Thank you for your business</div><div class="ivsign"><div>Customer signature</div><div>For ${esc(CO.name)}</div></div>`
+ +(btn?`<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button>`:'')+`</div>`}
 function words(n){
  n=Math.round(+n||0);if(!n)return 'Zero';
  const ONE=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
@@ -567,7 +768,7 @@ function words(n){
 (async function boot(){
  if(!db){$('#lgo').disabled=true;$('#dot').className='dot no';return lerr('supabase-js did not load — this page needs an internet connection.')}
  if(!window.crypto||!crypto.subtle){$('#lgo').disabled=true;$('#dot').className='dot no';return lerr('This browser blocks secure hashing. Open the file locally (file://) or over https.')}
- mode('in');ping();
+ ping();
  const keep=sessionStorage.getItem('ay.me');
  if(keep){try{ME=JSON.parse(keep)}catch(e){ME=null}}
  if(ME)await enter(ME);else $('#ph').focus();
