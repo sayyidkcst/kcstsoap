@@ -1,5 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Ayurgra – Office</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://yrvpfbsbbpfpkpnhzxyi.supabase.co" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<script async id="sbjs" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg:#f4f7fc;--c:#fff;--t:#16202c;--m:#64748b;--g:#2563eb;--g2:#1e3a8a;--s:#e8f0fe;--b:#dbe5f1;--r:#c0392b;--y:#b7791f;--sh:0 2px 10px #1e3a8a14;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--c:#111b2c;--t:#e7eefb;--m:#93a5bd;--g:#3b82f6;--g2:#1d4ed8;--s:#172a45;--b:#22334c;--r:#ff8a80;--y:#f0b44c;--sh:none;color-scheme:dark}}
@@ -325,7 +326,9 @@ function glEnd(){
  cringSet(g.querySelector('.cring'),100);
  GL.hide=setTimeout(()=>g.classList.remove('on'),320)}
 const gfetch=(u,o)=>{const m=String((o&&o.method)||(u&&u.method)||'GET').toUpperCase(),q=/\/rest\/v1\/history/.test(String((u&&u.url)||u));if(q)return fetch(u,o);glStart(m=='GET'||m=='HEAD'?'Loading…':'Saving…');return fetch(u,o).then(r=>{try{histLog(u,o,r)}catch(e){}return r}).finally(glEnd)};
-const db=window.supabase?window.supabase.createClient(SUP_URL,SUP_KEY,{auth:{persistSession:false},global:{fetch:gfetch}}):null;
+let db=null;
+const mkDb=()=>{if(!db&&window.supabase)db=window.supabase.createClient(SUP_URL,SUP_KEY,{auth:{persistSession:false},global:{fetch:gfetch}});return db};
+const libReady=new Promise(res=>{if(window.supabase)return res();const e=document.getElementById('sbjs');e.addEventListener('load',()=>res());e.addEventListener('error',()=>res());setTimeout(res,20000)}).then(mkDb);
 
 const $=s=>document.querySelector(s);
 const fm=n=>'₹'+Number(n).toLocaleString('en-IN');
@@ -400,6 +403,7 @@ async function doAuth(){
  catch(e){lerr(err(e));$('#lgo').disabled=false}
 }
 async function signin(ph,pw){
+ await libReady;if(!db)throw new Error('supabase-js did not load — check your internet connection.');
  const {data,error}=await db.from('accounts').select('*').eq('phone',ph).maybeSingle();
  if(error)throw new Error('Could not reach the database: '+error.message);
  if(!data)throw new Error('No account uses that number. Ask the admin to add you.');
@@ -422,13 +426,14 @@ function applyData(d){
  S={o:d.o.map(rO),c:byName(d.c.map(rC)),st:byName(d.st.map(rSt)),prod:d.pr.map(rPd),s:d.s.map(rS),cp:d.cp.map(rPay)};
  try{const l=JSON.parse(localStorage.getItem('ay.co')||'null');if(l)Object.assign(CO,l)}catch(e){}
  const x=d.co;if(x)Object.assign(CO,{name:x.name||CO.name,tag:x.tag||'',addr:x.addr||'',phone:x.phone||'',email:x.email||'',gst:x.gst||'',fssai:x.fssai??CO.fssai,bank:x.bank??CO.bank,branch:x.branch??CO.branch,acno:x.acno??CO.acno,ifsc:x.ifsc??CO.ifsc,qr:x.qr??CO.qr});
- MISS=d.miss||[];[S.pu,S.cn,S.pn,S.rt,S.ex,S.as]=[d.pu.map(kgRow),d.cn.map(kgRow),d.pn,d.rt,d.ex,d.as||[]];S.hi=d.hi||[]}
+ MISS=d.miss||[];[S.pu,S.cn,S.pn,S.rt,S.ex,S.as]=[d.pu.map(kgRow),d.cn.map(kgRow),d.pn,d.rt,d.ex,d.as||[]];S.hi=(d.hi&&d.hi.length)?d.hi:((S&&S.hi)||[])}
 async function sync(){
- let hit=false;
- try{const c=JSON.parse(localStorage.getItem('ay.cache')||'null');if(c&&c.me==(ME&&ME.phone)&&c.d){applyData(c.d);hit=true;R()}}catch(e){}
+ let hit=false,raw0='';
+ try{raw0=localStorage.getItem('ay.cache')||'';const c=JSON.parse(raw0||'null');if(c&&c.me==(ME&&ME.phone)&&c.d){applyData(c.d);hit=true;R()}}catch(e){}
  if(!hit)$('#app').innerHTML=accBar()+'<div class="ldg" role="status" aria-live="polite">'+cring(0,92)+'<div>Loading data…</div></div>';
  try{
-  let dn=0;const TOT=canSettle()?15:14,T=pr=>Promise.resolve(pr).then(r=>{dn++;cringSet(document.querySelector('#app .ldg .cring'),dn/TOT*100);return r},e=>{dn++;cringSet(document.querySelector('#app .ldg .cring'),dn/TOT*100);throw e});
+  await libReady;if(!db)throw new Error('supabase-js did not load — this page needs an internet connection.');
+  let dn=0;const TOT=14,T=pr=>Promise.resolve(pr).then(r=>{dn++;cringSet(document.querySelector('#app .ldg .cring'),dn/TOT*100);return r},e=>{dn++;cringSet(document.querySelector('#app .ldg .cring'),dn/TOT*100);throw e});
   const q=(t,o)=>T(db.from(t).select('*').order(o||'id',{ascending:!!o})),opt=t=>q(t).then(r=>({t,data:r.error?null:r.data}));
   const [o,c,st,pr,s,cp,co,pu,cn,pn,rt,ex,as,hi,accs]=await Promise.all([
    q('orders'),q('customers','name'),q('staff','name'),
@@ -436,7 +441,7 @@ async function sync(){
    q('settlements'),q('payments'),
    T(db.from('company').select('*').eq('id',1).maybeSingle().then(r=>r,()=>({}))),
    opt('purchases'),opt('consumption'),opt('production'),opt('staff_routes'),opt('expenses'),opt('assets'),
-   canSettle()?T(db.from('history').select('*').order('id',{ascending:false}).limit(500)).then(r=>({t:'history',data:r.error?null:r.data}),()=>({t:'history',data:null})):Promise.resolve({t:'history',data:[]}),
+   Promise.resolve({t:'history',data:[]}),
    T(db.from('accounts').select('*').eq('phone',ME.phone).maybeSingle()).then(r=>({t:'accounts',data:r.error?null:r.data}),()=>({t:'accounts',data:null}))]);
   const bad=[o,c,st,pr,s,cp].find(r=>r.error);
   if(bad)throw new Error(bad.error.message+' — is the schema created and reachable?');
@@ -445,9 +450,12 @@ async function sync(){
   const accChanged=JSON.stringify({c:ME.cat,s:ME.services||{}})!==accBefore;
   const ex2=[pu,cn,pn,rt,ex,as,hi,accs];
   const d={o:o.data,c:c.data,st:st.data,pr:pr.data,s:s.data,cp:cp.data,co:co&&co.data||null,miss:ex2.filter(x=>x.data===null).map(x=>x.t),pu:pu.data||[],cn:cn.data||[],pn:pn.data||[],rt:rt.data||[],ex:ex.data||[],as:as.data||[],hi:hi.data||[]};
+  const raw1=JSON.stringify({me:ME&&ME.phone,d});
+  if(hit&&raw1===raw0&&!accChanged){if(tab=='history')hiLazy();return}
   applyData(d);
-  try{localStorage.setItem('ay.cache',JSON.stringify({me:ME&&ME.phone,d}))}catch(e){}
+  try{localStorage.setItem('ay.cache',raw1)}catch(e){}
   if(!hit||!MF||accChanged)R();
+  if(tab=='history')hiLazy();
  }catch(e){if(!hit)$('#app').innerHTML=accBar()+`<div class="card"><b>Could not load data</b><div class="m" style="margin-top:6px">${esc(err(e))}</div><button class="btn" onclick="sync()">Retry</button></div>`}
 }
 const accBar=()=>`<div class="card ac"><span>Signed in as <b>${esc(ME&&ME.name||ME&&ME.phone||'')}</b></span><span><button class="btn o" onclick="sync()">⟳ Refresh</button><button class="btn d" onclick="out()">Logout</button></span></div>`;
@@ -477,6 +485,7 @@ function staffForm(x){
 function fail(a){return alert('Could not save — you are probably offline or the table is missing. '+err(a))}
 function go(t){if(!tabOk(t))return;tab=t;R();scrollTo(0,0)}
 function R(){
+ if(tab=='history')hiLazy();
  if(!tabOk(tab))tab=(vtabs()[0]||['orders'])[0];
  const vis=vtabs(),used=new Set();
  const navB=t=>`<button class="${t[0]==tab?'on':''}" onclick="go('${t[0]}')" title="${t[2]}"><i>${t[1]}</i><span>${t[2]}</span></button>`;
@@ -493,9 +502,9 @@ const clr=(a,b)=>`${a}='';${b}='';R()`;
 /* ORDERS */
 function Vo(){
  return `<div class="kp">${kp('Orders',S.o.length)}${kp('Sales',fm(sum(live().map(tot))))}${kp('Pending orders',S.o.filter(o=>o.st=='Pending').length,'')}${kp('Awaiting approval',fm(sum(ST().map(epend))),'bad')}</div>`
- +`<div class="chips">${['All','Pending','Confirmed','Delivered','Cancelled'].map(s=>`<button class="${s==f?'on':''}" onclick="f='${s}';R()">${s}</button>`).join('')}</div>`
+ +`<div class="chips">${['All','Pending','Confirmed','Delivered','Cancelled'].map(s=>`<button class="${s==f?'on':''}" onclick="f='${s}';OLIM=40;R()">${s}</button>`).join('')}</div>`
  +dr(odf,odt,'odf','odt',clr('odf','odt'))
- +`<input placeholder="🔍 Search shop, order no, executive" value="${esc(q)}" oninput="q=this.value;ru()"><div id="sb">${sbar()}</div><div id="ol">${ol()}</div>`}
+ +`<input placeholder="🔍 Search shop, order no, executive" value="${esc(q)}" oninput="q=this.value;OLIM=40;ru()"><div id="sb">${sbar()}</div><div id="ol">${ol()}</div>`}
 function vis(){const k=q.toLowerCase(),inR=rng(odf,odt);return S.o.filter(o=>(f=='All'||o.st==f)&&inR(o.date)&&hit(k,o.shop,o.no,o.by,o.date))}
 const b2bOf=o=>{const c=S.c.find(x=>x.name==o.shop);return !!(c&&c.gst)};
 const selList=()=>S.o.filter(o=>sel.has(o.id)).sort((a,b)=>a.id-b.id);
@@ -518,9 +527,10 @@ async function msChange(){
  const {error}=await db.from('orders').update({status:MS}).in('id',ids);
  if(error)return fail(error);
  S.o.forEach(o=>{if(sel.has(o.id))o.st=MS});sel.clear();R()}
+let OLIM=40;
 function ol(){
  const list=vis();
- return `${(odf||odt)?`<div class="m hint">${list.length} invoice(s)${rlab(odf,odt)} · ${fm(sum(list.filter(o=>o.st!='Cancelled').map(tot)))} in range. The cards on top stay all-time.</div>`:''}${list.map(oc).join('')||'<div class="empty">No orders found</div>'}`}
+ return `${(odf||odt)?`<div class="m hint">${list.length} invoice(s)${rlab(odf,odt)} · ${fm(sum(list.filter(o=>o.st!='Cancelled').map(tot)))} in range. The cards on top stay all-time.</div>`:''}${list.slice(0,OLIM).map(oc).join('')||'<div class="empty">No orders found</div>'}${list.length>OLIM?`<button class="btn o" style="width:100%;margin:4px 0 12px" onclick="OLIM+=40;ru()">Show more (${list.length-OLIM} left)</button>`:''}`}
 function oc(o){
  const rt=sum(o.items.map(i=>i.r*i.pr));
  return `<div class="card ost-${o.st}"><div class="it"><input type="checkbox" class="ck" ${sel.has(o.id)?'checked':''} onchange="tg(${o.id},this.checked)" title="Select for multiple print"><div class="av">${esc(o.shop[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(o.shop)}</b><span class="amt">${fm(tot(o))}</span></div><div class="m">${o.no} · ${o.date} · ${esc(o.by)}</div><div class="m">${o.items.map(i=>i.q+'× '+i.p).join(', ')}${rt?` · returns ${fm(rt)}`:''}${o.disc?` · discount ${fm(o.disc)}`:''}${' · GST '+(gstRates(o).length?gstRates(o).join('% & ')+'%':'0%')}${o.due?` · due ${o.due}`:''}</div>
@@ -1137,6 +1147,8 @@ function Vhist(){
 function hil(){
  const k=qh.toLowerCase().trim(),r=S.hi.filter(x=>(fh=='All'||x.action==fh)&&(eh=='All'||x.entity==eh)&&hit(k,x.by_name,x.role,x.entity,x.ref,x.detail,x.action));
  return `<table><tr><th>When</th><th>Who</th><th>Action</th><th>What</th></tr>${r.map(x=>`<tr><td>${hdt(x.at)}</td><td>${esc(x.by_name||'')}<div class="m">${esc(x.role||'')}</div></td><td><span class="tag ${x.action=='Deleted'?'Cancelled':x.action=='Added'?'Settled':'Pending'}">${esc(x.action)}</span></td><td><b>${esc(x.entity||'')}</b>${x.ref?' · '+esc(x.ref):''}${x.detail?`<div class="m">${esc(x.detail)}</div>`:''}</td></tr>`).join('')||empty(4,'No history yet')}</table>`}
+let HIL=false;
+function hiLazy(){if(HIL||!db||!canSettle())return;HIL=true;db.from('history').select('*').order('id',{ascending:false}).limit(500).then(r=>{if(r.error){if(!MISS.includes('history'))MISS.push('history')}else S.hi=r.data||[];if(tab=='history')R()},()=>{HIL=false})}
 async function hiReload(){const r=await db.from('history').select('*').order('id',{ascending:false}).limit(500);if(r.error)return fail(r.error);S.hi=r.data||[];R()}
 /* product stock */
 const newPn=()=>{if(!canDo('prod','add'))return deny('add production');openM('Add production',()=>S.prod.length?`<div class="k">Product</div><select id="pnp">${S.prod.map(p=>`<option>${esc(p.name)}</option>`).join('')}</select><div class="fl"><div><div class="k">Date</div><input type="date" id="pnd" value="${tod()}"></div><div><div class="k">Quantity</div><input type="number" step="any" id="pnq" placeholder="Units made"></div></div><div class="k">Notes</div><input id="pnn" placeholder="Batch no, opening stock… (optional)"><button class="btn" onclick="addPn()">Save</button>`:'<div class="empty">Add a product first</div>')};
@@ -1449,11 +1461,13 @@ function words(n){
  return out.join(' ')}
 /* BOOT */
 (async function boot(){
- if(!db){$('#lgo').disabled=true;$('#dot').className='dot no';return lerr('supabase-js did not load — this page needs an internet connection.')}
  if(!window.crypto||!crypto.subtle){$('#lgo').disabled=true;$('#dot').className='dot no';return lerr('This browser blocks secure hashing. Open the file locally (file://) or over https.')}
- ping();
  const keep=sessionStorage.getItem('ay.me');
  if(keep){try{ME=JSON.parse(keep)}catch(e){ME=null}}
- if(ME)await enter(ME);else $('#ph').focus();
+ if(ME)return enter(ME);
+ $('#ph').focus();
+ await libReady;
+ if(!db){$('#lgo').disabled=true;$('#dot').className='dot no';return lerr('supabase-js did not load — this page needs an internet connection.')}
+ ping();
 })();
 </script></body></html>
