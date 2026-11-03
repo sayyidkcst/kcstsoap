@@ -106,6 +106,8 @@ input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--b)
 .sbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px}.sbar .sall{display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}.sbar .m{margin-left:auto}.sbb .btn{margin:0 0 0 6px}
 .pth{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--s);display:block}.pph{display:grid;place-items:center;font-size:20px}.pth.big{width:84px;height:84px;border-radius:14px;font-size:30px}
 .pimgw{display:flex;gap:14px;align-items:center;margin-bottom:8px}.pimgw>div:last-child{flex:1;min-width:0}
+.cmap{width:100%;height:170px;border:1px solid var(--b);border-radius:10px;margin-top:8px;display:block;background:var(--s)}
+.av{overflow:hidden}.av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
 #inv .sheet+.sheet{margin-top:16px}#inv .ivbar{max-width:680px;margin:0 auto 12px;display:flex;align-items:center;gap:10px}#inv .ivbar .btn{margin:0}#inv .ivbar b{margin-right:auto}
 
 /* PRO THEME */
@@ -275,6 +277,8 @@ aside{box-shadow:0 -4px 16px #12392c14}
 
 .lbl2{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--m);margin:14px 4px 6px}
 .card.sv .top{align-items:center;gap:12px}.svr{display:flex;align-items:center;gap:10px;flex:none}
+.svgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;align-items:start}.svgrid .card{margin:0}
+@media(max-width:520px){.svgrid{grid-template-columns:1fr}}
 .aperm{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--b)}
 .aperm .k{margin:0;font-size:10px}
 .ab{font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px;border:1px solid var(--b);background:var(--bg);color:var(--m);cursor:pointer}
@@ -373,10 +377,10 @@ const vtabs=()=>T.filter(t=>tabOk(t[0]));
 const noStaff=()=>{if(isStaff()){alert('This is not available for staff');return true}return false};
 async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 const rO=r=>({id:r.id,no:r.no||'AY-'+String(r.id).padStart(4,'0'),date:r.date,by:r.agent,shop:r.shop,items:r.items||[],st:r.status,disc:+(r.disc||0),taxp:+(r.taxp||0),due:r.due||'',notes:r.notes||''});
-const rC=r=>({id:r.id,name:r.name,phone:r.phone||'',addr:r.addr||'',gst:r.gst||''});
+const rC=r=>({id:r.id,name:r.name,phone:r.phone||'',addr:r.addr||'',gst:r.gst||'',image:r.image||'',lat:r.lat??'',lng:r.lng??''});
 const gstOk=g=>!g||/^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(g);
 const btag=c=>`<span class="tag" style="${c&&c.gst?'background:#dbe8f7;color:#1f4f8f':'background:#fdecc8;color:#8a5a00'}">${c&&c.gst?'B2B':'B2C'}</span>`;
-function gfail(e){if(/gst/i.test(err(e)))return alert('The customers table needs a gst column. Run this once in Supabase > SQL Editor:\n\nalter table customers add column if not exists gst text;\n\nThen save again.');return fail(e)}
+function gfail(e){if(/gst|image|lat|lng/i.test(err(e)))return alert('The customers table needs new columns. Run this once in Supabase > SQL Editor:\n\nalter table customers add column if not exists gst text, add column if not exists image text, add column if not exists lat numeric, add column if not exists lng numeric;\n\nThen save again.');return fail(e)}
 const rSt=r=>({id:r.id,name:r.name,phone:r.phone||'',area:r.area||'',designation:r.designation||'',join:r.join_date||''});
 const rS=r=>({id:r.id,ex:r.ex,amt:+r.amount,mode:r.mode,date:r.date,st:{Approved:'Settled',Rejected:'Cancelled'}[r.status]||r.status});
 const rPay=r=>({id:r.id,cust:r.cust,amt:+r.amount,mode:r.mode,date:r.date,by:r.collected_by||'',dis:+(r.discount||0),rem:r.remarks||'',inv:r.invoice||'',st:{Approved:'Settled',Received:'Settled',Rejected:'Cancelled'}[r.status]||r.status||'Settled'});
@@ -391,7 +395,7 @@ let tab='orders',f='All',q='',qc='',qs='',qk='',lq='',lt='Customer',le='';
 let odf='',odt='',cdf='',cdt='',ldf='',ldt='';
 const T=[['orders','📦','Orders'],['sret','↩️','Sales Returns'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','🧑‍💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['exp','💸','Expenses'],['assets','🏭','Assets'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['pl','📈','Profit & Loss'],['bs','🏛️','Balance Sheet'],['company','🏢','Company'],['history','🕘','History'],['users','🔐','Users'],['settings','⚙️','Settings']];
 const NAVG=[['Sales',['orders','sret','collect','cust','staff','cal']],['Inventory',['prod','buy','exp','assets','raw']],['Books',['ledger','pl','bs','company']],['System',['history','users','settings']]];
-const H={orders:['Orders','Create and manage orders'],sret:['Sales Returns','Add, edit and cancel returns against invoices'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],exp:['Expenses','Day-to-day business expenses'],assets:['Assets','Machinery, furniture, vehicles and other fixed assets'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],pl:['Profit & Loss Account','Income, costs and net profit'],bs:['Balance Sheet','What the business owns and owes'],company:['Company','Details printed on every invoice'],users:['Users','Logins and their category'],history:['History','Who added, changed or deleted what, and when'],settings:['Settings','Choose which services each user can open']};
+const H={orders:['Orders','Create and manage orders'],sret:['Sales Returns','Add, edit, cancel or delete returns against invoices'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],exp:['Expenses','Day-to-day business expenses'],assets:['Assets','Machinery, furniture, vehicles and other fixed assets'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],pl:['Profit & Loss Account','Income, costs and net profit'],bs:['Balance Sheet','What the business owns and owes'],company:['Company','Details printed on every invoice'],users:['Users','Logins and their category'],history:['History','Who added, changed or deleted what, and when'],settings:['Settings','Choose which services each user can open']};
 const ACT={orders:['+ New order','newOrder'],sret:['+ New return','srNew'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],cal:['+ Assign route','newRt'],prod:['+ Add product','newProd'],buy:['+ Add purchase','newBuy'],exp:['+ Add expense','newExp'],assets:['+ Add asset','newAs'],users:['+ Add user','newUser'],raw:['+ Add consumption','newCn']};
 
 /* LOGIN */
@@ -484,7 +488,7 @@ const newOrder=()=>openM('New invoice',form,1);
 const newColl=()=>{if(!canDo('collect','add'))return deny('add collections');if(!canSettle())return alert('Only Admin or Owner can handle settlements');openM('Add Collection',()=>collFields(null,'cp'),1,1);setTimeout(()=>collBal('cp'),0)};
 const newCust=()=>{if(noStaff())return;if(!canDo('cust','add'))return deny('add customers');openM('New customer',custForm,1,1)};
 const newStaff=()=>{if(noStaff())return;if(!canDo('staff','add'))return deny('add staff');openM('Add staff',()=>staffForm())};
-function custForm(){return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="cn" placeholder="e.g. Vaidya Herbal Store"></div><div><div class="k">Phone</div><input id="cph" inputmode="numeric" maxlength="15" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="cgst" maxlength="15" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="ca" placeholder="Shop address, city, state"></div><div class="m" style="grid-column:span 4">Leave GST blank for a B2C shop. A valid 15-character GSTIN marks the customer B2B and splits tax as CGST / SGST on the invoice.</div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="addC()">Submit</button></div>`}
+function custForm(){CIMG='';CLOC=null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="cn" placeholder="e.g. Vaidya Herbal Store"></div><div><div class="k">Phone</div><input id="cph" inputmode="numeric" maxlength="15" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="cgst" maxlength="15" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="ca" placeholder="Shop address, city, state"></div><div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Leave GST blank for a B2C shop. A valid 15-character GSTIN marks the customer B2B and splits tax as CGST / SGST on the invoice.</div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="addC()">Submit</button></div>`}
 function staffForm(x){
  const s=x||{name:'',phone:'',area:'',designation:'',join:''};
  return `<div class="k">Name</div><input id="sn" value="${esc(s.name)}" placeholder="Staff / executive name"><div class="k">Mobile number</div><input id="sph" value="${esc(s.phone)}" inputmode="numeric" placeholder="Phone"><div class="fl"><div><div class="k">Designation</div><input id="sdes" value="${esc(s.designation)}" placeholder="e.g. Delivery executive"></div><div><div class="k">Join date</div><input type="date" id="sjd" value="${esc(String(s.join||'').slice(0,10))}"></div></div><div class="k">Area / route</div><input id="sar" value="${esc(s.area)}" placeholder="Area, locality or route"><button class="btn" onclick="${x?`updS(${x.id})`:'addS()'}">Save staff</button>${x?`<button class="btn d" onclick="delS(${x.id})">Delete</button>`:''}`;
@@ -678,7 +682,7 @@ function Vsr(){
  +srLegacyCard()
  +`<div class="chips">${['All','Active','Cancelled'].map(s=>`<button class="${s==srf?'on':''}" onclick="srf='${s}';R()">${s}</button>`).join('')}</div>`
  +dr(srdf,srdt,'srdf','srdt',clr('srdf','srdt'))
- +`<input placeholder="🔍 Search invoice, customer, item or reason" value="${esc(qsr)}" oninput="qsr=this.value;srRe()"><div id="srbar">${srBar()}</div><div class="card" style="padding:4px 14px"><div id="srlist">${srl()}</div></div>${S.sr.length||srTbl()?'':`<div class="card"><b>No returns showing, but you saved some?</b><div class="m">If row-level security is on, Supabase hides the rows from this page. Run this once in Supabase &gt; SQL Editor, then tap Refresh:</div><pre class="sqlb">${esc(SRPOL)}</pre></div>`}<div class="m hint">A return puts the goods back into Products &amp; Stock and lowers the invoice and the customer's ledger balance. Cancelling a return reverses both. Credit includes GST and the invoice discount share.</div>`}
+ +`<input placeholder="🔍 Search invoice, customer, item or reason" value="${esc(qsr)}" oninput="qsr=this.value;srRe()"><div id="srbar">${srBar()}</div><div class="card" style="padding:4px 14px"><div id="srlist">${srl()}</div></div><div class="m hint">A return puts the goods back into Products &amp; Stock and lowers the invoice and the customer's ledger balance. Cancelling a return reverses both. Credit includes GST and the invoice discount share.</div>`}
 function srLegacyCard(){
  const L=srLegacy();if(!L.length)return '';
  return `<div class="card"><h3>Returns entered directly on invoices</h3><div class="m">These have no return record yet. Import them to edit or cancel them from this page.</div>${L.map(x=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--b)"><div><b>${esc(x.o.no)}</b> · ${esc(x.o.shop)}<div class="m">${srTxt(x.ls)}</div></div>${canDo('sret','add')&&!isStaff()?`<button class="btn o" onclick="srImport(${x.o.id})">Import</button>`:''}</div>`).join('')}</div>`}
@@ -701,7 +705,7 @@ const srAll=on=>{srVis().filter(x=>x.st=='Active').forEach(x=>on?srsel.add(x.id)
 const srType=(t,on)=>{srVis().filter(x=>x.st=='Active'&&(t=='B2B')==srB2B(x)).forEach(x=>on?srsel.add(x.id):srsel.delete(x.id));srRe()};
 function srl(){
  const r=srVis();
- return r.map(x=>`<div class="srr${x.st=='Cancelled'?' sx':''}"><div>${x.st=='Active'?`<input type="checkbox" class="ck" ${srsel.has(x.id)?'checked':''} onchange="srTg(${x.id},this.checked)" title="Select for print">`:''}</div><div class="f1"><div class="top"><b>${esc(x.shop)}</b><span class="amt">${x.st=='Active'?fm(srCredit(x)):'—'}</span></div><div class="m">${srNo(x)} · Invoice ${esc(x.no)} · ${esc(x.date)}${x.by?' · by '+esc(x.by):''}</div><div class="m">${srTxt(x.items)}${x.reason?' · '+esc(x.reason):''}</div><div class="act"><span class="tag ${x.st=='Active'?'Settled':'Cancelled'}">${x.st}</span>${x.st=='Active'?`<button class="btn o" onclick="srPrint(${x.id})">Print</button>`:''}${x.st=='Active'&&canDo('sret','edit')&&!isStaff()?`<button class="btn o" onclick="srEdit(${x.id})">Edit</button><button class="btn d" onclick="srCancel(${x.id})">Cancel</button>`:''}</div></div></div>`).join('')||'<div class="empty">No sales returns yet</div>'}
+ return r.map(x=>`<div class="srr${x.st=='Cancelled'?' sx':''}"><div>${x.st=='Active'?`<input type="checkbox" class="ck" ${srsel.has(x.id)?'checked':''} onchange="srTg(${x.id},this.checked)" title="Select for print">`:''}</div><div class="f1"><div class="top"><b>${esc(x.shop)}</b><span class="amt">${x.st=='Active'?fm(srCredit(x)):'—'}</span></div><div class="m">${srNo(x)} · Invoice ${esc(x.no)} · ${esc(x.date)}${x.by?' · by '+esc(x.by):''}</div><div class="m">${srTxt(x.items)}${x.reason?' · '+esc(x.reason):''}</div><div class="act"><span class="tag ${x.st=='Active'?'Settled':'Cancelled'}">${x.st}</span>${x.st=='Active'?`<button class="btn o" onclick="srPrint(${x.id})">Print</button>`:''}${x.st=='Active'&&canDo('sret','edit')&&!isStaff()?`<button class="btn o" onclick="srEdit(${x.id})">Edit</button><button class="btn o" onclick="srCancel(${x.id})">Cancel</button>`:''}${canDo('sret','del')&&!isStaff()?`<button class="btn d" onclick="srDel(${x.id})">Delete</button>`:''}</div></div></div>`).join('')||'<div class="empty">No sales returns yet</div>'}
 function srNew(oid){
  if(!canDo('sret','add')||isStaff())return deny('add sales returns');
  SRF={id:null,oid:oid||null,shown:null};
@@ -776,6 +780,19 @@ async function srCancel(id){
  const r2=await db.from('sales_returns').update({status:'Cancelled'}).eq('id',id);
  if(r2.error){if(o)await srUndo(o,prev);return srFail(r2.error)}
  rec.st='Cancelled';srsel.delete(id);R()}
+async function srDel(id){
+ if(!canDo('sret','del')||isStaff())return deny('delete sales returns');
+ const rec=S.sr.find(x=>x.id==id);if(!rec)return;
+ if(srTbl())return srNoTbl();
+ const active=rec.st=='Active',o=S.o.find(x=>x.id==rec.oid),prev=o&&o.items;
+ if(!await cfm(`Delete ${srNo(rec)} permanently?${active&&o?` The ${fm(srCredit(rec))} credit is removed from invoice ${rec.no} and the customer's ledger.`:''} This cannot be undone.`,'Yes, delete'))return;
+ if(active&&o){
+  const items=o.items.map((i,k)=>({...i,r:Math.max(0,r3((+i.r||0)-srQ(rec,o,k)))}));
+  const r1=await db.from('orders').update({items}).eq('id',o.id);if(r1.error)return fail(r1.error);
+  o.items=items}
+ const r2=await db.from('sales_returns').delete().eq('id',id);
+ if(r2.error){if(active&&o)await srUndo(o,prev);return srFail(r2.error)}
+ S.sr=S.sr.filter(x=>x.id!=id);srsel.delete(id);R()}
 async function srImport(oid){
  if(!canDo('sret','add')||isStaff())return deny('add sales returns');
  if(srTbl())return srNoTbl();
@@ -892,8 +909,8 @@ function ulList(){
  return S.c.filter(c=>hit(k,c.name,c.phone,c.addr,c.gst,c.gst?'b2b':'b2c')).map(ucard).join('')||`<div class="empty">${k?'No customer matches that search':'No customers yet'}</div>`}
 function ucard(c){
  const b=cbal(c.name);
- return `<div class="card"><div class="it"><div class="av">${esc(c.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(c.name)}</b><span class="amt ${b>0?'bad':'ok'}">${fm(b)}</span></div><div class="m">${btag(c)} ${esc(c.phone||'No phone')} · ${esc(c.addr||'No address')}${c.gst?' · GSTIN '+esc(c.gst):''}</div><div class="m">${S.o.filter(o=>o.shop==c.name).length} orders</div>${isStaff()?'':`<button class="btn o" onclick="lt='Customer';le=this.dataset.n;go('ledger')" data-n="${esc(c.name)}">Open ledger</button>${canDo('cust','edit')?`<button class="btn o" onclick="editC(${c.id})">Edit</button>`:''}${canDo('cust','del')?`<button class="btn d" onclick="delC(${c.id})">Delete</button>`:''}`}</div></div></div>`}
-function custEditForm(c){return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="ecn" value="${esc(c.name)}"></div><div><div class="k">Phone</div><input id="ecph" inputmode="numeric" maxlength="15" value="${esc(c.phone||'')}" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="ecg" maxlength="15" value="${esc(c.gst||'')}" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="eca" value="${esc(c.addr||'')}" placeholder="Shop address, city, state"></div><div class="m" style="grid-column:span 4">Editing the name also renames it on this customer's invoices and payments.</div></div><div class="cft">${canDo('cust','del')?`<button class="btn d" type="button" style="margin-right:auto" onclick="delC(${c.id})">Delete</button>`:''}<button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="updC(${c.id})">Submit</button></div>`}
+ return `<div class="card"><div class="it"><div class="av">${c.image?`<img src="${esc(c.image)}" alt="">`:esc(c.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(c.name)}</b><span class="amt ${b>0?'bad':'ok'}">${fm(b)}</span></div><div class="m">${btag(c)} ${esc(c.phone||'No phone')} · ${esc(c.addr||'No address')}${c.gst?' · GSTIN '+esc(c.gst):''}</div><div class="m">${S.o.filter(o=>o.shop==c.name).length} orders</div>${hasLoc(c)||c.addr?`<button class="btn o" onclick="cMap(${c.id})">📍 Map</button>`:''}${isStaff()?'':`<button class="btn o" onclick="lt='Customer';le=this.dataset.n;go('ledger')" data-n="${esc(c.name)}">Open ledger</button>${canDo('cust','edit')?`<button class="btn o" onclick="editC(${c.id})">Edit</button>`:''}${canDo('cust','del')?`<button class="btn d" onclick="delC(${c.id})">Delete</button>`:''}`}</div></div></div>`}
+function custEditForm(c){CIMG=c.image||'';CLOC=hasLoc(c)?{lat:+c.lat,lng:+c.lng}:null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="ecn" value="${esc(c.name)}"></div><div><div class="k">Phone</div><input id="ecph" inputmode="numeric" maxlength="15" value="${esc(c.phone||'')}" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="ecg" maxlength="15" value="${esc(c.gst||'')}" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="eca" value="${esc(c.addr||'')}" placeholder="Shop address, city, state"></div><div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" value="${CLOC?CLOC.lat:''}" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" value="${CLOC?CLOC.lng:''}" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Editing the name also renames it on this customer's invoices and payments.</div></div><div class="cft">${canDo('cust','del')?`<button class="btn d" type="button" style="margin-right:auto" onclick="delC(${c.id})">Delete</button>`:''}<button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="updC(${c.id})">Submit</button></div>`}
 function editC(id){if(noStaff())return;if(!canDo('cust','edit'))return deny('edit customers');const c=S.c.find(x=>x.id==id);if(c)openM('Edit customer',()=>custEditForm(c),1,1)}
 async function updC(id){
  if(!canDo('cust','edit'))return deny('edit customers');
@@ -903,7 +920,8 @@ async function updC(id){
  if(n.toLowerCase()!=c.name.toLowerCase()&&S.c.some(x=>x.id!=id&&x.name.toLowerCase()==n.toLowerCase()))return alert('Another customer already uses that name');
  const old=c.name,phone=$('#ecph').value.trim(),addr=$('#eca').value.trim(),g=$('#ecg').value.trim().toUpperCase();
  if(!gstOk(g))return alert('That GST number does not look right. A GSTIN has 15 characters, for example 32ABCDE1234F1Z5.');
- const {error}=await db.from('customers').update({name:n,phone,addr,...(g||c.gst?{gst:g}:{})}).eq('id',id);
+ const extra=cLocRow(c);
+ const {error}=await db.from('customers').update({name:n,phone,addr,...(g||c.gst?{gst:g}:{}),...extra}).eq('id',id);
  if(error)return gfail(error);
  if(old!=n){
   const [a,b]=await Promise.all([db.from('orders').update({shop:n}).eq('shop',old),db.from('payments').update({cust:n}).eq('cust',old)]);
@@ -912,7 +930,7 @@ async function updC(id){
   S.cp.forEach(p=>{if(p.cust==old)p.cust=n});
   if(lt=='Customer'&&le==old)le=n;
  }
- c.name=n;c.phone=phone;c.addr=addr;c.gst=g;byName(S.c);R();done('Customer updated')}
+ c.name=n;c.phone=phone;c.addr=addr;c.gst=g;Object.assign(c,extra);byName(S.c);R();done('Customer updated')}
 async function delC(id){if(noStaff())return;if(!canDo('cust','del'))return deny('delete customers');
  const c=S.c.find(x=>x.id==id);if(!c)return;
  const n=S.o.filter(o=>o.shop==c.name).length,p=S.cp.filter(x=>x.cust==c.name).length;
@@ -925,9 +943,41 @@ async function addC(){
  const n=$('#cn').value.trim();if(!n)return alert('Enter name');
  if(S.c.some(c=>c.name.toLowerCase()==n.toLowerCase()))return alert('Customer already exists');
  const g=$('#cgst').value.trim().toUpperCase();if(!gstOk(g))return alert('That GST number does not look right. A GSTIN has 15 characters, for example 32ABCDE1234F1Z5.');
- const {data,error}=await db.from('customers').insert({name:n,phone:$('#cph').value.trim(),addr:$('#ca').value.trim(),...(g?{gst:g}:{})}).select().single();
+ const extra=cLocRow();
+ const {data,error}=await db.from('customers').insert({name:n,phone:$('#cph').value.trim(),addr:$('#ca').value.trim(),...(g?{gst:g}:{}),...extra}).select().single();
  if(error)return gfail(error);
  S.c.push(rC(data));byName(S.c);R();done(n+' added to customers')}
+/* customer photo + shop location */
+let CIMG='',CLOC=null;
+const hasLoc=c=>!!c&&c.lat!=null&&c.lat!==''&&c.lng!=null&&c.lng!=='';
+const cprev=()=>CIMG?`<img class="pth big" src="${esc(CIMG)}" alt="">`:`<div class="pth big pph">👤</div>`;
+function cCoord(){
+ const a=$('#clat'),b=$('#clng');
+ if(!a||!b)return CLOC;
+ if(!a.value.trim()&&!b.value.trim())return CLOC;
+ const la=parseFloat(a.value),ln=parseFloat(b.value);
+ return isFinite(la)&&isFinite(ln)&&Math.abs(la)<=90&&Math.abs(ln)<=180?{lat:la,lng:ln}:null}
+const cmapSrc=p=>'https://www.openstreetmap.org/export/embed.html?bbox='+(+p.lng-.006).toFixed(4)+','+(+p.lat-.004).toFixed(4)+','+(+p.lng+.006).toFixed(4)+','+(+p.lat+.004).toFixed(4)+'&layer=mapnik&marker='+(+p.lat)+','+(+p.lng);
+const cmapPrev=()=>{const p=cCoord();return p?`<iframe class="cmap" src="${esc(cmapSrc(p))}" loading="lazy" title="Customer location"></iframe>`:'<div class="m">No location yet — use the current location or type coordinates.</div>'};
+const cMapPrev=()=>{const w=$('#cmap');if(w)w.innerHTML=cmapPrev()};
+const cLocRow=c=>{const p=cCoord(),r={};if(CIMG||(c&&c.image))r.image=CIMG||'';if(p){r.lat=p.lat;r.lng=p.lng}else if(c&&hasLoc(c)){r.lat=null;r.lng=null}return r};
+function cimgPick(inp){
+ const file=inp.files&&inp.files[0];if(!file)return;
+ if(!/^image\//.test(file.type)){inp.value='';return alert('Please choose an image file')}
+ const fr=new FileReader();
+ fr.onload=()=>{const im=new Image();
+  im.onload=()=>{const k=Math.min(1,500/Math.max(im.width,im.height)),cv=document.createElement('canvas');
+   cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);
+   const cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);
+   CIMG=cv.toDataURL('image/jpeg',0.82);$('#cpv').innerHTML=cprev()};
+  im.onerror=()=>alert('Could not read that image');im.src=fr.result};
+ fr.readAsDataURL(file)}
+function cGeo(){
+ if(!navigator.geolocation)return alert('This browser cannot get the current location.');
+ navigator.geolocation.getCurrentPosition(p=>{CLOC={lat:+p.coords.latitude.toFixed(6),lng:+p.coords.longitude.toFixed(6)};
+  if($('#clat'))$('#clat').value=CLOC.lat;if($('#clng'))$('#clng').value=CLOC.lng;cMapPrev()},
+ e=>alert('Could not get the location: '+e.message),{enableHighAccuracy:true,timeout:12000})}
+const cMap=id=>{const c=S.c.find(x=>x.id==id);if(!c)return;const q=hasLoc(c)?c.lat+','+c.lng:(c.addr||c.name);window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener')};
 /* STAFF */
 function Vs(){
  return `<div class="kp">${kp('Staff',S.st.length)}${kp('Executive dues',fm(sum(ST().map(ebal))))}${kp('Awaiting approval',fm(sum(ST().map(epend))),'bad')}${kp('Settled',fm(sum(S.s.filter(x=>x.st=='Settled').map(x=>x.amt))),'ok')}</div><input placeholder="🔍 Search name, phone, designation or area" value="${esc(qs)}" oninput="qs=this.value;$('#sl').innerHTML=slList()"><div id="sl" class="glist">${slList()}</div>`}
@@ -1046,10 +1096,11 @@ function Vp(){
  +`<div class="card"><div class="tw"><table><tr><th class="n">Serial No</th><th>Image</th><th>Product Name</th><th class="n">Pcs/Box</th><th class="n">Rate (excl.)</th><th class="n">GST %</th><th class="n">Rate (incl.)</th><th class="n">Produced</th><th class="n">Sold</th><th class="n">In stock</th><th>Actions</th></tr>${r.map(x=>`<tr><td class="n">${x.p.serial||'—'}</td><td>${pth(x.p)}</td><td>${esc(x.p.name)}</td><td class="n">${x.p.pcs||'—'}</td><td class="n">${fm2(x.p.rate)}</td><td class="n">${x.p.gst||0}%</td><td class="n">${fm2(x.p.rate*(1+(+x.p.gst||0)/100))}</td><td class="n">${nf(x.m)}</td><td class="n">${nf(x.o)}</td><td class="n"><b class="${x.st<=0?'bad':'ok'}">${nf(x.st)}</b></td><td>${canDo('prod','edit')?`<button class="btn o" onclick="editP(${x.p.id})">Edit</button>`:''}${canDo('prod','del')?`<button class="btn d" onclick="delP(${x.p.id})">Delete</button>`:''}</td></tr>`).join('')||empty(11,'No products yet — add your first item')}</table></div><div class="m" style="margin-top:8px">In stock = produced − sold on invoices (cancelled orders excluded, returns added back). Enter opening stock with “+ Add production”; use a minus quantity for damage or adjustment. Invoices already created keep the name and rate they were billed with.</div></div>`
  +`<h4>Production / stock-in history</h4><div class="card"><div class="tw"><table><tr><th>Date</th><th>Product</th><th class="n">Qty</th><th>Notes</th><th></th></tr>${S.pn.map(x=>`<tr><td>${dm(x.date)||esc(x.date)}</td><td>${esc(x.product)}</td><td class="n">${nf(x.qty)}</td><td>${esc(x.notes||'')}</td><td>${canDo('prod','edit')?`<button class="btn o" onclick="editPn(${x.id})">Edit</button>`:''}${dbtn('production',x.id,'pn')}</td></tr>`).join('')||empty(5,'No production entries yet')}</table></div></div>`}
 /* LEDGER */
+const srOn=o=>S.sr.filter(x=>x.st=='Active'&&x.oid==o.id);
 function rows(){
  let r=[];
- if(lt=='Customer'){led().filter(o=>o.shop==le).forEach(o=>r.push({d:o.date,t:'Invoice '+o.no,dr:tot(o),cr:0,k:0,id:o.id}));S.cp.filter(p=>p.cust==le&&p.st=='Settled').forEach(p=>{r.push({d:p.date,t:'Payment ('+p.mode+')'+(p.inv?' · '+p.inv:''),dr:0,cr:p.amt,k:1,id:p.id});if(p.dis)r.push({d:p.date,t:'Cash discount',dr:0,cr:p.dis,k:1,id:p.id})})}
- else{led().filter(o=>o.by==le).forEach(o=>r.push({d:o.date,t:'Invoice '+o.no+' · '+o.shop,dr:tot(o),cr:0,id:o.id,k:0}));S.s.filter(s=>s.ex==le&&s.st=='Settled').forEach(s=>r.push({d:s.date,t:'Settlement ('+s.mode+')',dr:0,cr:s.amt,k:1,id:s.id}))}
+ if(lt=='Customer'){led().filter(o=>o.shop==le).forEach(o=>{const sr=srOn(o).map(x=>({x,c:srCredit(x)}));r.push({d:o.date,t:'Invoice '+o.no,dr:tot(o)+sum(sr.map(y=>y.c)),cr:0,k:0,id:o.id});sr.forEach(y=>r.push({d:y.x.date,t:'Sales return '+srNo(y.x)+' · Invoice '+o.no,dr:0,cr:y.c,k:1,id:y.x.id}))});S.cp.filter(p=>p.cust==le&&p.st=='Settled').forEach(p=>{r.push({d:p.date,t:'Payment ('+p.mode+')'+(p.inv?' · '+p.inv:''),dr:0,cr:p.amt,k:2,id:p.id});if(p.dis)r.push({d:p.date,t:'Cash discount',dr:0,cr:p.dis,k:2,id:p.id})})}
+ else{led().filter(o=>o.by==le).forEach(o=>{const sr=srOn(o).map(x=>({x,c:srCredit(x)}));r.push({d:o.date,t:'Invoice '+o.no+' · '+o.shop,dr:tot(o)+sum(sr.map(y=>y.c)),cr:0,id:o.id,k:0});sr.forEach(y=>r.push({d:y.x.date,t:'Sales return '+srNo(y.x)+' · '+o.shop,dr:0,cr:y.c,k:1,id:y.x.id}))});S.s.filter(s=>s.ex==le&&s.st=='Settled').forEach(s=>r.push({d:s.date,t:'Settlement ('+s.mode+')',dr:0,cr:s.amt,k:2,id:s.id}))}
  r.sort((a,b)=>dnum(a.d)-dnum(b.d)||a.k-b.k||a.id-b.id);let b=0;r.forEach(x=>{b+=x.dr-x.cr;x.b=b});return r}
 function ltable(r,open){
  open=open||0;
@@ -1064,7 +1115,7 @@ function Vl(){
  const list=names();if(!list.includes(le))le=list[0]||'';
  return `<div class="chips">${['Customer','Executive'].map(s=>`<button class="${s==lt?'on':''}" onclick="lt='${s}';le='';lq='';R()">${s} ledger</button>`).join('')}</div>
  ${dr(ldf,ldt,'ldf','ldt',clr('ldf','ldt'))}
- <div class="card"><input placeholder="🔍 Search ${lt=='Customer'?'customer':'staff'} name" value="${esc(lq)}" oninput="lq=this.value;$('#lbox').innerHTML=lbox()"><div id="lbox">${lbox()}</div><div class="m" style="margin-top:8px">Debit = invoices (after returns). Credit = payments received${lt=='Executive'?' (approved settlements only)':''}.${ldf||ldt?' Balances stay absolute: the statement opens with what was outstanding'+(ldf?' before '+dm(ldf):'')+' and closes with the real balance.'+(ldt?' Entries after '+dm(ldt)+' are hidden.':''):''}</div></div>`}
+ <div class="card"><input placeholder="🔍 Search ${lt=='Customer'?'customer':'staff'} name" value="${esc(lq)}" oninput="lq=this.value;$('#lbox').innerHTML=lbox()"><div id="lbox">${lbox()}</div><div class="m" style="margin-top:8px">Debit = invoices at billed value. Credit = sales returns (dated on the return date)${lt=='Executive'?' and approved settlements':' and payments received'}.${ldf||ldt?' Balances stay absolute: the statement opens with what was outstanding'+(ldf?' before '+dm(ldf):'')+' and closes with the real balance.'+(ldt?' Entries after '+dm(ldt)+' are hidden.':''):''}</div></div>`}
 function lbox(){
  const k=lq.toLowerCase().trim(),list=names().filter(n=>hit(k,n));
  if(list.length&&!list.includes(le))le=list[0];
@@ -1203,10 +1254,10 @@ async function saveAs(id){
  else if(await ins('assets',v,'as')){R();done()}}
 /* SETTINGS: enable / disable services per user (Owner only) */
 const SVC=[
-['orders','📦','Orders','Create, edit and print invoices','Modules'],['sret','↩️','Sales Returns','Add, edit and cancel sales returns','Modules'],['collect','💰','Collection','Approve payments and receive money','Modules'],['cust','👥','Customers','Shops and their outstanding','Modules'],['staff','🧑‍💼','Staff','Executives and their dues','Modules'],['cal','🗓️','Route Calendar','Who covers which route, day by day','Modules'],['prod','🧴','Products & Stock','Catalogue, production and stock','Modules'],['buy','🛒','Purchase','Raw material purchases','Modules'],['exp','💸','Expenses','Day-to-day business expenses','Modules'],['assets','🏭','Assets','Machinery, furniture and vehicles','Modules'],['raw','🧪','Raw Material','Consumption and stock of raw material','Modules'],['ledger','📒','Ledger','Customer and executive statements','Modules'],['pl','📈','Profit & Loss','Profit and loss account','Modules'],['bs','🏛️','Balance Sheet','Assets and liabilities','Modules'],['company','🏢','Company','Details printed on every invoice','Modules'],['history','🕘','History','Who changed what, and when','Modules'],['users','🔐','Users','Logins and their category','Modules'],
+['orders','📦','Orders','Create, edit and print invoices','Modules'],['sret','↩️','Sales Returns','Add, edit, cancel or delete sales returns','Modules'],['collect','💰','Collection','Approve payments and receive money','Modules'],['cust','👥','Customers','Shops and their outstanding','Modules'],['staff','🧑‍💼','Staff','Executives and their dues','Modules'],['cal','🗓️','Route Calendar','Who covers which route, day by day','Modules'],['prod','🧴','Products & Stock','Catalogue, production and stock','Modules'],['buy','🛒','Purchase','Raw material purchases','Modules'],['exp','💸','Expenses','Day-to-day business expenses','Modules'],['assets','🏭','Assets','Machinery, furniture and vehicles','Modules'],['raw','🧪','Raw Material','Consumption and stock of raw material','Modules'],['ledger','📒','Ledger','Customer and executive statements','Modules'],['pl','📈','Profit & Loss','Profit and loss account','Modules'],['bs','🏛️','Balance Sheet','Assets and liabilities','Modules'],['company','🏢','Company','Details printed on every invoice','Modules'],['history','🕘','History','Who changed what, and when','Modules'],['users','🔐','Users','Logins and their category','Modules'],
 ['loadslip','🚚','Staff loading slip','Loading slip and staff-wise invoice print','Features'],['hlog','📝','History recording','Record every add, change and delete','Features']];
 const SQLSVC="alter table accounts add column if not exists services jsonb default '{}'::jsonb;";
-const SVC_ACTS={orders:'aed',sret:'ae',collect:'aed',cust:'aed',staff:'aed',cal:'aed',prod:'aed',buy:'aed',exp:'aed',assets:'aed',raw:'ad',company:'e',users:'aed'};
+const SVC_ACTS={orders:'aed',sret:'aed',collect:'aed',cust:'aed',staff:'aed',cal:'aed',prod:'aed',buy:'aed',exp:'aed',assets:'aed',raw:'ad',company:'e',users:'aed'};
 const ACT_KEY={a:'add',e:'edit',d:'del'},ACT_LBL={add:'Add',edit:'Edit',del:'Delete'};
 const actsOf=k=>(SVC_ACTS[k]||'').split('').map(c=>ACT_KEY[c]);
 const svActs=k=>{const a=svMap(ME).acts;return a&&a[k]||{}};
@@ -1224,8 +1275,8 @@ function Vset(){
  return sqlHint()+(NOSVC?`<div class="card"><b>One-time setup</b><div class="m">Run this once in Supabase &gt; SQL Editor so every user can have their own services:</div><pre class="sqlb">${esc(SQLSVC)}</pre></div>`:'')
  +`<div class="card"><div class="k">Settings for</div><select onchange="SVU=this.value;R()" style="margin-top:8px">${US.map(x=>`<option value="${esc(x.phone)}" ${x.phone==SVU?'selected':''}>${esc(x.name||x.phone)} · ${esc(x.category)}${x.phone==ME.phone?' (you)':''}</option>`).join('')}</select><div class="m" style="margin-top:8px">Only the Owner can change these. Each person sees only the services switched on for them. Under each service, Add / Edit / Delete decide which buttons that person may use; a switch only changes their menu and never deletes data. It applies when that user taps ⟳ Refresh or signs in again.</div></div>`
  +`<div class="kp">${kp('Enabled',on+' / '+SVC.length,'ok')}${kp('Disabled',SVC.length-on,SVC.length-on?'bad':'')}</div><div class="m hint" style="margin:0 0 8px">Staff start with only Orders, Customers and Staff.${on<SVC.length?' <button class="btn o" type="button" onclick="svAll(true)">Enable all</button>':''}${on?' <button class="btn o" type="button" onclick="svAll(false)">Disable all</button>':''}</div>`
- +grp.map(g=>`<div class="lbl2">${g}</div>`+SVC.filter(x=>x[4]==g).map(x=>{const o=map[x[0]]!==false,aL=actsOf(x[0]),ua=(map.acts&&map.acts[x[0]])||{};
-  return `<div class="card sv"><div class="top"><span><b>${x[1]} ${esc(x[2])}</b><div class="m">${esc(x[3])}</div></span><span class="svr"><span class="tag ${o?'Settled':'Cancelled'}">${o?'Enabled':'Disabled'}</span><button type="button" class="sw ${o?'on':''}" role="switch" aria-checked="${o}" aria-label="${esc(x[2])}" onclick="svToggle('${x[0]}')"><i></i></button></span></div>${aL.length?`<div class="aperm"><span class="k">Allow</span>${aL.map(a=>{const an=o&&ua[a]!==false;return `<button type="button" class="ab ${an?'on':''}" ${o?'':'disabled'} onclick="svAct('${x[0]}','${a}')" aria-pressed="${an}">${ACT_LBL[a]}</button>`}).join('')}</div>`:''}</div>`}).join('')).join('')}
+ +grp.map(g=>`<div class="lbl2">${g}</div><div class="svgrid">`+SVC.filter(x=>x[4]==g).map(x=>{const o=map[x[0]]!==false,aL=actsOf(x[0]),ua=(map.acts&&map.acts[x[0]])||{};
+  return `<div class="card sv"><div class="top"><span><b>${x[1]} ${esc(x[2])}</b><div class="m">${esc(x[3])}</div></span><span class="svr"><span class="tag ${o?'Settled':'Cancelled'}">${o?'Enabled':'Disabled'}</span><button type="button" class="sw ${o?'on':''}" role="switch" aria-checked="${o}" aria-label="${esc(x[2])}" onclick="svToggle('${x[0]}')"><i></i></button></span></div>${aL.length?`<div class="aperm"><span class="k">Allow</span>${aL.map(a=>{const an=o&&ua[a]!==false;return `<button type="button" class="ab ${an?'on':''}" ${o?'':'disabled'} onclick="svAct('${x[0]}','${a}')" aria-pressed="${an}">${ACT_LBL[a]}</button>`}).join('')}</div>`:''}</div>`}).join('')+`</div>`).join('')}
 async function svToggle(k){
  if(!isOwner())return;
  const x=SVC.find(v=>v[0]==k),u=US&&US.find(v=>v.phone==SVU);if(!x||!u)return;
@@ -1510,17 +1561,41 @@ function Vpl(){
  return `<div class="kp">${kp('Net sales',fm(Math.round(d.sales)))}${kp('Gross profit',fm(Math.round(d.gp)),d.gp<0?'bad':'ok')}${kp('Expenses',fm(Math.round(d.exp)))}${kp(d.np<0?'Net loss':'Net profit',fm(Math.round(Math.abs(d.np))),d.np<0?'bad':'ok')}</div>${dr(pfa,pfb,'pfa','pfb',clr('pfa','pfb'))}<div class="card"><h3>Profit &amp; Loss Account${rlab(pfa,pfb)||' · all time'}</h3>${plTable(d)}<div class="m" style="margin-top:8px">${plNote}</div><button class="btn" onclick="plPrint()">🖨 Print</button></div>`}
 function plPrint(){
  $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">Profit &amp; Loss Account${rlab(pfa,pfb)||' · all time'} · printed ${today()}</div>${plTable(plData(pfa,pfb))}<div style="font-size:11px;color:#555">${plNote}</div><button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
+const pmode=m=>/bank|upi|card|cheque|check|online|neft|imps|gpay|paytm|razorpay/i.test(String(m||''))?'bank':'cash';
+function moneyBook(which){
+ const r=[];
+ S.cp.filter(p=>p.st=='Settled'&&pmode(p.mode)==which).forEach(p=>r.push({d:p.date,t:'Received from '+p.cust+(p.inv?' · '+p.inv:'')+' ('+(p.mode||'Cash')+')',in:+p.amt||0,out:0,id:'cp'+p.id}));
+ if(which=='cash')S.pu.forEach(p=>r.push({d:p.date,t:'Purchase — '+p.material+(p.supplier?' · '+p.supplier:''),in:0,out:(+p.qty||0)*(+p.rate||0),id:'pu'+p.id}));
+ S.ex.filter(e=>pmode(e.mode)==which).forEach(e=>r.push({d:e.date,t:'Expense — '+(e.category||'Other')+(e.description?' · '+e.description:''),in:0,out:+e.amount||0,id:'ex'+e.id}));
+ S.as.filter(a=>pmode(a.mode)==which).forEach(a=>r.push({d:a.date,t:'Asset bought — '+a.name,in:0,out:+a.cost||0,id:'as'+a.id}));
+ r.sort((a,b)=>dnum(a.d)-dnum(b.d)||String(a.id).localeCompare(String(b.id)));
+ let bal=0;r.forEach(x=>{bal+=x.in-x.out;x.bal=bal});return r}
+const cashBank=()=>{const cash=sum(moneyBook('cash').map(x=>x.in-x.out)),bank=sum(moneyBook('bank').map(x=>x.in-x.out));return {cash,bank,total:cash+bank}};
+let bbf='',bbt='',bbook='cash';
 function bsData(){
  const d=plData('',''),names=[...new Set([...S.c.map(c=>c.name),...S.o.map(o=>o.shop),...S.cp.map(p=>p.cust)])];
  const deb=sum(names.map(n=>Math.max(0,cbal(n)))),adv=sum(names.map(n=>Math.max(0,-cbal(n))));
- const fa=asNet(Date.now()),cash=sum(S.cp.filter(p=>p.st=='Settled').map(p=>p.amt))-d.pur-(sum(d.xc.map(x=>x[1]))-(d.dep||0))-asCost(Date.now());
- const L=[...(d.np>=0?[['Net profit (retained)',d.np]]:[]),['GST payable (output GST collected)',d.gst],['Customer advances (credit balances)',adv],...(cash<0?[['Funds introduced (spent more than received)',-cash]]:[])];
- const A=[...(fa>0?[['Fixed assets (net of depreciation)',fa]]:[]),['Closing stock — raw materials',d.close],['Sundry debtors (customers)',deb],['Cash & bank (receipts − purchases − expenses − assets bought)',Math.max(0,cash)],...(d.np<0?[['Net loss',-d.np]]:[])];
- return {L,A,deb,cash,fa,gst:d.gst,tl:sum(A.map(x=>x[1]))}}
-const bsNote='As on today. Money the owner put in before using this system is not recorded, so any shortfall shows as funds introduced. Finished-goods stock is not valued (no cost price), and only output GST is tracked.';
+ const fa=asNet(Date.now()),cb=cashBank();
+ const L=[...(d.np>=0?[['Net profit (retained)',d.np]]:[]),['GST payable (output GST collected)',d.gst],['Customer advances (credit balances)',adv],...(cb.cash<0?[['Cash deficit (funds introduced)',-cb.cash]]:[]),...(cb.bank<0?[['Bank deficit (funds introduced)',-cb.bank]]:[])];
+ const A=[...(fa>0?[['Fixed assets (net of depreciation)',fa]]:[]),['Closing stock — raw materials',d.close],['Sundry debtors (customers)',deb],...(cb.cash>0?[['Cash in hand',cb.cash]]:[]),...(cb.bank>0?[['Bank & UPI balance',cb.bank]]:[]),...(d.np<0?[['Net loss',-d.np]]:[])];
+ return {L,A,deb,cash:cb.total,cashIn:cb.cash,bank:cb.bank,fa,gst:d.gst,tl:sum(A.map(x=>x[1]))}}
+function bookRows(which){
+ const all=moneyBook(which),A=dnum(bbf),B=dnum(bbt);let open=0;
+ all.forEach(x=>{if(dnum(x.d)<A)open=x.bal});
+ return {r:all.filter(x=>inRange(x.d,A,B)),open}}
+function bookTable(w,which){
+ const name=which=='cash'?'Cash':'Bank & UPI';
+ return `<div class="tw"><table><tr><th>Date</th><th>Particulars</th><th class="n">In</th><th class="n">Out</th><th class="n">Balance</th></tr>${(bbf||bbt)?`<tr><td>${bbf?dm(bbf):'—'}</td><td><b>Opening balance</b></td><td class="n"></td><td class="n"></td><td class="n"><b>${fm(w.open)}</b></td></tr>`:''}${w.r.map(x=>`<tr><td>${esc(x.d)}</td><td>${esc(x.t)}</td><td class="n">${x.in?fm(x.in):''}</td><td class="n">${x.out?fm(x.out):''}</td><td class="n">${fm(x.bal)}</td></tr>`).join('')||`<tr><td colspan="5" class="empty">No ${name.toLowerCase()} entries${bbf||bbt?' in this range':''}</td></tr>`}${(w.r.length||w.open)?`<tr><td colspan="2"><b>Closing balance${bbt?' as on '+dm(bbt):''}</b></td><td class="n"><b>${fm(sum(w.r.map(x=>x.in)))}</b></td><td class="n"><b>${fm(sum(w.r.map(x=>x.out)))}</b></td><td class="n"><b>${fm(w.r.length?w.r[w.r.length-1].bal:w.open)}</b></td></tr>`:''}</table></div>`}
+function bookCard(){
+ const w=bookRows(bbook),title=bbook=='cash'?'Cash book':'Bank & UPI book';
+ return `<div class="card"><div class="chips">${[['cash','Cash'],['bank','Bank & UPI']].map(([k,l])=>`<button class="${bbook==k?'on':''}" onclick="bbook='${k}';R()">${l} book</button>`).join('')}</div><h3>${title}${bbf||bbt?' · '+rlab(bbf,bbt):' · as on '+today()}</h3>${dr(bbf,bbt,'bbf','bbt',clr('bbf','bbt'))}${bookTable(w,bbook)}<div class="m" style="margin-top:8px">In: settled customer collections with this mode. Out: ${bbook=='cash'?'purchases (no payment mode, so treated as cash), ':''}expenses and asset purchases paid by ${bbook=='cash'?'cash':'bank/UPI'}. Executive settlements are not counted again.</div><button class="btn" onclick="bookPrint()">🖨 Print book</button></div>`}
+function bookPrint(){
+ const w=bookRows(bbook);
+ $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">${bbook=='cash'?'Cash book':'Bank & UPI book'}${rlab(bbf,bbt)||' · all entries'} · printed ${today()}</div>${bookTable(w,bbook)}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
+const bsNote='As on today. Cash and bank are split by the payment mode on collections, expenses and asset purchases (UPI, card and bank transfer go to bank); purchases have no payment mode and are treated as cash. Money the owner put in before using this system is not recorded, so a negative cash or bank balance shows as a deficit. Finished-goods stock is not valued (no cost price), and only output GST is tracked.';
 function Vbs(){
  const b=bsData();
- return `<div class="kp">${kp('Total assets',fm(Math.round(b.tl)))}${kp('Fixed assets',fm(Math.round(b.fa)))}${kp('Debtors',fm(Math.round(b.deb)),'bad')}${kp('Cash & bank',fm(Math.round(b.cash)),b.cash<0?'bad':'ok')}${kp('GST payable',fm(Math.round(b.gst)))}</div><div class="card"><h3>Balance Sheet · as on ${today()}</h3>${tform(b.L,b.A,'Liabilities','Assets')}<div class="m" style="margin-top:8px">${bsNote}</div><button class="btn" onclick="bsPrint()">🖨 Print</button></div>`}
+ return `<div class="kp">${kp('Total assets',fm(Math.round(b.tl)))}${kp('Fixed assets',fm(Math.round(b.fa)))}${kp('Debtors',fm(Math.round(b.deb)),'bad')}${kp('Cash in hand',fm(Math.round(b.cashIn)),b.cashIn<0?'bad':'ok')}${kp('Bank & UPI',fm(Math.round(b.bank)),b.bank<0?'bad':'ok')}${kp('GST payable',fm(Math.round(b.gst)))}</div><div class="card"><h3>Balance Sheet · as on ${today()}</h3>${tform(b.L,b.A,'Liabilities','Assets')}<div class="m" style="margin-top:8px">${bsNote}</div><button class="btn" onclick="bsPrint()">🖨 Print</button></div>`+bookCard()}
 function bsPrint(){
  const b=bsData();
  $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">Balance Sheet · as on ${today()}</div>${tform(b.L,b.A,'Liabilities','Assets')}<div style="font-size:11px;color:#555">${bsNote}</div><button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
