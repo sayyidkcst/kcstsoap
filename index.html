@@ -323,7 +323,7 @@ function cringSet(e,p){if(!e)return;p=Math.max(0,Math.min(100,p));const g=e.quer
 const GL={n:0,t0:0,show:null,tick:null,hide:null,label:'Loading…'};
 function glEl(){let g=document.getElementById('gl');if(!g){g=document.createElement('div');g.id='gl';g.setAttribute('role','status');g.setAttribute('aria-live','polite');document.body.appendChild(g)}return g}
 function glStart(label){
- GL.n++;GL.label=label;clearTimeout(GL.hide);
+ return;GL.n++;GL.label=label;clearTimeout(GL.hide);
  if(GL.n>1||GL.show)return;
  GL.t0=Date.now();
  GL.show=setTimeout(()=>{
@@ -331,7 +331,7 @@ function glStart(label){
   const g=glEl();g.innerHTML=cring(5,40)+'<span id="gll"></span>';$('#gll').textContent=GL.label;g.classList.add('on');
   GL.tick=setInterval(()=>{const t=Date.now()-GL.t0-200,p=Math.min(92,100*(1-Math.exp(-t/1400)));cringSet(g.querySelector('.cring'),p);const l=$('#gll');if(l)l.textContent=GL.label},120)},180)}
 function glEnd(){
- GL.n=Math.max(0,GL.n-1);if(GL.n)return;
+ return;GL.n=Math.max(0,GL.n-1);if(GL.n)return;
  clearTimeout(GL.show);GL.show=null;clearInterval(GL.tick);
  const g=document.getElementById('gl');if(!g||!g.classList.contains('on'))return;
  cringSet(g.querySelector('.cring'),100);
@@ -372,12 +372,12 @@ const isStaff=()=>myCat()=='Staff',canSettle=()=>myCat()=='Admin'||myCat()=='Own
 const STAFF_TABS=['orders','cust','staff'],STAFF_SVC=[...STAFF_TABS,'loadslip','hlog'];
 const svMap=u=>{const s=u&&u.services;if(s&&typeof s==='object'&&Object.keys(s).length)return s;const stf=(u?(u.category||u.cat):myCat())=='Staff',m={};SVC.forEach(x=>m[x[0]]=stf?STAFF_SVC.includes(x[0]):true);return m};
 const svOn=k=>svMap(ME)[k]!==false;
-const tabOk=t=>T.some(x=>x[0]==t)&&(t=='settings'?isOwner():t=='sret'&&isStaff()?false:svOn(t));
+const tabOk=t=>T.some(x=>x[0]==t)&&(t=='settings'?isOwner():(t=='sret'||t=='cashbook'||t=='bankbook'||t=='irep')&&isStaff()?false:svOn(t));
 const vtabs=()=>T.filter(t=>tabOk(t[0]));
 const noStaff=()=>{if(isStaff()){alert('This is not available for staff');return true}return false};
 async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 const rO=r=>({id:r.id,no:r.no||'AY-'+String(r.id).padStart(4,'0'),date:r.date,by:r.agent,shop:r.shop,items:r.items||[],st:r.status,disc:+(r.disc||0),taxp:+(r.taxp||0),due:r.due||'',notes:r.notes||''});
-const rC=r=>({id:r.id,name:r.name,phone:r.phone||'',addr:r.addr||'',gst:r.gst||'',image:r.image||'',lat:r.lat??'',lng:r.lng??''});
+const rC=r=>({id:r.id,name:r.name,phone:r.phone||'',addr:r.addr||'',gst:r.gst||'',image:r.image||'',lat:r.lat??'',lng:r.lng??'',credit:+r.credit_days||0});
 const gstOk=g=>!g||/^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(g);
 const btag=c=>`<span class="tag" style="${c&&c.gst?'background:#dbe8f7;color:#1f4f8f':'background:#fdecc8;color:#8a5a00'}">${c&&c.gst?'B2B':'B2C'}</span>`;
 function gfail(e){if(/gst|image|lat|lng/i.test(err(e)))return alert('The customers table needs new columns. Run this once in Supabase > SQL Editor:\n\nalter table customers add column if not exists gst text, add column if not exists image text, add column if not exists lat numeric, add column if not exists lng numeric;\n\nThen save again.');return fail(e)}
@@ -388,15 +388,15 @@ const rPd=r=>({id:r.id,serial:+(r.serial||0),name:r.name,pcs:+(r.pcs||0),rate:+(
 const ST=()=>S.st.map(x=>x.name);
 const byName=a=>a.sort((x,y)=>x.name.localeCompare(y.name));
 
-let S={o:[],s:[],cp:[],c:[],st:[],prod:[],pu:[],cn:[],pn:[],rt:[],ex:[],as:[],sr:[],hi:[]},ME=null,LMODE='in';
+let S={o:[],s:[],cp:[],c:[],st:[],prod:[],pu:[],cn:[],pn:[],rt:[],ex:[],as:[],sr:[],dp:[],ba:[],hi:[]},ME=null,LMODE='in';
 let pfa='',pfb='',RC={y:new Date().getFullYear(),m:new Date().getMonth(),s:'All'},cf='All',sel=new Set(),csel=new Set(),CMS='Settled',PIMG='',DG=0,MS='Confirmed',MISS=[],qb='',qe='',qa='';
 let CO={name:'Ayurgra Herbal Soap',tag:'Ayurvedic & herbal products',addr:'',phone:'',email:'',gst:'',fssai:'',bank:'',branch:'',acno:'',ifsc:'',qr:''};
 let tab='orders',f='All',q='',qc='',qs='',qk='',lq='',lt='Customer',le='';
 let odf='',odt='',cdf='',cdt='',ldf='',ldt='';
-const T=[['orders','📦','Orders'],['sret','↩️','Sales Returns'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','🧑‍💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['exp','💸','Expenses'],['assets','🏭','Assets'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['pl','📈','Profit & Loss'],['bs','🏛️','Balance Sheet'],['company','🏢','Company'],['history','🕘','History'],['users','🔐','Users'],['settings','⚙️','Settings']];
-const NAVG=[['Sales',['orders','sret','collect','cust','staff','cal']],['Inventory',['prod','buy','exp','assets','raw']],['Books',['ledger','pl','bs','company']],['System',['history','users','settings']]];
-const H={orders:['Orders','Create and manage orders'],sret:['Sales Returns','Add, edit, cancel or delete returns against invoices'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],exp:['Expenses','Day-to-day business expenses'],assets:['Assets','Machinery, furniture, vehicles and other fixed assets'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],pl:['Profit & Loss Account','Income, costs and net profit'],bs:['Balance Sheet','What the business owns and owes'],company:['Company','Details printed on every invoice'],users:['Users','Logins and their category'],history:['History','Who added, changed or deleted what, and when'],settings:['Settings','Choose which services each user can open']};
-const ACT={orders:['+ New order','newOrder'],sret:['+ New return','srNew'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],cal:['+ Assign route','newRt'],prod:['+ Add product','newProd'],buy:['+ Add purchase','newBuy'],exp:['+ Add expense','newExp'],assets:['+ Add asset','newAs'],users:['+ Add user','newUser'],raw:['+ Add consumption','newCn']};
+const T=[['orders','📦','Orders'],['sret','↩️','Sales Returns'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','🧑‍💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['exp','💸','Expenses'],['assets','🏭','Assets'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['pl','📈','Profit & Loss'],['irep','📊','Item Sales Report'],['bs','🏛️','Balance Sheet'],['cashbook','💵','Cash Book'],['bankbook','🏦','Bank & UPI Book'],['company','🏢','Company'],['history','🕘','History'],['users','🔐','Users'],['settings','⚙️','Settings']];
+const NAVG=[['Sales',['orders','sret','collect','cust','staff','cal','irep']],['Inventory',['prod','buy','exp','assets','raw']],['Books',['ledger','pl','bs','cashbook','bankbook','company']],['System',['history','users','settings']]];
+const H={orders:['Orders','Create and manage orders'],sret:['Sales Returns','Add, edit, cancel or delete returns against invoices'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],exp:['Expenses','Day-to-day business expenses'],assets:['Assets','Machinery, furniture, vehicles and other fixed assets'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],pl:['Profit & Loss Account','Income, costs and net profit'],irep:['Item Sales Report','Product-wise sales, returns and customers'],bs:['Balance Sheet','What the business owns and owes'],cashbook:['Cash Book','Every cash receipt and payment with running balance'],bankbook:['Bank & UPI Book','Every bank, UPI and card receipt and payment with running balance'],company:['Company','Details printed on every invoice'],users:['Users','Logins and their category'],history:['History','Who added, changed or deleted what, and when'],settings:['Settings','Choose which services each user can open']};
+const ACT={orders:['+ New order','newOrder'],sret:['+ New return','srNew'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],cal:['+ Assign route','newRt'],prod:['+ Add product','newProd'],buy:['+ Add purchase','newBuy'],exp:['+ Add expense','newExp'],assets:['+ Add asset','newAs'],users:['+ Add user','newUser'],raw:['+ Add consumption','newCn'],cashbook:['+ Deposit to bank','newDep'],bankbook:['+ Deposit','newDep']};
 
 /* LOGIN */
 function peye(){const i=$('#pw');i.type=i.type=='password'?'text':'password';$('#eye').textContent=i.type=='password'?'👁':'🙈'}
@@ -437,21 +437,21 @@ function applyData(d){
  S={o:d.o.map(rO),c:byName(d.c.map(rC)),st:byName(d.st.map(rSt)),prod:d.pr.map(rPd),s:d.s.map(rS),cp:d.cp.map(rPay)};
  try{const l=JSON.parse(localStorage.getItem('ay.co')||'null');if(l)Object.assign(CO,l)}catch(e){}
  const x=d.co;if(x)Object.assign(CO,{name:x.name||CO.name,tag:x.tag||'',addr:x.addr||'',phone:x.phone||'',email:x.email||'',gst:x.gst||'',fssai:x.fssai??CO.fssai,bank:x.bank??CO.bank,branch:x.branch??CO.branch,acno:x.acno??CO.acno,ifsc:x.ifsc??CO.ifsc,qr:x.qr??CO.qr});
- MISS=d.miss||[];[S.pu,S.cn,S.pn,S.rt,S.ex,S.as]=[d.pu.map(kgRow),d.cn.map(kgRow),d.pn,d.rt,d.ex,d.as||[]];S.sr=(d.sr||[]).map(rSr);S.hi=(d.hi&&d.hi.length)?d.hi:((S&&S.hi)||[])}
+ MISS=d.miss||[];[S.pu,S.cn,S.pn,S.rt,S.ex,S.as]=[d.pu.map(kgRow),d.cn.map(kgRow),d.pn,d.rt,d.ex,d.as||[]];S.sr=(d.sr||[]).map(rSr);S.dp=d.dp||[];S.ba=d.ba||[];S.hi=(d.hi&&d.hi.length)?d.hi:((S&&S.hi)||[])}
 async function sync(){
  let hit=false,raw0='';
  try{raw0=localStorage.getItem('ay.cache')||'';const c=JSON.parse(raw0||'null');if(c&&c.me==(ME&&ME.phone)&&c.d){applyData(c.d);hit=true;R()}}catch(e){}
- if(!hit)$('#app').innerHTML=accBar()+'<div class="ldg" role="status" aria-live="polite">'+cring(0,92)+'<div>Loading data…</div></div>';
+ if(!hit)$('#app').innerHTML=accBar();
  try{
   await libReady;if(!db)throw new Error('supabase-js did not load — this page needs an internet connection.');
-  let dn=0;const TOT=15,T=pr=>Promise.resolve(pr).then(r=>{dn++;cringSet(document.querySelector('#app .ldg .cring'),dn/TOT*100);return r},e=>{dn++;cringSet(document.querySelector('#app .ldg .cring'),dn/TOT*100);throw e});
+  const T=pr=>Promise.resolve(pr);
   const q=(t,o)=>T(db.from(t).select('*').order(o||'id',{ascending:!!o})),opt=t=>q(t).then(r=>({t,data:r.error?null:r.data}));
-  const [o,c,st,pr,s,cp,co,pu,cn,pn,rt,ex,as,sr,hi,accs]=await Promise.all([
+  const [o,c,st,pr,s,cp,co,pu,cn,pn,rt,ex,as,sr,dp,ba,hi,accs]=await Promise.all([
    q('orders'),q('customers','name'),q('staff','name'),
    T(db.from('products').select('*').order('serial',{ascending:true}).order('id',{ascending:true})),
    q('settlements'),q('payments'),
    T(db.from('company').select('*').eq('id',1).maybeSingle().then(r=>r,()=>({}))),
-   opt('purchases'),opt('consumption'),opt('production'),opt('staff_routes'),opt('expenses'),opt('assets'),opt('sales_returns'),
+   opt('purchases'),opt('consumption'),opt('production'),opt('staff_routes'),opt('expenses'),opt('assets'),opt('sales_returns'),opt('deposits'),opt('bank_accounts'),
    Promise.resolve({t:'history',data:[]}),
    T(db.from('accounts').select('*').eq('phone',ME.phone).maybeSingle()).then(r=>({t:'accounts',data:r.error?null:r.data}),()=>({t:'accounts',data:null}))]);
   const bad=[o,c,st,pr,s,cp].find(r=>r.error);
@@ -459,8 +459,8 @@ async function sync(){
   const ac=accs&&accs.data,accBefore=JSON.stringify({c:ME.cat,s:ME.services||{}});
   if(ac){ME.name=ac.name||ME.name;ME.cat=ac.category||ME.cat;ME.services=ac.services&&typeof ac.services==='object'?ac.services:{};try{sessionStorage.setItem('ay.me',JSON.stringify(ME))}catch(e){}}
   const accChanged=JSON.stringify({c:ME.cat,s:ME.services||{}})!==accBefore;
-  const ex2=[pu,cn,pn,rt,ex,as,sr,hi,accs];
-  const d={o:o.data,c:c.data,st:st.data,pr:pr.data,s:s.data,cp:cp.data,co:co&&co.data||null,miss:ex2.filter(x=>x.data===null).map(x=>x.t),pu:pu.data||[],cn:cn.data||[],pn:pn.data||[],rt:rt.data||[],ex:ex.data||[],as:as.data||[],sr:sr.data||[],hi:hi.data||[]};
+  const ex2=[pu,cn,pn,rt,ex,as,sr,dp,ba,hi,accs];
+  const d={o:o.data,c:c.data,st:st.data,pr:pr.data,s:s.data,cp:cp.data,co:co&&co.data||null,miss:ex2.filter(x=>x.data===null).map(x=>x.t),pu:pu.data||[],cn:cn.data||[],pn:pn.data||[],rt:rt.data||[],ex:ex.data||[],as:as.data||[],sr:sr.data||[],dp:dp.data||[],ba:ba.data||[],hi:hi.data||[]};
   const raw1=JSON.stringify({me:ME&&ME.phone,d});
   if(hit&&raw1===raw0&&!accChanged){if(tab=='history')hiLazy();return}
   applyData(d);
@@ -488,7 +488,7 @@ const newOrder=()=>openM('New invoice',form,1);
 const newColl=()=>{if(!canDo('collect','add'))return deny('add collections');if(!canSettle())return alert('Only Admin or Owner can handle settlements');openM('Add Collection',()=>collFields(null,'cp'),1,1);setTimeout(()=>collBal('cp'),0)};
 const newCust=()=>{if(noStaff())return;if(!canDo('cust','add'))return deny('add customers');openM('New customer',custForm,1,1)};
 const newStaff=()=>{if(noStaff())return;if(!canDo('staff','add'))return deny('add staff');openM('Add staff',()=>staffForm())};
-function custForm(){CIMG='';CLOC=null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="cn" placeholder="e.g. Vaidya Herbal Store"></div><div><div class="k">Phone</div><input id="cph" inputmode="numeric" maxlength="15" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="cgst" maxlength="15" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="ca" placeholder="Shop address, city, state"></div><div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Leave GST blank for a B2C shop. A valid 15-character GSTIN marks the customer B2B and splits tax as CGST / SGST on the invoice.</div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="addC()">Submit</button></div>`}
+function custForm(){CIMG='';CLOC=null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="cn" placeholder="e.g. Vaidya Herbal Store"></div><div><div class="k">Phone</div><input id="cph" inputmode="numeric" maxlength="15" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="cgst" maxlength="15" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="ca" placeholder="Shop address, city, state"></div><div style="grid-column:span 4"><div class="k">Credit days limit</div><input id="ccd" type="number" min="0" step="1" placeholder="0 = no limit (e.g. 30)"><div class="m">New invoices are stopped once an unpaid invoice is older than this many days.</div></div><div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Leave GST blank for a B2C shop. A valid 15-character GSTIN marks the customer B2B and splits tax as CGST / SGST on the invoice.</div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="addC()">Submit</button></div>`}
 function staffForm(x){
  const s=x||{name:'',phone:'',area:'',designation:'',join:''};
  return `<div class="k">Name</div><input id="sn" value="${esc(s.name)}" placeholder="Staff / executive name"><div class="k">Mobile number</div><input id="sph" value="${esc(s.phone)}" inputmode="numeric" placeholder="Phone"><div class="fl"><div><div class="k">Designation</div><input id="sdes" value="${esc(s.designation)}" placeholder="e.g. Delivery executive"></div><div><div class="k">Join date</div><input type="date" id="sjd" value="${esc(String(s.join||'').slice(0,10))}"></div></div><div class="k">Area / route</div><input id="sar" value="${esc(s.area)}" placeholder="Area, locality or route"><button class="btn" onclick="${x?`updS(${x.id})`:'addS()'}">Save staff</button>${x?`<button class="btn d" onclick="delS(${x.id})">Delete</button>`:''}`;
@@ -505,7 +505,7 @@ function R(){
  $('#nav').innerHTML=grp+(loose.length?`<div class="ng">${loose.map(navB).join('')}</div>`:'');
  const a=(isStaff()&&(tab=='cust'||tab=='staff'))||!canDo(tab,'add')?null:ACT[tab];
  $('#hd').innerHTML=`<div><h1>${H[tab][0]}</h1><p>${H[tab][1]}</p></div>`+(a?`<div><button class="btn" onclick="${a[1]}()">${a[0]}</button>${tab=='prod'?'<button class="btn" style="margin-left:8px" onclick="newPn()">+ Add production</button>':''}${tab=='orders'&&svOn('loadslip')?'<button class="btn o" style="margin-left:8px" onclick="lsOpen()">🚚 Staff loading slip</button>':''}</div>`:'');
- $('#app').innerHTML=accBar()+({orders:Vo,sret:Vsr,collect:Vc,cust:Vu,staff:Vs,cal:Vcal,prod:Vp,buy:Vbuy,exp:Vexp,assets:Vas,users:Vusers,history:Vhist,settings:Vset,raw:Vraw,ledger:Vl,pl:Vpl,bs:Vbs,company:VcoW})[tab]();
+ $('#app').innerHTML=accBar()+({orders:Vo,sret:Vsr,collect:Vc,cust:Vu,staff:Vs,cal:Vcal,prod:Vp,buy:Vbuy,exp:Vexp,assets:Vas,users:Vusers,history:Vhist,settings:Vset,raw:Vraw,ledger:Vl,pl:Vpl,irep:Virep,bs:Vbs,cashbook:Vcashbook,bankbook:Vbankbook,company:VcoW})[tab]();
 }
 const kp=(k,v,c)=>`<div class="card"><div class="k">${k}</div><div class="v ${c||''}">${v}</div></div>`;
 const dr=(a,b,ca,cb,cl)=>`<div class="dr"><div><div class="k">Date from</div><input type="date" value="${a}" onchange="${ca}=this.value;R()"></div><div><div class="k">Date to</div><input type="date" value="${b}" onchange="${cb}=this.value;R()"></div>${a||b?`<button class="btn o" type="button" onclick="${cl}">Clear dates</button>`:''}</div>`;
@@ -636,6 +636,7 @@ async function mk(){
  const need={};items.forEach(i=>{const pr=S.prod.find(x=>x.name.toLowerCase()==i.p.toLowerCase());if(pr)need[pr.name]=(need[pr.name]||0)+i.q});
  const bad=Object.keys(need).map(n=>{const av=made(n)-sold(n);return av<=0?n+': out of stock':need[n]>av?`${n}: only ${nf(av)} in stock, you entered ${nf(need[n])}`:''}).filter(x=>x);
  if(bad.length)return alert('This order cannot be created.\n\n'+bad.join('\n')+'\n\nAdd production in Products & Stock first.');
+ if(!await creditCheck(shop))return;
  const sub=sum(items.map(i=>i.q*i.pr)),disc=Math.min(+$('#idisc').value||0,sub),taxp=gstAvg(items);
  const {data,error}=await db.from('orders').insert({date,agent:$('#by').value,shop,items,disc,taxp,status:$('#ist').value,due:$('#idue').value.trim(),notes:$('#inote').value.trim()}).select().single();
  if(error)return fail(error);
@@ -907,10 +908,23 @@ function Vu(){
 function ulList(){
  const k=qc.toLowerCase().trim();
  return S.c.filter(c=>hit(k,c.name,c.phone,c.addr,c.gst,c.gst?'b2b':'b2c')).map(ucard).join('')||`<div class="empty">${k?'No customer matches that search':'No customers yet'}</div>`}
+function overdueInfo(name){
+ const c=S.c.find(x=>x.name==name),days=c?+c.credit||0:0,r={days,amt:0,oldest:0};
+ if(!days)return r;
+ const inv=led().filter(o=>o.shop==name).sort((a,b)=>dnum(a.date)-dnum(b.date)||a.id-b.id),now=Math.floor(Date.now()/864e5);
+ let paid=Math.max(0,sum(inv.map(tot))-cbal(name));
+ inv.forEach(o=>{const t=tot(o),u=Math.min(paid,t);paid-=u;const left=t-u,age=now-dnum(o.date);if(left>0.5&&age>days){r.amt+=left;r.oldest=Math.max(r.oldest,age)}});
+ return r}
+const creditTag=c=>{if(!(+c.credit>0))return '';const o=overdueInfo(c.name);return ' · Credit '+c.credit+' days'+(o.amt>0?` · <span class="bad"><b>Overdue ${fm(Math.round(o.amt))}</b> (oldest ${o.oldest} days)</span>`:'')};
+async function creditCheck(shop){
+ const o=overdueInfo(shop);if(!o.amt)return true;
+ const msg=`${shop} has ${fm(Math.round(o.amt))} overdue beyond the ${o.days}-day credit limit (oldest unpaid invoice is ${o.oldest} days old).`;
+ if(canSettle())return cfm(msg+'\n\nCreate this invoice anyway?','Yes, create invoice');
+ alert(msg+'\n\nNew invoices are not allowed until the payment is received.');return false}
 function ucard(c){
  const b=cbal(c.name);
- return `<div class="card"><div class="it"><div class="av">${c.image?`<img src="${esc(c.image)}" alt="">`:esc(c.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(c.name)}</b><span class="amt ${b>0?'bad':'ok'}">${fm(b)}</span></div><div class="m">${btag(c)} ${esc(c.phone||'No phone')} · ${esc(c.addr||'No address')}${c.gst?' · GSTIN '+esc(c.gst):''}</div><div class="m">${S.o.filter(o=>o.shop==c.name).length} orders</div>${hasLoc(c)||c.addr?`<button class="btn o" onclick="cMap(${c.id})">📍 Map</button>`:''}${isStaff()?'':`<button class="btn o" onclick="lt='Customer';le=this.dataset.n;go('ledger')" data-n="${esc(c.name)}">Open ledger</button>${canDo('cust','edit')?`<button class="btn o" onclick="editC(${c.id})">Edit</button>`:''}${canDo('cust','del')?`<button class="btn d" onclick="delC(${c.id})">Delete</button>`:''}`}</div></div></div>`}
-function custEditForm(c){CIMG=c.image||'';CLOC=hasLoc(c)?{lat:+c.lat,lng:+c.lng}:null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="ecn" value="${esc(c.name)}"></div><div><div class="k">Phone</div><input id="ecph" inputmode="numeric" maxlength="15" value="${esc(c.phone||'')}" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="ecg" maxlength="15" value="${esc(c.gst||'')}" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="eca" value="${esc(c.addr||'')}" placeholder="Shop address, city, state"></div><div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" value="${CLOC?CLOC.lat:''}" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" value="${CLOC?CLOC.lng:''}" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Editing the name also renames it on this customer's invoices and payments.</div></div><div class="cft">${canDo('cust','del')?`<button class="btn d" type="button" style="margin-right:auto" onclick="delC(${c.id})">Delete</button>`:''}<button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="updC(${c.id})">Submit</button></div>`}
+ return `<div class="card"><div class="it"><div class="av">${c.image?`<img src="${esc(c.image)}" alt="">`:esc(c.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(c.name)}</b><span class="amt ${b>0?'bad':'ok'}">${fm(b)}</span></div><div class="m">${btag(c)} ${esc(c.phone||'No phone')} · ${esc(c.addr||'No address')}${c.gst?' · GSTIN '+esc(c.gst):''}</div><div class="m">${S.o.filter(o=>o.shop==c.name).length} orders${creditTag(c)}</div>${hasLoc(c)||c.addr?`<button class="btn o" onclick="cMap(${c.id})">📍 Map</button>`:''}${isStaff()?'':`<button class="btn o" onclick="lt='Customer';le=this.dataset.n;go('ledger')" data-n="${esc(c.name)}">Open ledger</button>${canDo('cust','edit')?`<button class="btn o" onclick="editC(${c.id})">Edit</button>`:''}${canDo('cust','del')?`<button class="btn d" onclick="delC(${c.id})">Delete</button>`:''}`}</div></div></div>`}
+function custEditForm(c){CIMG=c.image||'';CLOC=hasLoc(c)?{lat:+c.lat,lng:+c.lng}:null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="ecn" value="${esc(c.name)}"></div><div><div class="k">Phone</div><input id="ecph" inputmode="numeric" maxlength="15" value="${esc(c.phone||'')}" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="ecg" maxlength="15" value="${esc(c.gst||'')}" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="eca" value="${esc(c.addr||'')}" placeholder="Shop address, city, state"></div><div style="grid-column:span 4"><div class="k">Credit days limit</div><input id="eccd" type="number" min="0" step="1" value="${c.credit||''}" placeholder="0 = no limit (e.g. 30)"><div class="m">New invoices are stopped once an unpaid invoice is older than this many days.</div></div><div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" value="${CLOC?CLOC.lat:''}" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" value="${CLOC?CLOC.lng:''}" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Editing the name also renames it on this customer's invoices and payments.</div></div><div class="cft">${canDo('cust','del')?`<button class="btn d" type="button" style="margin-right:auto" onclick="delC(${c.id})">Delete</button>`:''}<button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="updC(${c.id})">Submit</button></div>`}
 function editC(id){if(noStaff())return;if(!canDo('cust','edit'))return deny('edit customers');const c=S.c.find(x=>x.id==id);if(c)openM('Edit customer',()=>custEditForm(c),1,1)}
 async function updC(id){
  if(!canDo('cust','edit'))return deny('edit customers');
@@ -920,8 +934,8 @@ async function updC(id){
  if(n.toLowerCase()!=c.name.toLowerCase()&&S.c.some(x=>x.id!=id&&x.name.toLowerCase()==n.toLowerCase()))return alert('Another customer already uses that name');
  const old=c.name,phone=$('#ecph').value.trim(),addr=$('#eca').value.trim(),g=$('#ecg').value.trim().toUpperCase();
  if(!gstOk(g))return alert('That GST number does not look right. A GSTIN has 15 characters, for example 32ABCDE1234F1Z5.');
- const extra=cLocRow(c);
- const {error}=await db.from('customers').update({name:n,phone,addr,...(g||c.gst?{gst:g}:{}),...extra}).eq('id',id);
+ const extra=cLocRow(c),cd=Math.max(0,Math.floor(+$('#eccd').value||0)),cdr=cd!=(c.credit||0)?{credit_days:cd}:{};
+ const {error}=await db.from('customers').update({name:n,phone,addr,...(g||c.gst?{gst:g}:{}),...extra,...cdr}).eq('id',id);
  if(error)return gfail(error);
  if(old!=n){
   const [a,b]=await Promise.all([db.from('orders').update({shop:n}).eq('shop',old),db.from('payments').update({cust:n}).eq('cust',old)]);
@@ -930,7 +944,7 @@ async function updC(id){
   S.cp.forEach(p=>{if(p.cust==old)p.cust=n});
   if(lt=='Customer'&&le==old)le=n;
  }
- c.name=n;c.phone=phone;c.addr=addr;c.gst=g;Object.assign(c,extra);byName(S.c);R();done('Customer updated')}
+ c.name=n;c.phone=phone;c.addr=addr;c.gst=g;c.credit=cd;Object.assign(c,extra);byName(S.c);R();done('Customer updated')}
 async function delC(id){if(noStaff())return;if(!canDo('cust','del'))return deny('delete customers');
  const c=S.c.find(x=>x.id==id);if(!c)return;
  const n=S.o.filter(o=>o.shop==c.name).length,p=S.cp.filter(x=>x.cust==c.name).length;
@@ -943,8 +957,8 @@ async function addC(){
  const n=$('#cn').value.trim();if(!n)return alert('Enter name');
  if(S.c.some(c=>c.name.toLowerCase()==n.toLowerCase()))return alert('Customer already exists');
  const g=$('#cgst').value.trim().toUpperCase();if(!gstOk(g))return alert('That GST number does not look right. A GSTIN has 15 characters, for example 32ABCDE1234F1Z5.');
- const extra=cLocRow();
- const {data,error}=await db.from('customers').insert({name:n,phone:$('#cph').value.trim(),addr:$('#ca').value.trim(),...(g?{gst:g}:{}),...extra}).select().single();
+ const extra=cLocRow(),cd=Math.max(0,Math.floor(+$('#ccd').value||0));
+ const {data,error}=await db.from('customers').insert({name:n,phone:$('#cph').value.trim(),addr:$('#ca').value.trim(),...(g?{gst:g}:{}),...extra,...(cd?{credit_days:cd}:{})}).select().single();
  if(error)return gfail(error);
  S.c.push(rC(data));byName(S.c);R();done(n+' added to customers')}
 /* customer photo + shop location */
@@ -1137,7 +1151,45 @@ create table if not exists assets(id bigint generated always as identity primary
 create table if not exists sales_returns(id bigint generated always as identity primary key,order_id bigint,order_no text,shop text,date text,items jsonb default '[]'::jsonb,reason text,status text default 'Active',created_by text,created_at timestamptz default now());
 alter table sales_returns enable row level security;
 drop policy if exists sales_returns_open on sales_returns;
-create policy sales_returns_open on sales_returns for all to anon, authenticated using (true) with check (true);`;
+create policy sales_returns_open on sales_returns for all to anon, authenticated using (true) with check (true);
+create table if not exists deposits(id bigint generated always as identity primary key,date text,amount numeric,notes text);
+alter table deposits enable row level security;
+drop policy if exists deposits_open on deposits;
+create policy deposits_open on deposits for all to anon, authenticated using (true) with check (true);
+alter table purchases enable row level security;
+drop policy if exists purchases_open on purchases;
+create policy purchases_open on purchases for all to anon, authenticated using (true) with check (true);
+alter table consumption enable row level security;
+drop policy if exists consumption_open on consumption;
+create policy consumption_open on consumption for all to anon, authenticated using (true) with check (true);
+alter table production enable row level security;
+drop policy if exists production_open on production;
+create policy production_open on production for all to anon, authenticated using (true) with check (true);
+alter table staff_routes enable row level security;
+drop policy if exists staff_routes_open on staff_routes;
+create policy staff_routes_open on staff_routes for all to anon, authenticated using (true) with check (true);
+alter table expenses enable row level security;
+drop policy if exists expenses_open on expenses;
+create policy expenses_open on expenses for all to anon, authenticated using (true) with check (true);
+alter table app_settings enable row level security;
+drop policy if exists app_settings_open on app_settings;
+create policy app_settings_open on app_settings for all to anon, authenticated using (true) with check (true);
+alter table history enable row level security;
+drop policy if exists history_open on history;
+create policy history_open on history for all to anon, authenticated using (true) with check (true);
+alter table assets enable row level security;
+drop policy if exists assets_open on assets;
+create policy assets_open on assets for all to anon, authenticated using (true) with check (true);
+create table if not exists bank_accounts(id bigint generated always as identity primary key,name text);
+alter table bank_accounts enable row level security;
+drop policy if exists bank_accounts_open on bank_accounts;
+create policy bank_accounts_open on bank_accounts for all to anon, authenticated using (true) with check (true);
+alter table purchases add column if not exists mode text;
+alter table deposits add column if not exists account text;
+alter table bank_accounts add column if not exists account_no text;
+alter table bank_accounts add column if not exists ifsc text;
+alter table bank_accounts add column if not exists branch text;
+alter table customers add column if not exists credit_days int;`;
 const nf=n=>(+n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
 const qkg=n=>(+n||0).toLocaleString('en-IN',{minimumFractionDigits:3,maximumFractionDigits:3});
 const qfmt=(q,u)=>/^kg$/i.test(String(u||'').trim())?qkg(q)+' kg':nf(q)+(u?' '+esc(u):'');
@@ -1154,9 +1206,9 @@ function mats(){
  return Object.values(m).sort((a,b)=>a.name.localeCompare(b.name))}
 async function ins(t,row,key){
  const {data,error}=await db.from(t).insert(row).select().single();
- if(error){alert((MISS.includes(t)?'This table does not exist yet. Run the setup SQL shown at the top of the tab in Supabase first.\n\n':'Could not save: ')+err(error));return null}
+ if(error){if(/row-level security|policy/i.test(err(error))){alert('Supabase is blocking the "'+t+'" table (row-level security is on without a policy). Run this once in Supabase > SQL Editor, then try again:\n\nalter table '+t+' enable row level security;\ndrop policy if exists '+t+'_open on '+t+';\ncreate policy '+t+'_open on '+t+' for all to anon, authenticated using (true) with check (true);');return null}alert((MISS.includes(t)?'This table does not exist yet. Run the setup SQL shown at the top of the tab in Supabase first.\n\n':'Could not save: ')+err(error));return null}
  S[key].unshift(data);return data}
-const ROW_SVC={production:'prod',purchases:'buy',expenses:'exp',assets:'assets',consumption:'raw'};
+const ROW_SVC={bank_accounts:'bankbook',deposits:'cashbook',production:'prod',purchases:'buy',expenses:'exp',assets:'assets',consumption:'raw'};
 async function delRow(t,id,key){
  const s=ROW_SVC[t]||'';
  if(s&&!canDo(s,'del'))return deny('delete '+t);
@@ -1168,10 +1220,10 @@ const dbtn=(t,id,k)=>{const s=ROW_SVC[t]||'';return s&&!canDo(s,'del')?'<td></td
 const empty=(n,t)=>`<tr><td colspan="${n}" class="empty">${t}</td></tr>`;
 /* purchase */
 function Vbuy(){
- return sqlHint()+`<div class="kp">${kp('Purchases',S.pu.length)}${kp('Total spent',fm(Math.round(sum(S.pu.map(p=>p.qty*p.rate)))))}${kp('Suppliers',new Set(S.pu.map(p=>p.supplier).filter(x=>x)).size)}${kp('Raw materials',mats().length)}</div><input placeholder="🔍 Search supplier, material or date" value="${esc(qb)}" oninput="qb=this.value;$('#bl').innerHTML=bl()"><div class="card"><div class="tw" id="bl">${bl()}</div></div>`}
+ return sqlHint()+`<div class="kp">${kp('Purchases',S.pu.length)}${kp('Total spent',fm(Math.round(sum(S.pu.map(p=>p.qty*p.rate)))))}${kp('Suppliers',new Set(S.pu.map(p=>p.supplier).filter(x=>x)).size)}${kp('Raw materials',mats().length)}</div><input placeholder="🔍 Search supplier, material or date" value="${esc(qb)}" oninput="qb=this.value;$('#bl').innerHTML=bl()"><div class="card"><button class="btn o" style="margin-bottom:8px" onclick="buyPrint()">🖨 Print list</button><div class="tw" id="bl">${bl()}</div></div>`}
 function bl(){
  const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date));
- return `<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th></th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td>${canDo('buy','edit')?`<button class="btn o" onclick="editBuy(${p.id})">Edit</button>`:''}${dbtn('purchases',p.id,'pu')}</td></tr>`).join('')||empty(7,'No purchases yet')}</table>`}
+ return `<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th>Paid from</th><th></th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td>${esc(p.mode||'Cash')}</td><td><button class="btn o" onclick="vchPrint('b',${p.id})">Print</button>${canDo('buy','edit')?`<button class="btn o" onclick="editBuy(${p.id})">Edit</button>`:''}${dbtn('purchases',p.id,'pu')}</td></tr>`).join('')||empty(8,'No purchases yet')}</table>`}
 const newBuy=()=>{if(!canDo('buy','add'))return deny('add purchases');openM('Add purchase',()=>buyForm(),1,1)};
 const editBuy=id=>{if(!canDo('buy','edit'))return deny('edit purchases');const x=S.pu.find(p=>p.id==id);if(x)openM('Edit purchase',()=>buyForm(x),1,1)};
 function buyForm(x){
@@ -1187,7 +1239,8 @@ function buyForm(x){
  +`<div><div class="k rq">Unit</div><select id="bu" data-u="${esc(cur)}" onchange="buUnit()">${opts.map(a=>`<option value="${esc(a[0])}" ${a[0]==cur?'selected':''}>${esc(a[1])}</option>`).join('')}</select></div>`
  +`<div><div class="k rq" id="brl">Rate (₹ per ${kg?'kg':'unit'})</div><input type="number" min="0" step="any" id="br" value="${x?x.rate:''}" oninput="buAmt()"></div>`
  +`<div><div class="k">Amount</div><input id="ba" readonly tabindex="-1" value="${x?fm(Math.round(x.qty*x.rate)):''}" placeholder="auto"></div>`
- +`<div><div class="k">Notes</div><input id="bn" value="${esc(x?x.notes:'')}" placeholder="Bill no, remarks (optional)"></div></div>`
+ +`<div><div class="k rq">Paid from</div><select id="bpm">${payOpts(x&&x.mode)}</select></div>`
+  +`<div><div class="k">Notes</div><input id="bn" value="${esc(x?x.notes:'')}" placeholder="Bill no, remarks (optional)"></div></div>`
  +`<div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveBuy(${x?x.id:'null'})">Submit</button></div>`}
 const buQ=()=>{const q=+$('#bq').value||0;return $('#bu').value=='g'?+(q/1000).toFixed(6):q};
 function buUnit(){
@@ -1205,6 +1258,7 @@ async function saveBuy(id){
  const v={date:$('#bd').value,supplier:$('#bs').value.trim(),material:$('#bm').value.trim(),unit:u=='g'?'kg':u,qty:buQ(),rate:+$('#br').value||0,notes:$('#bn').value.trim()};
  if(!v.date)return alert('Pick the purchase date');if(!v.material)return alert('Enter the raw material');
  if(!(v.qty>0))return alert('Enter a quantity above 0');if(!(v.rate>=0)||$('#br').value==='')return alert('Enter the rate');
+ {const o=id?S.pu.find(p=>p.id==id):null,pm=$('#bpm').value;if(pm!='Cash'||(o&&o.mode))v.mode=pm;const w=pmode(pm);if(!checkFunds(w,v.qty*v.rate,o&&pmode(o.mode)==w?o.qty*o.rate:0))return}
  if(id){const {error}=await db.from('purchases').update(v).eq('id',id);if(error)return fail(error);
   Object.assign(S.pu.find(p=>p.id==id),v);R();done('Purchase updated — '+v.material)}
  else if(await ins('purchases',v,'pu')){R();done('Purchase saved — '+v.material)}}
@@ -1212,19 +1266,20 @@ async function saveBuy(id){
 const expCats=()=>{const m={};S.ex.forEach(e=>{const k=String(e.category||'Other').trim()||'Other';m[k]=(m[k]||0)+(+e.amount||0)});return Object.entries(m).map(([k,v])=>[k,Math.round(v)]).sort((a,b)=>b[1]-a[1])};
 function Vexp(){
  const t=sum(S.ex.map(e=>+e.amount)),ym=tod().slice(0,7),mo=sum(S.ex.filter(e=>String(e.date).slice(0,7)==ym).map(e=>+e.amount)),c=expCats();
- return sqlHint()+`<div class="kp">${kp('Total expenses',fm(Math.round(t)))}${kp('This month',fm(Math.round(mo)))}${kp('Entries',S.ex.length)}${kp('Top category',c[0]?esc(c[0][0]):'—')}</div><input placeholder="🔍 Search category, description or date" value="${esc(qe)}" oninput="qe=this.value;$('#xl').innerHTML=xl()"><div class="card"><div class="tw" id="xl">${xl()}</div></div>`}
+ return sqlHint()+`<div class="kp">${kp('Total expenses',fm(Math.round(t)))}${kp('This month',fm(Math.round(mo)))}${kp('Entries',S.ex.length)}${kp('Top category',c[0]?esc(c[0][0]):'—')}</div><input placeholder="🔍 Search category, description or date" value="${esc(qe)}" oninput="qe=this.value;$('#xl').innerHTML=xl()"><div class="card"><button class="btn o" style="margin-bottom:8px" onclick="expPrint()">🖨 Print list</button><div class="tw" id="xl">${xl()}</div></div>`}
 function xl(){
  const k=qe.toLowerCase(),r=S.ex.filter(e=>hit(k,e.category,e.description,e.date));
- return `<table><tr><th>Date</th><th>Category</th><th>Description</th><th>Mode</th><th class="n">Amount</th><th></th></tr>${r.map(e=>`<tr><td>${dm(e.date)||esc(e.date)}</td><td>${esc(e.category)}</td><td>${esc(e.description||'')}</td><td>${esc(e.mode||'')}</td><td class="n">${fm(e.amount)}</td><td>${canDo('exp','edit')?`<button class="btn o" onclick="editExp(${e.id})">Edit</button>`:''}${dbtn('expenses',e.id,'ex')}</td></tr>`).join('')||empty(6,'No expenses yet')}</table>`}
+ return `<table><tr><th>Date</th><th>Category</th><th>Description</th><th>Mode</th><th class="n">Amount</th><th></th></tr>${r.map(e=>`<tr><td>${dm(e.date)||esc(e.date)}</td><td>${esc(e.category)}</td><td>${esc(e.description||'')}</td><td>${esc(e.mode||'')}</td><td class="n">${fm(e.amount)}</td><td><button class="btn o" onclick="vchPrint('e',${e.id})">Print</button>${canDo('exp','edit')?`<button class="btn o" onclick="editExp(${e.id})">Edit</button>`:''}${dbtn('expenses',e.id,'ex')}</td></tr>`).join('')||empty(6,'No expenses yet')}</table>`}
 const newExp=()=>{if(!canDo('exp','add'))return deny('add expenses');openM('Add expense',()=>expForm(),1,1)};
 const editExp=id=>{if(!canDo('exp','edit'))return deny('edit expenses');const x=S.ex.find(e=>e.id==id);if(x)openM('Edit expense',()=>expForm(x),1,1)};
 function expForm(x){
  const cats=[...new Set(['Salary','Rent','Electricity','Transport','Packaging','Marketing','Repairs','Miscellaneous',...S.ex.map(e=>e.category).filter(v=>v)])];
- return `<div class="cg"><div><div class="k rq">Date</div><input type="date" id="xd" value="${x?esc(x.date):tod()}"></div><div><div class="k rq">Amount (₹)</div><input type="number" min="0" step="any" id="xa" value="${x?x.amount:''}" placeholder="0.00"></div><div><div class="k rq">Category</div><input id="xc" list="xcl" value="${esc(x?x.category:'')}" placeholder="e.g. Transport"><datalist id="xcl">${cats.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div><div><div class="k rq">Payment mode</div><select id="xm">${['Cash','UPI','Bank'].map(m=>`<option ${x&&x.mode==m?'selected':''}>${m}</option>`).join('')}</select></div><div style="grid-column:span 4"><div class="k">Description</div><input id="xn" value="${esc(x?x.description:'')}" placeholder="What was it for? (optional)"></div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveExp(${x?x.id:'null'})">Submit</button></div>`}
+ return `<div class="cg"><div><div class="k rq">Date</div><input type="date" id="xd" value="${x?esc(x.date):tod()}"></div><div><div class="k rq">Amount (₹)</div><input type="number" min="0" step="any" id="xa" value="${x?x.amount:''}" placeholder="0.00"></div><div><div class="k rq">Category</div><input id="xc" list="xcl" value="${esc(x?x.category:'')}" placeholder="e.g. Transport"><datalist id="xcl">${cats.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div><div><div class="k rq">Paid from</div><select id="xm">${payOpts(x&&x.mode)}</select></div><div style="grid-column:span 4"><div class="k">Description</div><input id="xn" value="${esc(x?x.description:'')}" placeholder="What was it for? (optional)"></div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveExp(${x?x.id:'null'})">Submit</button></div>`}
 async function saveExp(id){
  if(!canDo('exp',id?'edit':'add'))return deny((id?'edit':'add')+' expenses');
  const v={date:$('#xd').value,category:$('#xc').value.trim(),amount:+$('#xa').value||0,mode:$('#xm').value,description:$('#xn').value.trim()};
  if(!v.date)return alert('Pick the date');if(!v.category)return alert('Enter the category');if(!(v.amount>0))return alert('Enter an amount above 0');
+ {const w=pmode(v.mode),o=id?S.ex.find(e=>e.id==id):null;if(!checkFunds(w,v.amount,o&&pmode(o.mode)==w?+o.amount||0:0))return}
  if(id){const {error}=await db.from('expenses').update(v).eq('id',id);if(error)return fail(error);
   Object.assign(S.ex.find(e=>e.id==id),v);R();done('Expense updated')}
  else if(await ins('expenses',v,'ex')){R();done('Expense saved — '+fm(v.amount))}}
@@ -1245,19 +1300,20 @@ function asl(){
 const newAs=()=>{if(!canDo('assets','add'))return deny('add assets');openM('Add asset',()=>asForm(),1,1)};
 const editAs=id=>{if(!canDo('assets','edit'))return deny('edit assets');const x=S.as.find(a=>a.id==id);if(x)openM('Edit asset',()=>asForm(x),1,1)};
 function asForm(x){
- return `<div class="cg"><div><div class="k rq">Purchase date</div><input type="date" id="ad" value="${x?esc(String(x.date).slice(0,10)):tod()}"></div><div><div class="k rq">Cost (₹)</div><input type="number" min="0" step="any" id="ac" value="${x?x.cost:''}" placeholder="0.00"></div><div style="grid-column:span 2"><div class="k rq">Asset name</div><input id="an" value="${esc(x?x.name:'')}" placeholder="e.g. Soap cutting machine"></div><div><div class="k rq">Category</div><input id="acat" list="acl" value="${esc(x?x.category:'')}" placeholder="e.g. Machinery"><datalist id="acl">${asCats().map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div><div><div class="k">Depreciation % per year</div><input type="number" min="0" max="100" step="any" id="ar" value="${x?(+x.dep_rate||0):15}" placeholder="e.g. 15"></div><div><div class="k rq">Paid by</div><select id="am">${['Cash','UPI','Bank'].map(m=>`<option ${x&&x.mode==m?'selected':''}>${m}</option>`).join('')}</select></div><div style="grid-column:span 4"><div class="k">Notes</div><input id="anote" value="${esc(x?x.notes||'':'')}" placeholder="Serial no, supplier… (optional)"></div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveAs(${x?x.id:'null'})">Submit</button></div>`}
+ return `<div class="cg"><div><div class="k rq">Purchase date</div><input type="date" id="ad" value="${x?esc(String(x.date).slice(0,10)):tod()}"></div><div><div class="k rq">Cost (₹)</div><input type="number" min="0" step="any" id="ac" value="${x?x.cost:''}" placeholder="0.00"></div><div style="grid-column:span 2"><div class="k rq">Asset name</div><input id="an" value="${esc(x?x.name:'')}" placeholder="e.g. Soap cutting machine"></div><div><div class="k rq">Category</div><input id="acat" list="acl" value="${esc(x?x.category:'')}" placeholder="e.g. Machinery"><datalist id="acl">${asCats().map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div><div><div class="k">Depreciation % per year</div><input type="number" min="0" max="100" step="any" id="ar" value="${x?(+x.dep_rate||0):15}" placeholder="e.g. 15"></div><div><div class="k rq">Paid from</div><select id="am">${payOpts(x&&x.mode)}</select></div><div style="grid-column:span 4"><div class="k">Notes</div><input id="anote" value="${esc(x?x.notes||'':'')}" placeholder="Serial no, supplier… (optional)"></div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveAs(${x?x.id:'null'})">Submit</button></div>`}
 async function saveAs(id){
  if(!canDo('assets',id?'edit':'add'))return deny((id?'edit':'add')+' assets');
  const v={date:$('#ad').value,name:$('#an').value.trim(),category:$('#acat').value.trim(),cost:+$('#ac').value||0,dep_rate:+$('#ar').value||0,mode:$('#am').value,notes:$('#anote').value.trim()};
  if(!v.date)return alert('Pick the purchase date');if(!v.name)return alert('Enter the asset name');if(!v.category)return alert('Enter the category');if(!(v.cost>0))return alert('Enter a cost above 0');if(v.dep_rate<0||v.dep_rate>100)return alert('Depreciation must be between 0 and 100');
+ {const w=pmode(v.mode),o=id?S.as.find(a=>a.id==id):null;if(!checkFunds(w,v.cost,o&&pmode(o.mode)==w?+o.cost||0:0))return}
  if(id){const {error}=await db.from('assets').update(v).eq('id',id);if(error)return fail(error);Object.assign(S.as.find(a=>a.id==id),v);R();done()}
  else if(await ins('assets',v,'as')){R();done()}}
 /* SETTINGS: enable / disable services per user (Owner only) */
 const SVC=[
-['orders','📦','Orders','Create, edit and print invoices','Modules'],['sret','↩️','Sales Returns','Add, edit, cancel or delete sales returns','Modules'],['collect','💰','Collection','Approve payments and receive money','Modules'],['cust','👥','Customers','Shops and their outstanding','Modules'],['staff','🧑‍💼','Staff','Executives and their dues','Modules'],['cal','🗓️','Route Calendar','Who covers which route, day by day','Modules'],['prod','🧴','Products & Stock','Catalogue, production and stock','Modules'],['buy','🛒','Purchase','Raw material purchases','Modules'],['exp','💸','Expenses','Day-to-day business expenses','Modules'],['assets','🏭','Assets','Machinery, furniture and vehicles','Modules'],['raw','🧪','Raw Material','Consumption and stock of raw material','Modules'],['ledger','📒','Ledger','Customer and executive statements','Modules'],['pl','📈','Profit & Loss','Profit and loss account','Modules'],['bs','🏛️','Balance Sheet','Assets and liabilities','Modules'],['company','🏢','Company','Details printed on every invoice','Modules'],['history','🕘','History','Who changed what, and when','Modules'],['users','🔐','Users','Logins and their category','Modules'],
+['orders','📦','Orders','Create, edit and print invoices','Modules'],['sret','↩️','Sales Returns','Add, edit, cancel or delete sales returns','Modules'],['collect','💰','Collection','Approve payments and receive money','Modules'],['cust','👥','Customers','Shops and their outstanding','Modules'],['staff','🧑‍💼','Staff','Executives and their dues','Modules'],['cal','🗓️','Route Calendar','Who covers which route, day by day','Modules'],['prod','🧴','Products & Stock','Catalogue, production and stock','Modules'],['buy','🛒','Purchase','Raw material purchases','Modules'],['exp','💸','Expenses','Day-to-day business expenses','Modules'],['assets','🏭','Assets','Machinery, furniture and vehicles','Modules'],['raw','🧪','Raw Material','Consumption and stock of raw material','Modules'],['ledger','📒','Ledger','Customer and executive statements','Modules'],['pl','📈','Profit & Loss','Profit and loss account','Modules'],['irep','📊','Item Sales Report','Product-wise sales for the sales manager','Modules'],['bs','🏛️','Balance Sheet','Assets and liabilities','Modules'],['cashbook','💵','Cash Book','Cash receipts and payments','Modules'],['bankbook','🏦','Bank & UPI Book','Bank, UPI and card receipts and payments','Modules'],['company','🏢','Company','Details printed on every invoice','Modules'],['history','🕘','History','Who changed what, and when','Modules'],['users','🔐','Users','Logins and their category','Modules'],
 ['loadslip','🚚','Staff loading slip','Loading slip and staff-wise invoice print','Features'],['hlog','📝','History recording','Record every add, change and delete','Features']];
 const SQLSVC="alter table accounts add column if not exists services jsonb default '{}'::jsonb;";
-const SVC_ACTS={orders:'aed',sret:'aed',collect:'aed',cust:'aed',staff:'aed',cal:'aed',prod:'aed',buy:'aed',exp:'aed',assets:'aed',raw:'ad',company:'e',users:'aed'};
+const SVC_ACTS={cashbook:'ad',bankbook:'aed',orders:'aed',sret:'aed',collect:'aed',cust:'aed',staff:'aed',cal:'aed',prod:'aed',buy:'aed',exp:'aed',assets:'aed',raw:'ad',company:'e',users:'aed'};
 const ACT_KEY={a:'add',e:'edit',d:'del'},ACT_LBL={add:'Add',edit:'Edit',del:'Delete'};
 const actsOf=k=>(SVC_ACTS[k]||'').split('').map(c=>ACT_KEY[c]);
 const svActs=k=>{const a=svMap(ME).acts;return a&&a[k]||{}};
@@ -1268,7 +1324,7 @@ let SVU='';
 const goSet=p=>{SVU=p;go('settings')};
 function Vset(){
  if(!isOwner())return '<div class="card"><b>Only the Owner can change settings</b><div class="m" style="margin-top:6px">Ask the owner of the business to change which services are switched on.</div></div>';
- if(US===null){loadUsers();return '<div class="ldg" role="status">'+cring(null,64)+'<div>Loading users…</div></div>'}
+ if(US===null){loadUsers();return ''}
  if(!SVU||!US.some(u=>u.phone==SVU))SVU=(US.find(u=>u.phone==ME.phone)||US[0]||{}).phone||ME.phone;
  const u=US.find(x=>x.phone==SVU)||{name:ME.name,phone:ME.phone,category:ME.cat||myCat(),services:ME.services};
  const map=svMap(u),on=SVC.filter(x=>map[x[0]]!==false).length,grp=['Modules','Features'];
@@ -1474,7 +1530,7 @@ async function loadUsers(){
  if(r.error){US=[];alert('Could not load users: '+err(r.error))}else US=r.data.map(u=>({...u,category:u.category||'Owner',services:u.services&&typeof u.services==='object'?u.services:{}}));
  if(tab=='users'||tab=='settings')R()}
 function Vusers(){
- if(US===null){loadUsers();return '<div class="ldg">'+cring(null,64)+'<div>Loading users…</div></div>'}
+ if(US===null){loadUsers();return ''}
  const n=c=>US.filter(u=>u.category==c).length;
  return (NOCAT?`<div class="card"><b>One-time setup</b><div class="m">Run this once in Supabase &gt; SQL Editor so every user can have a category (users without one are treated as Owner):</div><pre class="sqlb">alter table accounts add column if not exists category text;</pre></div>`:'')
  +`<div class="kp">${kp('Users',US.length)}${kp('Owners',n('Owner'))}${kp('Admins',n('Admin'))}${kp('Staff',n('Staff'))}</div>`
@@ -1561,56 +1617,168 @@ function Vpl(){
  return `<div class="kp">${kp('Net sales',fm(Math.round(d.sales)))}${kp('Gross profit',fm(Math.round(d.gp)),d.gp<0?'bad':'ok')}${kp('Expenses',fm(Math.round(d.exp)))}${kp(d.np<0?'Net loss':'Net profit',fm(Math.round(Math.abs(d.np))),d.np<0?'bad':'ok')}</div>${dr(pfa,pfb,'pfa','pfb',clr('pfa','pfb'))}<div class="card"><h3>Profit &amp; Loss Account${rlab(pfa,pfb)||' · all time'}</h3>${plTable(d)}<div class="m" style="margin-top:8px">${plNote}</div><button class="btn" onclick="plPrint()">🖨 Print</button></div>`}
 function plPrint(){
  $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">Profit &amp; Loss Account${rlab(pfa,pfb)||' · all time'} · printed ${today()}</div>${plTable(plData(pfa,pfb))}<div style="font-size:11px;color:#555">${plNote}</div><button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
-const pmode=m=>/bank|upi|card|cheque|check|online|neft|imps|gpay|paytm|razorpay/i.test(String(m||''))?'bank':'cash';
+const BANKRX=/bank|upi|card|cheque|check|online|neft|imps|gpay|paytm|razorpay/i;
+const BA=()=>[...(S.ba||[])].sort((a,b)=>a.id-b.id),bkey=a=>'b'+a.id;
+function pmode(m){const t=String(m||'').trim().toLowerCase(),a=BA().find(x=>String(x.name).trim().toLowerCase()==t);
+ if(a)return bkey(a);
+ if(BANKRX.test(t))return BA().length?bkey(BA()[0]):'bank';
+ return 'cash'}
+const srcName=k=>k=='cash'?'Cash':(k=='bank'||k=='all')?'Bank & UPI':((BA().find(a=>bkey(a)==k)||{}).name||'Bank');
+const bankKeys=()=>BA().length?BA().map(bkey):['bank'];
+const inB=(k,w)=>w=='all'?k!='cash':k==w;
+const payOpts=cur=>{const o=['Cash',...BA().map(a=>a.name)];if(!BA().length)o.push('UPI','Bank');const c=String(cur||'');if(c&&!o.some(m=>m.toLowerCase()==c.toLowerCase()))o.push(c);return o.map(m=>`<option ${c&&c.toLowerCase()==m.toLowerCase()?'selected':''}>${esc(m)}</option>`).join('')};
 function moneyBook(which){
- const r=[];
- S.cp.filter(p=>p.st=='Settled'&&pmode(p.mode)==which).forEach(p=>r.push({d:p.date,t:'Received from '+p.cust+(p.inv?' · '+p.inv:'')+' ('+(p.mode||'Cash')+')',in:+p.amt||0,out:0,id:'cp'+p.id}));
- if(which=='cash')S.pu.forEach(p=>r.push({d:p.date,t:'Purchase — '+p.material+(p.supplier?' · '+p.supplier:''),in:0,out:(+p.qty||0)*(+p.rate||0),id:'pu'+p.id}));
- S.ex.filter(e=>pmode(e.mode)==which).forEach(e=>r.push({d:e.date,t:'Expense — '+(e.category||'Other')+(e.description?' · '+e.description:''),in:0,out:+e.amount||0,id:'ex'+e.id}));
- S.as.filter(a=>pmode(a.mode)==which).forEach(a=>r.push({d:a.date,t:'Asset bought — '+a.name,in:0,out:+a.cost||0,id:'as'+a.id}));
+ const r=[],tag=k=>which=='all'&&BA().length>1?' — '+srcName(k):'';
+ S.cp.filter(p=>p.st=='Settled'&&inB(pmode(p.mode),which)).forEach(p=>r.push({d:p.date,t:'Received from '+p.cust+(p.inv?' · '+p.inv:'')+' ('+(p.mode||'Cash')+')'+tag(pmode(p.mode)),in:+p.amt||0,out:0,id:'cp'+p.id}));
+ S.pu.filter(p=>inB(pmode(p.mode),which)).forEach(p=>r.push({d:p.date,t:'Purchase — '+p.material+(p.supplier?' · '+p.supplier:'')+tag(pmode(p.mode)),in:0,out:(+p.qty||0)*(+p.rate||0),id:'pu'+p.id}));
+ S.ex.filter(e=>inB(pmode(e.mode),which)).forEach(e=>r.push({d:e.date,t:'Expense — '+(e.category||'Other')+(e.description?' · '+e.description:'')+tag(pmode(e.mode)),in:0,out:+e.amount||0,id:'ex'+e.id}));
+ S.as.filter(a=>inB(pmode(a.mode),which)).forEach(a=>r.push({d:a.date,t:'Asset bought — '+a.name+tag(pmode(a.mode)),in:0,out:+a.cost||0,id:'as'+a.id}));
+ (S.dp||[]).forEach(p=>{const bk=pmode(p.account||'Bank');
+  if(which=='cash')r.push({d:p.date,t:'Deposited to bank — '+srcName(bk)+(p.notes?' · '+p.notes:''),in:0,out:+p.amount||0,id:'dp'+p.id,dp:p.id});
+  else if(inB(bk,which))r.push({d:p.date,t:'Cash deposited'+tag(bk)+(p.notes?' · '+p.notes:''),in:+p.amount||0,out:0,id:'dp'+p.id,dp:p.id})});
  r.sort((a,b)=>dnum(a.d)-dnum(b.d)||String(a.id).localeCompare(String(b.id)));
  let bal=0;r.forEach(x=>{bal+=x.in-x.out;x.bal=bal});return r}
-const cashBank=()=>{const cash=sum(moneyBook('cash').map(x=>x.in-x.out)),bank=sum(moneyBook('bank').map(x=>x.in-x.out));return {cash,bank,total:cash+bank}};
+const cashBank=()=>{const cash=sum(moneyBook('cash').map(x=>x.in-x.out)),list=bankKeys().map(k=>({key:k,name:srcName(k),bal:sum(moneyBook(k).map(x=>x.in-x.out))})),bank=sum(list.map(x=>x.bal));return {cash,bank,list,total:cash+bank}};
 let bbf='',bbt='',bbook='cash';
+const bookBal=w=>{const r=moneyBook(w);return r.length?r[r.length-1].bal:0};
+function checkFunds(w,amt,old){
+ const avail=bookBal(w)+(old||0);
+ if(amt>avail+0.005){alert('Not enough '+(w=='cash'?'cash':srcName(w))+' balance. Available '+fm(Math.round(avail*100)/100)+', needed '+fm(Math.round(amt*100)/100)+'. Add money first (collection or deposit) and try again.');return false}
+ return true}
+const prDoc=(title,html)=>{$('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">${title} · printed ${today()}</div>${html}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false};
+const vchRows=a=>`<table>${a.map(x=>`<tr><td style="width:38%"><b>${x[0]}</b></td><td>${esc(x[1])}</td></tr>`).join('')}</table><div style="display:flex;justify-content:space-between;margin-top:46px;font-size:12px"><span>Prepared by</span><span>Approved by</span><span>Receiver's signature</span></div>`;
+function buyPrint(){
+ const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date));
+ prDoc('Purchase register'+(k?' · search “'+esc(qb)+'”':''),`<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td></tr>`).join('')||empty(6,'No purchases')}<tr><td colspan="5"><b>Total</b></td><td class="n"><b>${fm(Math.round(sum(r.map(p=>p.qty*p.rate))))}</b></td></tr></table>`)}
+function expPrint(){
+ const k=qe.toLowerCase(),r=S.ex.filter(e=>hit(k,e.category,e.description,e.date));
+ prDoc('Expense register'+(k?' · search “'+esc(qe)+'”':''),`<table><tr><th>Date</th><th>Category</th><th>Description</th><th>Mode</th><th class="n">Amount</th></tr>${r.map(e=>`<tr><td>${dm(e.date)||esc(e.date)}</td><td>${esc(e.category)}</td><td>${esc(e.description||'')}</td><td>${esc(e.mode||'')}</td><td class="n">${fm(e.amount)}</td></tr>`).join('')||empty(5,'No expenses')}<tr><td colspan="4"><b>Total</b></td><td class="n"><b>${fm(Math.round(sum(r.map(e=>+e.amount))))}</b></td></tr></table>`)}
+function vchPrint(t,id){
+ if(t=='b'){const p=S.pu.find(x=>x.id==id);if(!p)return;
+  prDoc('Purchase voucher',vchRows([['Date',dm(p.date)||p.date],['Supplier',p.supplier||'—'],['Material',p.material],['Quantity',(+p.qty).toLocaleString('en-IN',{maximumFractionDigits:3})+' '+(p.unit||'')],['Rate',fm(p.rate)],['Amount',fm(Math.round(p.qty*p.rate*100)/100)],['Paid from',p.mode||'Cash'],['Notes',p.notes||'']]))}
+ else{const e=S.ex.find(x=>x.id==id);if(!e)return;
+  prDoc('Expense voucher',vchRows([['Date',dm(e.date)||e.date],['Category',e.category],['Description',e.description||''],['Payment mode',e.mode||'Cash'],['Amount',fm(e.amount)]]))}}
 function bsData(){
  const d=plData('',''),names=[...new Set([...S.c.map(c=>c.name),...S.o.map(o=>o.shop),...S.cp.map(p=>p.cust)])];
  const deb=sum(names.map(n=>Math.max(0,cbal(n)))),adv=sum(names.map(n=>Math.max(0,-cbal(n))));
  const fa=asNet(Date.now()),cb=cashBank();
- const L=[...(d.np>=0?[['Net profit (retained)',d.np]]:[]),['GST payable (output GST collected)',d.gst],['Customer advances (credit balances)',adv],...(cb.cash<0?[['Cash deficit (funds introduced)',-cb.cash]]:[]),...(cb.bank<0?[['Bank deficit (funds introduced)',-cb.bank]]:[])];
- const A=[...(fa>0?[['Fixed assets (net of depreciation)',fa]]:[]),['Closing stock — raw materials',d.close],['Sundry debtors (customers)',deb],...(cb.cash>0?[['Cash in hand',cb.cash]]:[]),...(cb.bank>0?[['Bank & UPI balance',cb.bank]]:[]),...(d.np<0?[['Net loss',-d.np]]:[])];
+ const L=[...(d.np>=0?[['Net profit (retained)',d.np]]:[]),['GST payable (output GST collected)',d.gst],['Customer advances (credit balances)',adv],...(cb.cash<0?[['Cash deficit (funds introduced)',-cb.cash]]:[]),...cb.list.filter(x=>x.bal<0).map(x=>['Bank deficit — '+x.name+' (funds introduced)',-x.bal])];
+ const A=[...(fa>0?[['Fixed assets (net of depreciation)',fa]]:[]),['Closing stock — raw materials',d.close],['Sundry debtors (customers)',deb],...(cb.cash>0?[['Cash in hand',cb.cash]]:[]),...cb.list.filter(x=>x.bal>0).map(x=>[cb.list.length>1?'Bank — '+x.name:'Bank & UPI balance',x.bal]),...(d.np<0?[['Net loss',-d.np]]:[])];
  return {L,A,deb,cash:cb.total,cashIn:cb.cash,bank:cb.bank,fa,gst:d.gst,tl:sum(A.map(x=>x[1]))}}
 function bookRows(which){
  const all=moneyBook(which),A=dnum(bbf),B=dnum(bbt);let open=0;
  all.forEach(x=>{if(dnum(x.d)<A)open=x.bal});
  return {r:all.filter(x=>inRange(x.d,A,B)),open}}
 function bookTable(w,which){
- const name=which=='cash'?'Cash':'Bank & UPI';
- return `<div class="tw"><table><tr><th>Date</th><th>Particulars</th><th class="n">In</th><th class="n">Out</th><th class="n">Balance</th></tr>${(bbf||bbt)?`<tr><td>${bbf?dm(bbf):'—'}</td><td><b>Opening balance</b></td><td class="n"></td><td class="n"></td><td class="n"><b>${fm(w.open)}</b></td></tr>`:''}${w.r.map(x=>`<tr><td>${esc(x.d)}</td><td>${esc(x.t)}</td><td class="n">${x.in?fm(x.in):''}</td><td class="n">${x.out?fm(x.out):''}</td><td class="n">${fm(x.bal)}</td></tr>`).join('')||`<tr><td colspan="5" class="empty">No ${name.toLowerCase()} entries${bbf||bbt?' in this range':''}</td></tr>`}${(w.r.length||w.open)?`<tr><td colspan="2"><b>Closing balance${bbt?' as on '+dm(bbt):''}</b></td><td class="n"><b>${fm(sum(w.r.map(x=>x.in)))}</b></td><td class="n"><b>${fm(sum(w.r.map(x=>x.out)))}</b></td><td class="n"><b>${fm(w.r.length?w.r[w.r.length-1].bal:w.open)}</b></td></tr>`:''}</table></div>`}
-function bookCard(){
- const w=bookRows(bbook),title=bbook=='cash'?'Cash book':'Bank & UPI book';
- return `<div class="card"><div class="chips">${[['cash','Cash'],['bank','Bank & UPI']].map(([k,l])=>`<button class="${bbook==k?'on':''}" onclick="bbook='${k}';R()">${l} book</button>`).join('')}</div><h3>${title}${bbf||bbt?' · '+rlab(bbf,bbt):' · as on '+today()}</h3>${dr(bbf,bbt,'bbf','bbt',clr('bbf','bbt'))}${bookTable(w,bbook)}<div class="m" style="margin-top:8px">In: settled customer collections with this mode. Out: ${bbook=='cash'?'purchases (no payment mode, so treated as cash), ':''}expenses and asset purchases paid by ${bbook=='cash'?'cash':'bank/UPI'}. Executive settlements are not counted again.</div><button class="btn" onclick="bookPrint()">🖨 Print book</button></div>`}
-function bookPrint(){
- const w=bookRows(bbook);
- $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">${bbook=='cash'?'Cash book':'Bank & UPI book'}${rlab(bbf,bbt)||' · all entries'} · printed ${today()}</div>${bookTable(w,bbook)}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
+ const name=srcName(which);
+ return `<div class="tw"><table><tr><th>Date</th><th>Particulars</th><th class="n">In</th><th class="n">Out</th><th class="n">Balance</th><th class="np">Action</th></tr>${(bbf||bbt)?`<tr><td>${bbf?dm(bbf):'—'}</td><td><b>Opening balance</b></td><td class="n"></td><td class="n"></td><td class="n"><b>${fm(w.open)}</b></td><td class="np"></td></tr>`:''}${w.r.map(x=>`<tr><td>${esc(x.d)}</td><td>${esc(x.t)}</td><td class="n">${x.in?fm(x.in):''}</td><td class="n">${x.out?fm(x.out):''}</td><td class="n">${fm(x.bal)}</td><td class="np"><button class="btn d" onclick="bookDel('${x.id}')">Delete</button></td></tr>`).join('')||`<tr><td colspan="6" class="empty">No ${name.toLowerCase()} entries${bbf||bbt?' in this range':''}</td></tr>`}${(w.r.length||w.open)?`<tr><td colspan="2"><b>Closing balance${bbt?' as on '+dm(bbt):''}</b></td><td class="n"><b>${fm(sum(w.r.map(x=>x.in)))}</b></td><td class="n"><b>${fm(sum(w.r.map(x=>x.out)))}</b></td><td class="n"><b>${fm(w.r.length?w.r[w.r.length-1].bal:w.open)}</b></td><td class="np"></td></tr>`:''}</table></div>`}
+const bookTitle=w=>w=='cash'?'Cash book':w=='all'?'Bank & UPI book'+(BA().length>1?' (all accounts)':''):'Bank book — '+srcName(w);
+function bookCard(which){
+ bbook=which;const w=bookRows(bbook),title=bookTitle(bbook);
+ return `<div class="card"><h3>${title}${bbf||bbt?' · '+rlab(bbf,bbt):' · as on '+today()}</h3>${dr(bbf,bbt,'bbf','bbt',clr('bbf','bbt'))}${bookTable(w,bbook)}<div class="m" style="margin-top:8px">In: settled customer collections (UPI, card and bank collections go to the first bank account). Out: purchases, expenses and asset purchases paid from ${bbook=='cash'?'cash':'this account'}. Deposits move money from cash to a bank account. Executive settlements are not counted again.</div><button class="btn" onclick="bookPrint('${bbook}')">🖨 Print book</button></div>`}
+function bookDel(rid){
+ const m=/^(cp|pu|ex|as|dp)(\d+)$/.exec(String(rid));if(!m)return;
+ if(['cash',...bankKeys()].some(k=>{const now=sum(moneyBook(k).map(r=>r.in-r.out)),aft=sum(moneyBook(k).filter(r=>r.id!=rid).map(r=>r.in-r.out));return aft<-0.005&&aft<now-0.005}))return alert('Cannot delete this entry: the cash / bank balance would go below zero.');
+ const id=+m[2],k=m[1];
+ if(k=='cp')return delColl('cp',id);
+ const t={pu:['purchases','pu'],ex:['expenses','ex'],as:['assets','as'],dp:['deposits','dp']}[k];
+ return delRow(t[0],id,t[1])}
+const newDep=()=>{if(!canDo('cashbook','add'))return deny('add deposits');openM('Deposit cash to bank',()=>`<div class="cg"><div><div class="k rq">Date</div><input type="date" id="dpd" value="${tod()}"></div><div><div class="k rq">Amount (₹)</div><input type="number" min="0" step="any" id="dpa" placeholder="0.00"></div>${BA().length?`<div style="grid-column:span 2"><div class="k rq">Bank account</div><select id="dpb">${BA().map(a=>`<option ${bkey(a)==bsel?'selected':''}>${esc(a.name)}</option>`).join('')}</select></div>`:''}<div style="grid-column:span 4"><div class="k">Note</div><input id="dpn" placeholder="e.g. Deposited at branch (optional)"></div></div><div class="m" style="margin-top:8px">Cash goes out of the Cash Book and comes into the selected bank account. Total money stays the same.</div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveDep()">Submit</button></div>`,1,1)};
+async function saveDep(){
+ const v={date:$('#dpd').value,amount:+$('#dpa').value||0,notes:$('#dpn').value.trim()};
+ if($('#dpb'))v.account=$('#dpb').value;
+ if(!v.date)return alert('Pick the date');if(!(v.amount>0))return alert('Enter an amount above 0');
+ if(!checkFunds('cash',v.amount,0))return;
+ if(await ins('deposits',v,'dp')){R();done()}}
+function bookPrint(which){
+ bbook=which||bbook;const w=bookRows(bbook);
+ $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">${bookTitle(bbook)}${bankInfo(bbook)?' · '+esc(bankInfo(bbook)):''}${rlab(bbf,bbt)||' · all entries'} · printed ${today()}</div>${bookTable(w,bbook)}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
 const bsNote='As on today. Cash and bank are split by the payment mode on collections, expenses and asset purchases (UPI, card and bank transfer go to bank); purchases have no payment mode and are treated as cash. Money the owner put in before using this system is not recorded, so a negative cash or bank balance shows as a deficit. Finished-goods stock is not valued (no cost price), and only output GST is tracked.';
 function Vbs(){
  const b=bsData();
- return `<div class="kp">${kp('Total assets',fm(Math.round(b.tl)))}${kp('Fixed assets',fm(Math.round(b.fa)))}${kp('Debtors',fm(Math.round(b.deb)),'bad')}${kp('Cash in hand',fm(Math.round(b.cashIn)),b.cashIn<0?'bad':'ok')}${kp('Bank & UPI',fm(Math.round(b.bank)),b.bank<0?'bad':'ok')}${kp('GST payable',fm(Math.round(b.gst)))}</div><div class="card"><h3>Balance Sheet · as on ${today()}</h3>${tform(b.L,b.A,'Liabilities','Assets')}<div class="m" style="margin-top:8px">${bsNote}</div><button class="btn" onclick="bsPrint()">🖨 Print</button></div>`+bookCard()}
+ return `<div class="kp">${kp('Total assets',fm(Math.round(b.tl)))}${kp('Fixed assets',fm(Math.round(b.fa)))}${kp('Debtors',fm(Math.round(b.deb)),'bad')}${kp('Cash in hand',fm(Math.round(b.cashIn)),b.cashIn<0?'bad':'ok')}${kp('Bank & UPI',fm(Math.round(b.bank)),b.bank<0?'bad':'ok')}${kp('GST payable',fm(Math.round(b.gst)))}</div><div class="card"><h3>Balance Sheet · as on ${today()}</h3>${tform(b.L,b.A,'Liabilities','Assets')}<div class="m" style="margin-top:8px">${bsNote}</div><button class="btn" onclick="bsPrint()">🖨 Print</button></div>`}
+let bsel='all';
+function bookKp(w,which){const cb=cashBank(),v=which=='cash'?cb.cash:which=='all'?cb.bank:((cb.list.find(x=>x.key==which)||{}).bal||0);return `<div class="kp">${kp(which=='cash'?'Cash in hand':which=='all'?'Bank & UPI balance':esc(srcName(which))+' balance',fm(Math.round(v)),v<0?'bad':'ok')}${kp('Total in (shown)',fm(Math.round(sum(w.r.map(x=>x.in)))),'ok')}${kp('Total out (shown)',fm(Math.round(sum(w.r.map(x=>x.out)))),'bad')}${kp('Entries',w.r.length)}</div>`}
+function baDetail(k){const a=BA().find(x=>bkey(x)==k);if(!a)return '';const f=(l,v)=>`<div><div class="k">${l}</div><div><b>${v?esc(v):'—'}</b></div></div>`;return `<div class="kp" style="margin-top:10px">${f('Account number',a.account_no)}${f('IFSC code',a.ifsc)}${f('Branch',a.branch)}</div>`}
+function bankTabs(){const l=BA();return `<div class="card"><div class="chips"><button class="${bsel=='all'?'on':''}" onclick="bsel='all';R()">All accounts</button>${l.map(a=>`<button class="${bsel==bkey(a)?'on':''}" onclick="bsel='${bkey(a)}';R()">${esc(a.name)}</button>`).join('')}</div><div style="margin-top:8px"><button class="btn o" onclick="newBA()">+ Add bank account</button>${bsel!='all'?` <button class="btn o" onclick="editBA('${bsel}')">✎ Edit details</button> <button class="btn d" onclick="delBA('${bsel}')">Delete this account</button>`:''}</div>${bsel!='all'?baDetail(bsel):''}${l.length?'':'<div class="m" style="margin-top:6px">Add your bank accounts to keep a separate book for each. Until then, everything is in one Bank &amp; UPI book.</div>'}</div>`}
+const newBA=()=>baForm(null);
+const editBA=k=>{const a=BA().find(x=>bkey(x)==k);if(a)baForm(a)};
+function baForm(a){
+ if(!canDo('bankbook',a?'edit':'add'))return deny((a?'edit':'add')+' bank accounts');
+ openM(a?'Edit bank account':'Add bank account',()=>`<div class="cg"><div style="grid-column:span 4"><div class="k rq">Account name</div><input id="bkn" value="${esc(a?a.name:'')}" placeholder="e.g. SBI Current Account" maxlength="60"></div><div style="grid-column:span 2"><div class="k">Account number</div><input id="bkno" inputmode="numeric" value="${esc(a?a.account_no||'':'')}" placeholder="Account number" maxlength="25"></div><div style="grid-column:span 2"><div class="k">IFSC code</div><input id="bkif" value="${esc(a?a.ifsc||'':'')}" placeholder="e.g. SBIN0001234" maxlength="11" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Branch</div><input id="bkbr" value="${esc(a?a.branch||'':'')}" placeholder="Branch name"></div></div>${a?'<div class="m" style="margin-top:8px">If you change the name, all earlier entries of this account are renamed too.</div>':''}<div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveBA(${a?a.id:'null'})">Submit</button></div>`,0,1)}
+async function saveBA(id){
+ const n=$('#bkn').value.trim(),no=$('#bkno').value.trim(),ifsc=$('#bkif').value.trim().toUpperCase(),br=$('#bkbr').value.trim();
+ if(!n)return alert('Enter the account name');
+ if(n.toLowerCase()=='cash')return alert('Choose a different name — "Cash" is reserved for the Cash Book');
+ if(BA().some(a=>a.id!=id&&String(a.name).trim().toLowerCase()==n.toLowerCase()))return alert('This account already exists');
+ if(ifsc&&!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc))return alert('IFSC code should be 11 characters, like SBIN0001234');
+ if(id){
+  const a=S.ba.find(x=>x.id==id),old=a.name,row={name:n,account_no:no,ifsc,branch:br};
+  const {error}=await db.from('bank_accounts').update(row).eq('id',id);if(error)return fail(error);
+  Object.assign(a,row);
+  if(old!=n){
+   const lc=String(old).trim().toLowerCase(),is=v=>String(v||'').trim().toLowerCase()==lc;
+   for(const [t,arr,col] of [['payments',S.cp,'mode'],['expenses',S.ex,'mode'],['assets',S.as,'mode'],['purchases',S.pu,'mode'],['deposits',S.dp,'account']]){
+    const vars=[...new Set(arr.filter(x=>is(x[col])).map(x=>x[col]))];if(!vars.length)continue;
+    const r=await db.from(t).update({[col]:n}).in(col,vars);if(r.error)return fail(r.error);
+    arr.forEach(x=>{if(is(x[col]))x[col]=n})}}
+  R();done()}
+ else{
+  const row={name:n};if(no)row.account_no=no;if(ifsc)row.ifsc=ifsc;if(br)row.branch=br;
+  const d=await ins('bank_accounts',row,'ba');
+  if(d){bsel=bkey(d);R();done()}}}
+const bankInfo=k=>{const a=BA().find(x=>bkey(x)==k);return a?[a.account_no?'A/c '+a.account_no:'',a.ifsc?'IFSC '+a.ifsc:'',a.branch?'Branch '+a.branch:''].filter(Boolean).join(' · '):''};
+async function delBA(k){
+ const a=BA().find(x=>bkey(x)==k);if(!a)return;
+ if(moneyBook(k).length)return alert('This account has entries in its book, so it cannot be deleted. Delete or move those entries first.');
+ const n=S.ba.length;await delRow('bank_accounts',a.id,'ba');if(S.ba.length<n)bsel='all';R()}
+function Vcashbook(){return sqlHint()+bookKp(bookRows('cash'),'cash')+bookCard('cash')}
+function Vbankbook(){if(bsel!='all'&&!BA().some(a=>bkey(a)==bsel))bsel='all';return sqlHint()+bankTabs()+bookKp(bookRows(bsel),bsel)+bookCard(bsel)}
 function bsPrint(){
  const b=bsData();
  $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">Balance Sheet · as on ${today()}</div>${tform(b.L,b.A,'Liabilities','Assets')}<div style="font-size:11px;color:#555">${bsNote}</div><button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
+/* ITEM-WISE SALES REPORT */
+let irf='',irt='',irq='',irs='val',iru=false;
+function itemData(a,b){
+ const A=dnum(a),B=dnum(b),m={},mk=n=>m[n]||(m[n]={name:n,q:0,r:0,gv:0,tx:0,gst:0,inv:new Set(),cu:{},mo:{}});
+ S.prod.forEach(p=>mk(p.name));
+ led().filter(o=>inRange(o.date,A,B)).forEach(o=>{
+  const g=gross(o),d=Math.min(+o.disc||0,g),f=g?(g-d)/g:1,mo=new Date(dnum(o.date)*864e5).toISOString().slice(0,7);
+  o.items.forEach(i=>{
+   const x=mk(i.p),q=+i.q||0,r=+i.r||0,net=q-r,val=net*(+i.pr||0),tx=val*f,gs=tx*lineGst(i,o)/100;
+   x.q+=q;x.r+=r;x.gv+=val;x.tx+=tx;x.gst+=gs;x.inv.add(o.id);
+   const c=x.cu[o.shop]||(x.cu[o.shop]={q:0,v:0});c.q+=net;c.v+=tx;
+   const y=x.mo[mo]||(x.mo[mo]={q:0,v:0});y.q+=net;y.v+=tx})});
+ return Object.values(m)}
+function irRows(){
+ const k=irq.toLowerCase().trim();let r=itemData(irf,irt).filter(x=>hit(k,x.name)&&(iru||x.q>0||x.r>0));
+ r.sort(irs=='qty'?(a,b)=>(b.q-b.r)-(a.q-a.r):irs=='name'?(a,b)=>a.name.localeCompare(b.name):(a,b)=>b.tx-a.tx);return r}
+function irTable(r,pr){
+ const T=sum(r.map(x=>x.tx))||1;
+ return `<div class="tw"><table><tr><th>#</th><th>Product</th><th class="n">Qty sold</th><th class="n">Returned</th><th class="n">Net qty</th><th class="n">Avg rate</th><th class="n">Sales (ex GST)</th><th class="n">GST</th><th class="n">Total</th><th class="n">Share</th><th class="n">Invoices</th><th class="n">Customers</th>${pr?'':'<th class="np"></th>'}</tr>${r.map((x,i)=>{const n=x.q-x.r;return `<tr><td>${i+1}</td><td>${esc(x.name)}${x.q||x.r?'':' <span class="m">· not sold</span>'}</td><td class="n">${nf(x.q)}</td><td class="n">${x.r?nf(x.r):''}</td><td class="n"><b>${nf(n)}</b></td><td class="n">${n?fm(Math.round(x.gv/n*100)/100):''}</td><td class="n">${fm(Math.round(x.tx))}</td><td class="n">${fm(Math.round(x.gst))}</td><td class="n">${fm(Math.round(x.tx+x.gst))}</td><td class="n">${(x.tx/T*100).toFixed(1)}%</td><td class="n">${x.inv.size}</td><td class="n">${Object.keys(x.cu).length}</td>${pr?'':`<td class="np"><button class="btn o" onclick="irView('${encodeURIComponent(x.name)}')">View</button></td>`}</tr>`}).join('')||empty(13,'No sales in this period')}<tr><td colspan="2"><b>Total</b></td><td class="n"><b>${nf(sum(r.map(x=>x.q)))}</b></td><td class="n"><b>${nf(sum(r.map(x=>x.r)))}</b></td><td class="n"><b>${nf(sum(r.map(x=>x.q-x.r)))}</b></td><td></td><td class="n"><b>${fm(Math.round(sum(r.map(x=>x.tx))))}</b></td><td class="n"><b>${fm(Math.round(sum(r.map(x=>x.gst))))}</b></td><td class="n"><b>${fm(Math.round(sum(r.map(x=>x.tx+x.gst))))}</b></td><td></td><td></td><td></td>${pr?'':'<td class="np"></td>'}</tr></table></div>`}
+function Virep(){
+ const r=irRows(),sold=r.filter(x=>x.q>0),top=sold.slice().sort((a,b)=>b.tx-a.tx)[0],tx=sum(r.map(x=>x.tx));
+ return `<div class="kp">${kp('Sales (ex GST)',fm(Math.round(tx)))}${kp('Units sold (net)',nf(sum(r.map(x=>x.q-x.r))))}${kp('Products sold',sold.length)}${kp('Top product',top?esc(top.name):'—')}</div>${dr(irf,irt,'irf','irt',clr('irf','irt'))}<div class="card"><div class="fl"><div><div class="k">Search product</div><input placeholder="🔍 Product name" value="${esc(irq)}" oninput="irq=this.value;$('#irl').innerHTML=irTable(irRows())"></div></div><div class="chips">${[['val','By sales value'],['qty','By quantity'],['name','A–Z']].map(([k,l])=>`<button class="${irs==k?'on':''}" onclick="irs='${k}';R()">${l}</button>`).join('')}<button class="${iru?'on':''}" onclick="iru=!iru;R()">Show unsold products</button></div><button class="btn o" style="margin:8px 0" onclick="irPrint()">🖨 Print report</button><div id="irl">${irTable(r)}</div><div class="m" style="margin-top:8px">Uses confirmed invoices (not pending or cancelled). Quantities are net of sales returns. Sales exclude GST and are after the invoice discount. Tap View for customer-wise and month-wise sales of a product.</div></div>`}
+function irPrint(){prDoc('Item-wise sales report'+(rlab(irf,irt)||' · all time'),irTable(irRows(),1))}
+function irView(en){
+ const n=decodeURIComponent(en),x=itemData(irf,irt).find(y=>y.name==n);if(!x)return;
+ const cu=Object.entries(x.cu).sort((a,b)=>b[1].v-a[1].v),mo=Object.entries(x.mo).sort((a,b)=>b[0].localeCompare(a[0]));
+ openM(esc(n)+(rlab(irf,irt)||' · all time'),()=>`<div class="kp">${kp('Net qty',nf(x.q-x.r))}${kp('Sales (ex GST)',fm(Math.round(x.tx)))}${kp('Customers',cu.length)}${kp('Invoices',x.inv.size)}</div><h3>Customer-wise</h3><div class="tw"><table><tr><th>Customer</th><th class="n">Net qty</th><th class="n">Sales (ex GST)</th></tr>${cu.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="n">${nf(v.q)}</td><td class="n">${fm(Math.round(v.v))}</td></tr>`).join('')||empty(3,'No sales')}</table></div><h3 style="margin-top:14px">Month-wise</h3><div class="tw"><table><tr><th>Month</th><th class="n">Net qty</th><th class="n">Sales (ex GST)</th></tr>${mo.map(([k,v])=>`<tr><td>${k}</td><td class="n">${nf(v.q)}</td><td class="n">${fm(Math.round(v.v))}</td></tr>`).join('')||empty(3,'No sales')}</table></div>`,1)}
 /* INVOICE */
 function inv(id){const o=S.o.find(x=>x.id==id);if(!o)return;$('#inv').innerHTML=invSheet(o,1);$('#inv').hidden=false}
 /* STAFF-WISE LOADING SLIP + INVOICES (confirmed invoices only) */
-function stGroups(){
- const m={};S.o.filter(o=>o.st=='Confirmed').forEach(o=>{const k=o.by||'Office';(m[k]||(m[k]=[])).push(o)});
+function stGroups(a,b){
+ const m={},A=dnum(a),B=dnum(b);S.o.filter(o=>o.st=='Confirmed'&&inRange(o.date,A,B)).forEach(o=>{const k=o.by||'Office';(m[k]||(m[k]=[])).push(o)});
  return Object.keys(m).sort((x,y)=>x.localeCompare(y)).map(k=>({by:k,list:m[k].sort((a,b)=>a.id-b.id)}))}
-function lsPick(){const v=$('#lsst').value,g=stGroups();return v=='*'?g:g.filter(x=>x.by==v)}
+const lsRng=()=>({a:($('#lsdf')||{}).value||'',b:($('#lsdt')||{}).value||''});
+function lsPick(){const r=lsRng(),v=$('#lsst').value,g=stGroups(r.a,r.b);return v=='*'?g:g.filter(x=>x.by==v)}
+function lsOpts(){const r=lsRng(),g=stGroups(r.a,r.b);return `<option value="*">All staff — one page each (${g.reduce((n,x)=>n+x.list.length,0)} invoices)</option>`+g.map(x=>`<option value="${esc(x.by)}">${esc(x.by)} — ${x.list.length} invoice${x.list.length>1?'s':''} · ${fm(sum(x.list.map(tot)))}</option>`).join('')}
+function lsDates(){const sel=$('#lsst'),prev=sel.value;sel.innerHTML=lsOpts();if([...sel.options].some(o=>o.value==prev))sel.value=prev;lsInfo()}
 function lsOpen(){
  if(!svOn('loadslip'))return alert('The loading slip service is disabled in Settings');
  const g=stGroups();if(!g.length)return alert('There are no Confirmed invoices to load right now');
- openM('Staff loading slip',()=>`<div class="m" style="margin-bottom:8px">Uses every <b>Confirmed</b> invoice, grouped by staff. No need to tick anything.</div><div class="k rq">Staff</div><select id="lsst" onchange="lsInfo()"><option value="*">All staff — one page each (${g.reduce((n,x)=>n+x.list.length,0)} invoices)</option>${g.map(x=>`<option value="${esc(x.by)}">${esc(x.by)} — ${x.list.length} invoice${x.list.length>1?'s':''} · ${fm(sum(x.list.map(tot)))}</option>`).join('')}</select><div class="m" id="lsinfo"></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn o" type="button" onclick="lsInv()">🖨 Print invoices</button><button class="btn cs" type="button" onclick="lsPrint()">🚚 Loading slip</button></div>`,0,1);lsInfo()}
-function lsInfo(){const g=lsPick();$('#lsinfo').textContent=g.length?g.reduce((n,x)=>n+x.list.length,0)+' invoice(s) · '+fm(sum(g.map(x=>sum(x.list.map(tot))))):''}
+ openM('Staff loading slip',()=>`<div class="m" style="margin-bottom:8px">Uses every <b>Confirmed</b> invoice in the dates below, grouped by staff. Leave the dates blank to include all. No need to tick anything.</div><div class="fl"><div><div class="k">Date from</div><input type="date" id="lsdf" onchange="lsDates()"></div><div><div class="k">Date to</div><input type="date" id="lsdt" onchange="lsDates()"></div></div><div class="k rq">Staff</div><select id="lsst" onchange="lsInfo()">${lsOpts()}</select><div class="m" id="lsinfo"></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn o" type="button" onclick="lsInv()">🖨 Print invoices</button><button class="btn cs" type="button" onclick="lsPrint()">🚚 Loading slip</button></div>`,0,1);lsInfo()}
+function lsInfo(){const g=lsPick();$('#lsinfo').textContent=g.length?g.reduce((n,x)=>n+x.list.length,0)+' invoice(s) · '+fm(sum(g.map(x=>sum(x.list.map(tot))))):'No confirmed invoices in these dates'}
 function lsSheet(by,l,dt,pdt){
  const m={};
  l.forEach(o=>o.items.forEach(i=>{if(!(i.q>0))return;const k=i.p.toLowerCase(),x=m[k]||(m[k]={p:i.p,q:0,bx:0,a:0});x.q+=i.q;x.bx+=bxOf(i);x.a+=i.q*i.pr*(1+lineGst(i,o)/100)}));
@@ -1624,8 +1792,8 @@ function lsSheet(by,l,dt,pdt){
  +`<div class="ft"><div class="sg"><div style="height:34px"></div><div class="as">Prepared by</div></div><div class="sg"><div style="height:34px"></div><div class="as">Loaded by</div></div><div class="sg"><div style="height:34px"></div><div class="as">${esc(by)} (signature)</div></div></div></div><div class="pdt">Printed Date: ${pdt}</div></div>`}
 function lsPdt(){const n=new Date();return n.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+' Time: '+n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true}).toUpperCase()}
 function lsPrint(){
- const g=lsPick();if(!g.length)return alert('No confirmed invoices for this staff');closeM();
- const dt=today(),pd=lsPdt(),n=g.reduce((c,x)=>c+x.list.length,0);
+ const g=lsPick(),r=lsRng();if(!g.length)return alert('No confirmed invoices for this staff');closeM();
+ const dt=(r.a||r.b)?(dm(r.a)||'start')+' to '+(dm(r.b)||today()):today(),pd=lsPdt(),n=g.reduce((c,x)=>c+x.list.length,0);
  $('#inv').innerHTML=`<div class="np ivbar"><b>Loading slip · ${g.length} staff · ${n} invoice${n>1?'s':''}</b><span class="pgnote">one page per staff · A4</span><button class="btn" onclick="print()">Print</button><button class="btn o" onclick="$('#inv').hidden=true">Close</button></div>`+g.map(x=>lsSheet(x.by,x.list,dt,pd)).join('');
  $('#inv').hidden=false;$('#inv').scrollTop=0}
 function lsInv(){
