@@ -1730,7 +1730,6 @@ function bookCard(which){
  return `<div class="card"><h3>${title}${bbf||bbt?' · '+rlab(bbf,bbt):' · as on '+today()}</h3>${dr(bbf,bbt,'bbf','bbt',clr('bbf','bbt'))}${bookTable(w,bbook)}<div class="m" style="margin-top:8px">In: settled customer collections (UPI, card and bank collections go to the first bank account). Out: purchases, expenses and asset purchases paid from ${bbook=='cash'?'cash':'this account'}. Deposits move money from cash to a bank account. Executive settlements are not counted again.</div><button class="btn" onclick="bookPrint('${bbook}')">🖨 Print book</button></div>`}
 function bookDel(rid){
  const m=/^(cp|pu|ex|as|dp)(\d+)$/.exec(String(rid));if(!m)return;
- if(['cash',...bankKeys()].some(k=>{const now=sum(moneyBook(k).map(r=>r.in-r.out)),aft=sum(moneyBook(k).filter(r=>r.id!=rid).map(r=>r.in-r.out));return aft<-0.005&&aft<now-0.005}))return alert('Cannot delete this entry: the cash / bank balance would go below zero.');
  const id=+m[2],k=m[1];
  if(k=='cp')return delColl('cp',id);
  const t={pu:['purchases','pu'],ex:['expenses','ex'],as:['assets','as'],dp:['deposits','dp']}[k];
@@ -1740,7 +1739,6 @@ async function saveDep(){
  const v={date:$('#dpd').value,amount:+$('#dpa').value||0,notes:$('#dpn').value.trim()};
  if($('#dpb'))v.account=$('#dpb').value;
  if(!v.date)return alert('Pick the date');if(!(v.amount>0))return alert('Enter an amount above 0');
- if(!checkFunds('cash',v.amount,0))return;
  if(await ins('deposits',v,'dp')){R();done()}}
 function bookPrint(which){
  bbook=which||bbook;const w=bookRows(bbook);
