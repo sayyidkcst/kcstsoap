@@ -1363,7 +1363,7 @@ async function saveAs(id){
 /* SETTINGS: enable / disable services per user (Owner only) */
 const SVC=[
 ['orders','📦','Orders','Create, edit and print invoices','Modules'],['sret','↩️','Sales Returns','Add, edit, cancel or delete sales returns','Modules'],['collect','💰','Collection','Approve payments and receive money','Modules'],['cust','👥','Customers','Shops and their outstanding','Modules'],['staff','🧑‍💼','Staff','Executives and their dues','Modules'],['cal','🗓️','Route Calendar','Who covers which route, day by day','Modules'],['prod','🧴','Products & Stock','Catalogue, production and stock','Modules'],['buy','🛒','Purchase','Raw material purchases','Modules'],['exp','💸','Expenses','Day-to-day business expenses','Modules'],['assets','🏭','Assets','Machinery, furniture and vehicles','Modules'],['raw','🧪','Raw Material','Consumption and stock of raw material','Modules'],['ledger','📒','Ledger','Customer and executive statements','Modules'],['pl','📈','Profit & Loss','Profit and loss account','Modules'],['irep','📊','Item Sales Report','Product-wise sales for the sales manager','Modules'],['bs','🏛️','Balance Sheet','Assets and liabilities','Modules'],['cashbook','💵','Cash Book','Cash receipts and payments','Modules'],['bankbook','🏦','Bank & UPI Book','Bank, UPI and card receipts and payments','Modules'],['company','🏢','Company','Details printed on every invoice','Modules'],['history','🕘','History','Who changed what, and when','Modules'],['users','🔐','Users','Logins and their category','Modules'],
-['loadslip','🚚','Staff loading slip','Loading slip and staff-wise invoice print','Features'],['hlog','📝','History recording','Record every add, change and delete','Features']];
+['loadslip','🚚','Staff loading slip','Loading slip and staff-wise invoice print','Features'],['hlog','📝','History recording','Record every add, change and delete','Features'],['nobal','⚖️','Skip balance check','Deposit, spend or delete in Cash / Bank Book even when the balance is not enough','Features']];
 const SQLSVC="alter table accounts add column if not exists services jsonb default '{}'::jsonb;";
 const SVC_ACTS={cashbook:'ad',bankbook:'aed',orders:'aed',sret:'aed',collect:'aed',cust:'vaed',staff:'aed',cal:'aed',prod:'vaed',buy:'aed',exp:'aed',assets:'aed',raw:'ad',company:'e',users:'aed'};
 const ACT_KEY={v:'view',a:'add',e:'edit',d:'del'},ACT_LBL={view:'View',add:'Add',edit:'Edit',del:'Delete'};
@@ -1371,6 +1371,7 @@ const actsOf=k=>(SVC_ACTS[k]||'').split('').map(c=>ACT_KEY[c]);
 const svActs=k=>{const a=svMap(ME).acts;return a&&a[k]||{}};
 const canDo=(k,a)=>svOn(k)&&svActs(k)[a]!==false;
 const uCan=(u,k,a)=>svMap(u)[k]!==false&&((svMap(u).acts||{})[k]||{})[a]!==false;
+const canNeg=()=>svOn('nobal');
 const deny=what=>alert('You do not have permission to '+what+'. Ask the owner to switch it on in Settings.');
 let SVU='';
 const goSet=p=>{SVU=p;go('settings')};
@@ -1694,6 +1695,7 @@ const cashBank=()=>{const cash=sum(moneyBook('cash').map(x=>x.in-x.out)),list=ba
 let bbf='',bbt='',bbook='cash';
 const bookBal=w=>{const r=moneyBook(w);return r.length?r[r.length-1].bal:0};
 function checkFunds(w,amt,old){
+ if(canNeg())return true;
  const avail=bookBal(w)+(old||0);
  if(amt>avail+0.005){alert('Not enough '+(w=='cash'?'cash':srcName(w))+' balance. Available '+fm(Math.round(avail*100)/100)+', needed '+fm(Math.round(amt*100)/100)+'. Add money first (collection or deposit) and try again.');return false}
  return true}
@@ -1730,6 +1732,7 @@ function bookCard(which){
  return `<div class="card"><h3>${title}${bbf||bbt?' · '+rlab(bbf,bbt):' · as on '+today()}</h3>${dr(bbf,bbt,'bbf','bbt',clr('bbf','bbt'))}${bookTable(w,bbook)}<div class="m" style="margin-top:8px">In: settled customer collections (UPI, card and bank collections go to the first bank account). Out: purchases, expenses and asset purchases paid from ${bbook=='cash'?'cash':'this account'}. Deposits move money from cash to a bank account. Executive settlements are not counted again.</div><button class="btn" onclick="bookPrint('${bbook}')">🖨 Print book</button></div>`}
 function bookDel(rid){
  const m=/^(cp|pu|ex|as|dp)(\d+)$/.exec(String(rid));if(!m)return;
+ if(!canNeg()&&['cash',...bankKeys()].some(k=>{const now=sum(moneyBook(k).map(r=>r.in-r.out)),aft=sum(moneyBook(k).filter(r=>r.id!=rid).map(r=>r.in-r.out));return aft<-0.005&&aft<now-0.005}))return alert('Cannot delete this entry: the cash / bank balance would go below zero.');
  const id=+m[2],k=m[1];
  if(k=='cp')return delColl('cp',id);
  const t={pu:['purchases','pu'],ex:['expenses','ex'],as:['assets','as'],dp:['deposits','dp']}[k];
@@ -1739,6 +1742,7 @@ async function saveDep(){
  const v={date:$('#dpd').value,amount:+$('#dpa').value||0,notes:$('#dpn').value.trim()};
  if($('#dpb'))v.account=$('#dpb').value;
  if(!v.date)return alert('Pick the date');if(!(v.amount>0))return alert('Enter an amount above 0');
+ if(!canNeg()&&!checkFunds('cash',v.amount,0))return;
  if(await ins('deposits',v,'dp')){R();done()}}
 function bookPrint(which){
  bbook=which||bbook;const w=bookRows(bbook);
