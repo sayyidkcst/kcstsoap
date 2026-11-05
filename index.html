@@ -472,7 +472,7 @@ let odf='',odt='',cdf='',cdt='',ldf='',ldt='';
 const T=[['orders','📦','Orders'],['sret','↩️','Sales Returns'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['exp','💸','Expenses'],['assets','🏭','Assets'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['pl','📈','Profit & Loss'],['irep','📊','Item Sales Report'],['bs','🏛️','Balance Sheet'],['cashbook','💵','Cash Book'],['bankbook','🏦','Bank & UPI Book'],['company','🏢','Company'],['history','🕘','History'],['users','🔐','Users'],['settings','⚙️','Settings']];
 const NAVG=[['Sales',['orders','sret','collect','cust','staff','cal','irep']],['Inventory',['prod','buy','exp','assets','raw']],['Books',['ledger','pl','bs','cashbook','bankbook','company']],['System',['history','users','settings']]];
 const H={orders:['Orders','Create and manage orders'],sret:['Sales Returns','Add, edit, cancel or delete returns against invoices'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],exp:['Expenses','Day-to-day business expenses'],assets:['Assets','Machinery, furniture, vehicles and other fixed assets'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],pl:['Profit & Loss Account','Income, costs and net profit'],irep:['Item Sales Report','Product-wise sales, returns and customers'],bs:['Balance Sheet','What the business owns and owes'],cashbook:['Cash Book','Every cash receipt and payment with running balance'],bankbook:['Bank & UPI Book','Every bank, UPI and card receipt and payment with running balance'],company:['Company','Details printed on every invoice'],users:['Users','Logins and their category'],history:['History','Who added, changed or deleted what, and when'],settings:['Settings','Choose which services each user can open']};
-const ACT={orders:['+ New order','newOrder'],sret:['+ New return','srNew'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],cal:['+ Assign route','newRt'],prod:['+ Add product','newProd'],buy:['+ Add purchase','newBuy'],exp:['+ Add expense','newExp'],assets:['+ Add asset','newAs'],users:['+ Add user','newUser'],raw:['+ Add consumption','newCn'],cashbook:['+ Deposit to bank','newDep'],bankbook:['+ Deposit','newDep']};
+const ACT={orders:['+ New order','newOrder'],sret:['+ New return','srNew'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],cal:['+ Assign route','newRt'],prod:['+ Add product','newProd'],buy:['+ Add purchase','newBuy'],exp:['+ Add expense','newExp'],assets:['+ Add asset','newAs'],users:['+ Add user','newUser'],raw:['+ Add consumption','newCn'],cashbook:['+ Deposit','newDep'],bankbook:['+ Deposit','newDep']};
 
 /* LOGIN */
 function peye(){const i=$('#pw');i.type=i.type=='password'?'text':'password';$('#eye').textContent=i.type=='password'?'👁':'🙈'}
@@ -1406,7 +1406,7 @@ alter table bank_accounts add column if not exists branch text;
 alter table customers add column if not exists credit_days int;`;
 const nf=n=>(+n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
 const qkg=n=>(+n||0).toLocaleString('en-IN',{minimumFractionDigits:3,maximumFractionDigits:3});
-const qfmt=(q,u)=>/^kg$/i.test(String(u||'').trim())?qkg(q)+' kg':nf(q)+(u?' '+esc(u):'');
+const qfmt=(q,u)=>/^(kg|ltr)$/i.test(String(u||'').trim())?qkg(q)+' '+(/^kg$/i.test(String(u).trim())?'kg':'Ltr'):nf(q)+(u?' '+esc(u):'');
 const gU=/^(g|gm|gms|grm|gram|grams)$/i;
 function kgRow(r){return gU.test(String(r.unit||'').trim())?{...r,unit:'kg',qty:+((+r.qty||0)/1000).toFixed(6),rate:+((+r.rate||0)*1000).toFixed(4)}:r}
 const tod=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
@@ -1441,35 +1441,38 @@ function bl(){
 const newBuy=()=>{if(!canDo('buy','add'))return deny('add purchases');openM('Add purchase',()=>buyForm(),1,1)};
 const editBuy=id=>{if(!canDo('buy','edit'))return deny('edit purchases');const x=S.pu.find(p=>p.id==id);if(x)openM('Edit purchase',()=>buyForm(x),1,1)};
 function buyForm(x){
- const U=[['kg','kg'],['g','g (gram)'],['Pcs','Pcs'],['Ltr','Ltr']];
+ const U=[['kg','kg'],['g','g (gram)'],['Pcs','Pcs'],['Ltr','Ltr'],['ml','ml (millilitre)']];
  const rawU=x?String(x.unit||'kg').toLowerCase():'',found=U.find(a=>a[0].toLowerCase()==rawU);
  const cur=found?found[0]:(x?String(x.unit||'kg'):'g'),opts=U.some(a=>a[0]==cur)?U:[...U,[cur,cur]];
- const kg=cur=='kg'||cur=='g';
+ const kg=cur=='kg'||cur=='g',lt=cur=='Ltr'||cur=='ml';
  const sup=[...new Set(S.pu.map(p=>p.supplier).filter(v=>v))];
  return `<div class="cg"><div><div class="k rq">Date</div><input type="date" id="bd" value="${x?esc(x.date):tod()}"></div>`
- +`<div><div class="k">Supplier</div><input id="bs" list="bsl" value="${esc(x?x.supplier:'')}" placeholder="Supplier name"><datalist id="bsl">${sup.map(v=>`<option value="${esc(v)}">`).join('')}</datalist></div>`
+ +`<div><div class="k">Supplier</div><input id="bs" list="bsl" value="${esc(x?x.supplier:'')}" placeholder="Supplier name" autocapitalize="words" onkeydown="buCaps=!!(event.getModifierState&&event.getModifierState('CapsLock'))" oninput="buCap(this)"><datalist id="bsl">${sup.map(v=>`<option value="${esc(v)}">`).join('')}</datalist></div>`
  +`<div><div class="k rq">Raw material</div><input id="bm" list="bml" value="${esc(x?x.material:'')}" placeholder="e.g. Coconut oil" oninput="buAuto()"><datalist id="bml">${mats().map(m=>`<option value="${esc(m.name)}">`).join('')}</datalist></div>`
- +`<div><div class="k rq" id="bql">Quantity${cur=='g'?' (grams)':''}</div><input type="number" min="0" step="any" id="bq" value="${x?x.qty:''}" oninput="buAmt()"><div class="m" id="bqh" style="margin:-2px 0 0"></div></div>`
  +`<div><div class="k rq">Unit</div><select id="bu" data-u="${esc(cur)}" onchange="buUnit()">${opts.map(a=>`<option value="${esc(a[0])}" ${a[0]==cur?'selected':''}>${esc(a[1])}</option>`).join('')}</select></div>`
- +`<div><div class="k rq" id="brl">Rate (₹ per ${kg?'kg':'unit'})</div><input type="number" min="0" step="any" id="br" value="${x?x.rate:''}" oninput="buAmt()"></div>`
+ +`<div><div class="k rq" id="bql">Quantity${cur=='g'?' (grams)':cur=='ml'?' (ml)':''}</div><input type="number" min="0" step="any" id="bq" value="${x?x.qty:''}" oninput="buAmt()"><div class="m" id="bqh" style="margin:-2px 0 0"></div></div>`
+ +`<div><div class="k rq" id="brl">Rate (₹ per ${kg?'kg':lt?'Ltr':'unit'})</div><input type="number" min="0" step="any" id="br" value="${x?x.rate:''}" oninput="buAmt()"></div>`
  +`<div><div class="k">Amount</div><input id="ba" readonly tabindex="-1" value="${x?fm(Math.round(x.qty*x.rate)):''}" placeholder="auto"></div>`
  +`<div><div class="k rq">Paid from</div><select id="bpm">${payOpts(x&&x.mode)}</select></div>`
   +`<div><div class="k">Notes</div><input id="bn" value="${esc(x?x.notes:'')}" placeholder="Bill no, remarks (optional)"></div></div>`
  +`<div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveBuy(${x?x.id:'null'})">Submit</button></div>`}
-const buQ=()=>{const q=+$('#bq').value||0;return $('#bu').value=='g'?+(q/1000).toFixed(6):q};
+const buQ=()=>{const q=+$('#bq').value||0,u=$('#bu').value;return u=='g'||u=='ml'?+(q/1000).toFixed(6):q};
+let buCaps=false;
+function buCap(el){if(buCaps)return;const v=el.value,n=v.replace(/(^|[\s.,&/(-])([a-z])/g,(m,p,c)=>p+c.toUpperCase());if(n!==v){const i=el.selectionStart;el.value=n;try{el.setSelectionRange(i,i)}catch(e){}}}
+const buGrp=u=>u=='kg'||u=='g'?'w':u=='Ltr'||u=='ml'?'v':'';
 function buUnit(){
- const sel=$('#bu'),u=sel.value,old=sel.dataset.u||u,kg=u=='kg'||u=='g',q=+$('#bq').value||0;
- if(q&&old!=u&&(old=='kg'||old=='g')&&(u=='kg'||u=='g'))$('#bq').value=+(u=='g'?q*1000:q/1000).toFixed(6);
+ const sel=$('#bu'),u=sel.value,old=sel.dataset.u||u,q=+$('#bq').value||0;
+ if(q&&old!=u&&buGrp(old)&&buGrp(old)==buGrp(u))$('#bq').value=+((u=='g'||u=='ml')?q*1000:q/1000).toFixed(6);
  sel.dataset.u=u;
- $('#bql').textContent='Quantity'+(u=='g'?' (grams)':'');
- $('#brl').textContent='Rate (₹ per '+(kg?'kg':'unit')+')';
+ $('#bql').textContent='Quantity'+(u=='g'?' (grams)':u=='ml'?' (ml)':'');
+ $('#brl').textContent='Rate (₹ per '+(u=='kg'||u=='g'?'kg':u=='Ltr'||u=='ml'?'Ltr':'unit')+')';
  buAmt()}
-function buAmt(){const q=buQ(),a=q*(+$('#br').value||0);$('#ba').value=a>0?fm(Math.round(a)):'';const h=$('#bqh');if(h)h.textContent=$('#bu').value=='g'&&q>0?'= '+qkg(q)+' kg':''}
+function buAmt(){const q=buQ(),a=q*(+$('#br').value||0);$('#ba').value=a>0?fm(Math.round(a)):'';const h=$('#bqh');if(h)h.textContent=q>0&&$('#bu').value=='g'?'= '+qkg(q)+' kg':q>0&&$('#bu').value=='ml'?'= '+qkg(q)+' Ltr':''}
 function buAuto(){const m=mats().find(x=>x.name.toLowerCase()==$('#bm').value.trim().toLowerCase());if(!m||!m.unit)return;const u=String(m.unit).toLowerCase();if(u=='kg')return;const o=[...$('#bu').options].find(o=>o.value.toLowerCase()==u);if(o){$('#bu').value=o.value;buUnit()}}
 async function saveBuy(id){
  if(!canDo('buy',id?'edit':'add'))return deny((id?'edit':'add')+' purchases');
  const u=$('#bu').value;
- const v={date:$('#bd').value,supplier:$('#bs').value.trim(),material:$('#bm').value.trim(),unit:u=='g'?'kg':u,qty:buQ(),rate:+$('#br').value||0,notes:$('#bn').value.trim()};
+ const v={date:$('#bd').value,supplier:$('#bs').value.trim(),material:$('#bm').value.trim(),unit:u=='g'?'kg':u=='ml'?'Ltr':u,qty:buQ(),rate:+$('#br').value||0,notes:$('#bn').value.trim()};
  if(!v.date)return alert('Pick the purchase date');if(!v.material)return alert('Enter the raw material');
  if(!(v.qty>0))return alert('Enter a quantity above 0');if(!(v.rate>=0)||$('#br').value==='')return alert('Enter the rate');
  {const o=id?S.pu.find(p=>p.id==id):null,pm=$('#bpm').value;if(pm!='Cash'||(o&&o.mode))v.mode=pm;const w=pmode(pm);if(!checkFunds(w,v.qty*v.rate,o&&pmode(o.mode)==w?o.qty*o.rate:0))return}
@@ -1847,7 +1850,7 @@ function moneyBook(which){
  S.ex.filter(e=>inB(pmode(e.mode),which)).forEach(e=>r.push({d:e.date,t:'Expense'+(e.category?' — '+e.category:'')+(e.description?' — '+e.description:'')+tag(pmode(e.mode)),in:0,out:+e.amount||0,id:'ex'+e.id}));
  S.as.filter(a=>inB(pmode(a.mode),which)).forEach(a=>r.push({d:a.date,t:'Asset bought — '+a.name+tag(pmode(a.mode)),in:0,out:+a.cost||0,id:'as'+a.id}));
  (S.dp||[]).forEach(p=>{const bk=pmode(p.account||'Bank');
-  if(which!='cash'&&inB(bk,which))r.push({d:p.date,t:'Deposit'+tag(bk)+(p.notes?' · '+p.notes:''),in:+p.amount||0,out:0,id:'dp'+p.id,dp:p.id})});
+  if(inB(bk,which))r.push({d:p.date,t:'Deposit'+tag(bk)+(p.notes?' · '+p.notes:''),in:+p.amount||0,out:0,id:'dp'+p.id,dp:p.id})});
  r.sort((a,b)=>dnum(a.d)-dnum(b.d)||String(a.id).localeCompare(String(b.id)));
  let bal=0;r.forEach(x=>{bal+=x.in-x.out;x.bal=bal});return r}
 const cashBank=()=>{const cash=sum(moneyBook('cash').map(x=>x.in-x.out)),list=bankKeys().map(k=>({key:k,name:srcName(k),bal:sum(moneyBook(k).map(x=>x.in-x.out))})),bank=sum(list.map(x=>x.bal));return {cash,bank,list,total:cash+bank}};
@@ -1888,7 +1891,7 @@ function bookTable(w,which){
 const bookTitle=w=>w=='cash'?'Cash book':w=='all'?'Bank & UPI book'+(BA().length>1?' (all accounts)':''):'Bank book — '+srcName(w);
 function bookCard(which){
  bbook=which;const w=bookRows(bbook),title=bookTitle(bbook);
- return `<div class="card"><h3>${title}${bbf||bbt?' · '+rlab(bbf,bbt):' · as on '+today()}</h3>${dr(bbf,bbt,'bbf','bbt',clr('bbf','bbt'))}${bookTable(w,bbook)}<div class="m" style="margin-top:8px">In: settled customer collections (UPI, card and bank collections go to the first bank account). Out: purchases, expenses and asset purchases paid from ${bbook=='cash'?'cash':'this account'}. Deposits are added to the bank account only; the Cash Book is separate. Executive settlements are not counted again.</div><button class="btn" onclick="bookPrint('${bbook}')">🖨 Print book</button></div>`}
+ return `<div class="card"><h3>${title}${bbf||bbt?' · '+rlab(bbf,bbt):' · as on '+today()}</h3>${dr(bbf,bbt,'bbf','bbt',clr('bbf','bbt'))}${bookTable(w,bbook)}<div class="m" style="margin-top:8px">In: settled customer collections (UPI, card and bank collections go to the first bank account). Out: purchases, expenses and asset purchases paid from ${bbook=='cash'?'cash':'this account'}. Deposits are added to the account you choose — Cash goes to the Cash Book, a bank account goes to its Bank book. The two are kept separate. Executive settlements are not counted again.</div><button class="btn" onclick="bookPrint('${bbook}')">🖨 Print book</button></div>`}
 function bookDel(rid){
  const m=/^(cp|pu|ex|as|dp)(\d+)$/.exec(String(rid));if(!m)return;
  if(!canNeg()&&['cash',...bankKeys()].some(k=>{const now=sum(moneyBook(k).map(r=>r.in-r.out)),aft=sum(moneyBook(k).filter(r=>r.id!=rid).map(r=>r.in-r.out));return aft<-0.005&&aft<now-0.005}))return alert('Cannot delete this entry: the cash / bank balance would go below zero.');
@@ -1896,10 +1899,10 @@ function bookDel(rid){
  if(k=='cp')return delColl('cp',id);
  const t={pu:['purchases','pu'],ex:['expenses','ex'],as:['assets','as'],dp:['deposits','dp']}[k];
  return delRow(t[0],id,t[1])}
-const newDep=()=>{if(!canDo('cashbook','add'))return deny('add deposits');openM('Deposit to bank account',()=>`<div class="cg"><div><div class="k rq">Date</div><input type="date" id="dpd" value="${tod()}"></div><div><div class="k rq">Amount (₹)</div><input type="number" min="0" step="any" id="dpa" placeholder="0.00"></div>${BA().length?`<div style="grid-column:span 2"><div class="k rq">Bank account</div><select id="dpb">${BA().map(a=>`<option ${bkey(a)==bsel?'selected':''}>${esc(a.name)}</option>`).join('')}</select></div>`:''}<div style="grid-column:span 4"><div class="k">Note</div><input id="dpn" placeholder="e.g. Deposited at branch (optional)"></div></div><div class="m" style="margin-top:8px">The amount is added to the selected bank account only. The Cash Book is not affected.</div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveDep()">Submit</button></div>`,1,1)};
+const newDep=()=>{if(!canDo('cashbook','add'))return deny('add deposits');const toCash=bbook=='cash';openM('Add deposit',()=>`<div class="cg"><div><div class="k rq">Date</div><input type="date" id="dpd" value="${tod()}"></div><div><div class="k rq">Amount (₹)</div><input type="number" min="0" step="any" id="dpa" placeholder="0.00"></div><div style="grid-column:span 2"><div class="k rq">Deposit to</div><select id="dpb"><option ${toCash?'selected':''}>Cash</option>${(BA().length?BA().map(a=>a.name):['Bank']).map((n,ix)=>`<option ${!toCash&&(BA().length?bkey(BA()[ix])==bsel:true)?'selected':''}>${esc(n)}</option>`).join('')}</select></div><div style="grid-column:span 4"><div class="k">Note</div><input id="dpn" placeholder="e.g. Cash added / deposited at branch (optional)"></div></div><div class="m" style="margin-top:8px">Cash and bank are separate accounts. The amount is added only to the account you choose — Cash shows in the Cash Book, a bank account shows in its Bank book.</div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveDep()">Submit</button></div>`,1,1)};
 async function saveDep(){
  const v={date:$('#dpd').value,amount:+$('#dpa').value||0,notes:$('#dpn').value.trim()};
- if($('#dpb'))v.account=$('#dpb').value;
+ v.account=$('#dpb').value;
  if(!v.date)return alert('Pick the date');if(!(v.amount>0))return alert('Enter an amount above 0');
  if(await ins('deposits',v,'dp')){R();done()}}
 function bookPrint(which){
