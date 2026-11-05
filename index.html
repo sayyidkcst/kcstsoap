@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#12392c"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Ayurgra"><title>Ayurgra – Office</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#12392c"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="AyurGra"><title>AyurGra</title>
 <link rel="preconnect" href="https://yrvpfbsbbpfpkpnhzxyi.supabase.co" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <script async id="sbjs" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -211,7 +211,7 @@ textarea{width:100%;font:inherit;border:1px solid var(--b);border-radius:11px;pa
 @media print{#inv .sheet.tx.a4{max-width:194mm}#inv .sheet.tx.a5{max-width:138mm}}
 
 .tf td{white-space:normal}.tf td:nth-child(3),.tf th:nth-child(3){border-left:2px solid var(--b)}
-/* AYURGRA HERBAL THEME */
+/* AyurGra HERBAL THEME */
 :root{--bg:#eef3ee;--c:#fff;--t:#17261f;--m:#5f7268;--g:#2b7a57;--g2:#12392c;--s:#e3f0e8;--b:#d6e2d9;--r:#b93a2e;--y:#b9770e;--gold:#d99a1c;--side:#12392c;--sh:0 1px 2px #12392c0d,0 6px 18px #12392c10;--rad:14px}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1713;--c:#15231c;--t:#e6f1ea;--m:#92a99b;--g:#4fb37f;--g2:#0f2f24;--s:#1b3328;--b:#25392e;--r:#ff8f82;--y:#f0b44c;--gold:#f0b44c;--side:#0a1a13;--sh:none}}
 :root[data-theme="dark"]{--bg:#0d1713;--c:#15231c;--t:#e6f1ea;--m:#92a99b;--g:#4fb37f;--g2:#0f2f24;--s:#1b3328;--b:#25392e;--r:#ff8f82;--y:#f0b44c;--gold:#f0b44c;--side:#0a1a13;--sh:none}
@@ -242,7 +242,8 @@ th{background:var(--s);color:var(--g2);font-weight:700;font-size:12px;padding:10
 th:first-child{border-radius:9px 0 0 9px}th:last-child{border-radius:0 9px 9px 0}
 td{padding:10px 8px}tbody tr:hover td,table tr:hover td{background:#2b7a570a}
 .tag{border-radius:20px;padding:4px 10px;background:var(--s)}
-.tag.Pending,.Pending.tag{background:#d99a1c26}.tag.Rejected,.tag.Cancelled{background:#b93a2e1c}
+.tag.Pending,.Pending.tag{background:#d99a1c26}.tag.Purchased{background:#2f9e6026}
+.tag.Rejected,.tag.Cancelled{background:#b93a2e1c}
 .av{background:linear-gradient(135deg,var(--s),#f4e3b8);color:var(--g2)}
 .empty{padding:34px 0}
 #md{backdrop-filter:blur(3px);background:#0a1a13bb}.mb{border-radius:18px;border:1px solid var(--b)}
@@ -368,9 +369,13 @@ aside{box-shadow:0 -4px 16px #12392c14}
 .cmo-up input[type=file]{flex:1;min-width:0}
 .co-hrow{display:flex;align-items:center;gap:10px;margin-top:6px}
 .co-hl{width:36px;height:36px;object-fit:contain;border-radius:9px;background:#fff;border:1px solid var(--b);padding:2px;box-sizing:border-box}
+
+/* mobile: icon-only buttons */
+.btn .bi{display:none}
+@media(max-width:819px){.btn .bi{display:inline;font-size:17px;line-height:1}.btn .bl{display:none}.btn[data-mi]{min-width:42px;padding-left:12px;padding-right:12px;text-align:center}td .btn[data-mi]{min-width:34px;padding-left:9px;padding-right:9px}.cft .btn[data-mi]{flex:1}}
 </style></head><body>
 <div id="lg"><div class="lgb" id="lgb">
- <div class="lgtop"></div><div class="lgmark">🌿</div><h2>Ayurgra</h2><p id="lgsub">Office panel · sign in to continue</p>
+ <div class="lgtop"></div><div class="lgmark">🌿</div><h2>AyurGra</h2><p id="lgsub">Office panel · sign in to continue</p>
  <form onsubmit="return doSubmit(event)" autocomplete="on">
   <div class="k">Mobile number</div>
   <label class="fld"><span class="fi">📱</span><input id="ph" inputmode="numeric" maxlength="10" autocomplete="username" placeholder="10-digit mobile number"></label>
@@ -382,7 +387,7 @@ aside{box-shadow:0 -4px 16px #12392c14}
  </form>
  <div class="lgfoot"><span class="dot" id="dot"></span><span id="net">checking cloud connection…</span></div>
 </div></div>
-<div id="shell" hidden><aside><div class="brand"><b>🌿</b><span>Ayurgra<small>Office panel</small></span></div><div id="nav"></div></aside><div class="ct"><div class="hd" id="hd"></div><main id="app"></main></div></div>
+<div id="shell" hidden><aside><div class="brand"><b>🌿</b><span>AyurGra<small>Office panel</small></span></div><div id="nav"></div></aside><div class="ct"><div class="hd" id="hd"></div><main id="app"></main></div></div>
 <div id="md" hidden></div><div id="inv" hidden></div><div id="dlg" hidden></div>
 <script>
 const SUP_URL='https://yrvpfbsbbpfpkpnhzxyi.supabase.co';
@@ -466,7 +471,7 @@ const byName=a=>a.sort((x,y)=>x.name.localeCompare(y.name));
 
 let S={o:[],s:[],cp:[],c:[],st:[],prod:[],pu:[],cn:[],pn:[],rt:[],ex:[],as:[],sr:[],dp:[],ba:[],hi:[]},ME=null,LMODE='in';
 let pfa='',pfb='',RC={y:new Date().getFullYear(),m:new Date().getMonth(),s:'All'},cf='All',sel=new Set(),csel=new Set(),CMS='Settled',PIMG='',DG=0,MS='Confirmed',MISS=[],qb='',qe='',qa='';
-let CO={name:'Ayurgra Herbal Soap',tag:'Ayurvedic & herbal products',addr:'',phone:'',email:'',gst:'',fssai:'',bank:'',branch:'',acno:'',ifsc:'',qr:''};
+let CO={name:'AyurGra Herbal Soap',tag:'Ayurvedic & herbal products',addr:'',phone:'',email:'',gst:'',fssai:'',bank:'',branch:'',acno:'',ifsc:'',qr:''};
 let tab='orders',f='All',q='',qc='',qs='',qk='',lq='',lt='Customer',le='';
 let odf='',odt='',cdf='',cdt='',ldf='',ldt='';
 const T=[['orders','📦','Orders'],['sret','↩️','Sales Returns'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['exp','💸','Expenses'],['assets','🏭','Assets'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['pl','📈','Profit & Loss'],['irep','📊','Item Sales Report'],['bs','🏛️','Balance Sheet'],['cashbook','💵','Cash Book'],['bankbook','🏦','Bank & UPI Book'],['company','🏢','Company'],['history','🕘','History'],['users','🔐','Users'],['settings','⚙️','Settings']];
@@ -570,7 +575,7 @@ function coLogo(inp){
  fr.readAsDataURL(f)}
 function coForm(c){
  LG.v=c&&c.logo||'';
- openM(c?'Edit company':'New company',()=>`<div class="cmo"><div class="cmo-av${LG.v?' has':''}" id="cmoav">${LG.v?`<img src="${esc(LG.v)}" alt="">`:esc(c?(c.name||'?').trim().charAt(0).toUpperCase():'?')}</div><div><b>${c?'Update company details':'Create a new company'}</b><div class="m">${c?'Change the name or logo of this company.':'It starts empty, with its own orders, customers, stock, money and users.'}</div></div></div><div class="k" style="margin-top:16px">Company logo</div><div class="cmo-up"><input type="file" accept="image/*" id="cml" onchange="coLogo(this)"><button class="btn o" type="button" onclick="LG.v='';$('#cml').value='';coPrev()">Remove logo</button></div><div class="k rq" style="margin-top:14px">Company name</div><input id="cmn" value="${esc(c?c.name:'')}" placeholder="e.g. Ayurgra Herbal Soap" maxlength="60" autocomplete="off" oninput="coPrev()"><div class="cft"><button class="btn o" type="button" onclick="closeM()">Cancel</button><button class="btn cs" type="button" onclick="coSave(${c?c.id:0})">${c?'Save changes':'Create company'}</button></div>`,0,1);
+ openM(c?'Edit company':'New company',()=>`<div class="cmo"><div class="cmo-av${LG.v?' has':''}" id="cmoav">${LG.v?`<img src="${esc(LG.v)}" alt="">`:esc(c?(c.name||'?').trim().charAt(0).toUpperCase():'?')}</div><div><b>${c?'Update company details':'Create a new company'}</b><div class="m">${c?'Change the name or logo of this company.':'It starts empty, with its own orders, customers, stock, money and users.'}</div></div></div><div class="k" style="margin-top:16px">Company logo</div><div class="cmo-up"><input type="file" accept="image/*" id="cml" onchange="coLogo(this)"><button class="btn o" type="button" onclick="LG.v='';$('#cml').value='';coPrev()">Remove logo</button></div><div class="k rq" style="margin-top:14px">Company name</div><input id="cmn" value="${esc(c?c.name:'')}" placeholder="e.g. AyurGra Herbal Soap" maxlength="60" autocomplete="off" oninput="coPrev()"><div class="cft"><button class="btn o" type="button" onclick="closeM()">Cancel</button><button class="btn cs" type="button" onclick="coSave(${c?c.id:0})">${c?'Save changes':'Create company'}</button></div>`,0,1);
  setTimeout(()=>{const i=$('#cmn');if(i)i.focus()},60)}
 function coAdd(){if(isStaff())return;coForm(null)}
 function coRen(id){const c=COALL.find(x=>x.id==id);if(!coCan(c))return R();coForm(c)}
@@ -617,7 +622,7 @@ async function ping(){
  if(!db)return;
  const {error}=await db.from('accounts').select('id',{count:'exact',head:true});
  if(error){$('#dot').className='dot no';$('#net').textContent='not connected — '+error.message.slice(0,70)}
- else{$('#dot').className='dot ok';$('#net').textContent='connected to Ayurgra cloud'}
+ else{$('#dot').className='dot ok';$('#net').textContent='connected to AyurGra cloud'}
 }
 function applyData(d){
  S={o:d.o.map(rO),c:byName(d.c.map(rC)),st:byName(d.st.map(rSt)),prod:d.pr.map(rPd),s:d.s.map(rS),cp:d.cp.map(rPay)};
@@ -703,7 +708,7 @@ function R(){
  $('#nav').innerHTML=grp+(loose.length?`<div class="ng">${loose.map(navB).join('')}</div>`:'');
  {const n=$('#nav'),on=n.querySelector('.on');if(on&&n.scrollWidth>n.clientWidth)n.scrollLeft=on.offsetLeft-(n.clientWidth-on.offsetWidth)/2}
  const a=!canDo(tab,'add')?null:ACT[tab];
- $('#hd').innerHTML=`<div><h1>${H[tab][0]}</h1><p>${H[tab][1]}</p>${coSel()}</div>`+(a?`<div><button class="btn" onclick="${a[1]}()">${a[0]}</button>${tab=='prod'?'<button class="btn" style="margin-left:8px" onclick="newPn()">+ Add production</button>':''}${tab=='orders'&&svOn('loadslip')?'<button class="btn o" style="margin-left:8px" onclick="lsOpen()">🚚 Staff loading slip</button>':''}</div>`:'');
+ $('#hd').innerHTML=`<div><h1>${H[tab][0]}</h1><p>${H[tab][1]}</p>${coSel()}</div>`+(a?`<div><button class="btn" onclick="${a[1]}()">${a[0]}</button>${tab=='prod'?'<button class="btn" style="margin-left:8px" onclick="newPn()">+ Add production</button>':''}${tab=='orders'&&svOn('loadslip')&&!isMob()?'<button class="btn o" style="margin-left:8px" onclick="lsOpen()">🚚 Staff loading slip</button>':''}</div>`:'');
  $('#app').innerHTML=accBar()+({orders:Vo,sret:Vsr,collect:Vc,cust:Vu,staff:Vs,cal:Vcal,prod:Vp,buy:Vbuy,exp:Vexp,assets:Vas,users:Vusers,history:Vhist,settings:Vset,raw:Vraw,ledger:Vl,pl:Vpl,irep:Virep,bs:Vbs,cashbook:Vcashbook,bankbook:Vbankbook,company:VcoW})[tab]();
 }
 const kp=(k,v,c)=>`<div class="card"><div class="k">${k}</div><div class="v ${c||''}">${v}</div></div>`;
@@ -1399,10 +1404,12 @@ alter table bank_accounts enable row level security;
 drop policy if exists bank_accounts_open on bank_accounts;
 create policy bank_accounts_open on bank_accounts for all to anon, authenticated using (true) with check (true);
 alter table purchases add column if not exists mode text;
+alter table purchases add column if not exists status text;
 alter table deposits add column if not exists account text;
 alter table bank_accounts add column if not exists account_no text;
 alter table bank_accounts add column if not exists ifsc text;
 alter table bank_accounts add column if not exists branch text;
+alter table bank_accounts add column if not exists logo text;
 alter table customers add column if not exists credit_days int;`;
 const nf=n=>(+n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
 const qkg=n=>(+n||0).toLocaleString('en-IN',{minimumFractionDigits:3,maximumFractionDigits:3});
@@ -1413,9 +1420,11 @@ const tod=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOStrin
 const sqlHint=()=>MISS.length?`<div class="card"><b>One-time setup</b><div class="m">Missing tables: ${MISS.join(', ')}. Run this once in Supabase &gt; SQL Editor (give them the same access policy as your other tables), then tap Refresh.</div><pre class="sqlb">${esc(SQLN)}</pre></div>`:'';
 const sold=n=>sum(live().map(o=>sum(o.items.filter(i=>i.p==n).map(i=>i.q-i.r))));
 const made=n=>sum(S.pn.filter(x=>x.product==n).map(x=>+x.qty));
+const PST=['Pending','Purchased','Cancelled'],puSt=p=>PST.includes(p.status)?p.status:'Purchased',puOn=p=>puSt(p)=='Purchased';
+let qbs='';
 function mats(){
  const m={},g=(n,u)=>m[n.toLowerCase()]||(m[n.toLowerCase()]={name:n,unit:u||'',pq:0,pc:0,cq:0});
- [...S.pu].reverse().forEach(p=>{const x=g(p.material,p.unit);x.name=p.material;if(p.unit)x.unit=p.unit;x.pq+=+p.qty;x.pc+=p.qty*p.rate});
+ [...S.pu].reverse().forEach(p=>{const x=g(p.material,p.unit);x.name=p.material;if(p.unit)x.unit=p.unit;if(puOn(p)){x.pq+=+p.qty;x.pc+=p.qty*p.rate}});
  S.cn.forEach(c=>{g(c.material,c.unit).cq+=+c.qty});
  return Object.values(m).sort((a,b)=>a.name.localeCompare(b.name))}
 async function ins(t,row,key){
@@ -1434,10 +1443,10 @@ const dbtn=(t,id,k)=>{const s=ROW_SVC[t]||'';return s&&!canDo(s,'del')?'<td></td
 const empty=(n,t)=>`<tr><td colspan="${n}" class="empty">${t}</td></tr>`;
 /* purchase */
 function Vbuy(){
- return sqlHint()+`<div class="kp">${kp('Purchases',S.pu.length)}${kp('Total spent',fm(Math.round(sum(S.pu.map(p=>p.qty*p.rate)))))}${kp('Suppliers',new Set(S.pu.map(p=>p.supplier).filter(x=>x)).size)}${kp('Raw materials',mats().length)}</div><input placeholder="🔍 Search supplier, material or date" value="${esc(qb)}" oninput="qb=this.value;$('#bl').innerHTML=bl()"><div class="card"><button class="btn o" style="margin-bottom:8px" onclick="buyPrint()">🖨 Print list</button><div class="tw" id="bl">${bl()}</div></div>`}
+ return sqlHint()+`<div class="kp">${kp('Total spent (Purchased)',fm(Math.round(sum(S.pu.filter(puOn).map(p=>p.qty*p.rate)))))}${kp('Pending (budget)',fm(Math.round(sum(S.pu.filter(p=>puSt(p)=='Pending').map(p=>p.qty*p.rate)))))}${kp('Cancelled',S.pu.filter(p=>puSt(p)=='Cancelled').length)}${kp('Purchased bills',S.pu.filter(puOn).length)}${kp('Suppliers',new Set(S.pu.map(p=>p.supplier).filter(x=>x)).size)}${kp('Raw materials',mats().length)}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><input style="flex:1;min-width:180px" placeholder="🔍 Search supplier, material or date" value="${esc(qb)}" oninput="qb=this.value;$('#bl').innerHTML=bl()"><select style="width:auto" onchange="qbs=this.value;$('#bl').innerHTML=bl()"><option value="">All status</option>${PST.map(t=>`<option ${qbs==t?'selected':''}>${t}</option>`).join('')}</select></div><div class="card"><button class="btn o" style="margin-bottom:8px" onclick="buyPrint()">🖨 Print list</button><div class="tw" id="bl">${bl()}</div></div>`}
 function bl(){
- const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date));
- return `<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th>Paid from</th><th></th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td>${esc(p.mode||'Cash')}</td><td><button class="btn o" onclick="vchPrint('b',${p.id})">Print</button>${canDo('buy','edit')?`<button class="btn o" onclick="editBuy(${p.id})">Edit</button>`:''}${dbtn('purchases',p.id,'pu')}</td></tr>`).join('')||empty(8,'No purchases yet')}</table>`}
+ const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date)&&(!qbs||puSt(p)==qbs));
+ return `<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th>Paid from</th><th>Status</th><th></th></tr>${r.map(p=>`<tr${puSt(p)=='Cancelled'?' style="opacity:.6"':''}><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td>${esc(p.mode||'Cash')}</td><td><span class="tag ${puSt(p)}">${puSt(p)}</span></td><td><button class="btn o" onclick="vchPrint('b',${p.id})">Print</button>${canDo('buy','edit')?`<button class="btn o" onclick="editBuy(${p.id})">Edit</button>`:''}${dbtn('purchases',p.id,'pu')}</td></tr>`).join('')||empty(9,'No purchases yet')}</table>`}
 const newBuy=()=>{if(!canDo('buy','add'))return deny('add purchases');openM('Add purchase',()=>buyForm(),1,1)};
 const editBuy=id=>{if(!canDo('buy','edit'))return deny('edit purchases');const x=S.pu.find(p=>p.id==id);if(x)openM('Edit purchase',()=>buyForm(x),1,1)};
 function buyForm(x){
@@ -1454,7 +1463,8 @@ function buyForm(x){
  +`<div><div class="k rq" id="brl">Rate (₹ per ${kg?'kg':lt?'Ltr':'unit'})</div><input type="number" min="0" step="any" id="br" value="${x?x.rate:''}" oninput="buAmt()"></div>`
  +`<div><div class="k">Amount</div><input id="ba" readonly tabindex="-1" value="${x?fm(Math.round(x.qty*x.rate)):''}" placeholder="auto"></div>`
  +`<div><div class="k rq">Paid from</div><select id="bpm">${payOpts(x&&x.mode)}</select></div>`
-  +`<div><div class="k">Notes</div><input id="bn" value="${esc(x?x.notes:'')}" placeholder="Bill no, remarks (optional)"></div></div>`
+  +`<div><div class="k">Notes</div><input id="bn" value="${esc(x?x.notes:'')}" placeholder="Bill no, remarks (optional)"></div>`
+ +`<div><div class="k rq">Status</div><select id="bst">${PST.map(t=>`<option ${(x?puSt(x):'Purchased')==t?'selected':''}>${t}</option>`).join('')}</select><div class="m" style="margin:2px 0 0">Only <b>Purchased</b> counts in stock, spent and cash/bank. Pending is budget only.</div></div></div>`
  +`<div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveBuy(${x?x.id:'null'})">Submit</button></div>`}
 const buQ=()=>{const q=+$('#bq').value||0,u=$('#bu').value;return u=='g'||u=='ml'?+(q/1000).toFixed(6):q};
 let buCaps=false;
@@ -1473,9 +1483,10 @@ async function saveBuy(id){
  if(!canDo('buy',id?'edit':'add'))return deny((id?'edit':'add')+' purchases');
  const u=$('#bu').value;
  const v={date:$('#bd').value,supplier:$('#bs').value.trim(),material:$('#bm').value.trim(),unit:u=='g'?'kg':u=='ml'?'Ltr':u,qty:buQ(),rate:+$('#br').value||0,notes:$('#bn').value.trim()};
+ const st=$('#bst').value;
  if(!v.date)return alert('Pick the purchase date');if(!v.material)return alert('Enter the raw material');
  if(!(v.qty>0))return alert('Enter a quantity above 0');if(!(v.rate>=0)||$('#br').value==='')return alert('Enter the rate');
- {const o=id?S.pu.find(p=>p.id==id):null,pm=$('#bpm').value;if(pm!='Cash'||(o&&o.mode))v.mode=pm;const w=pmode(pm);if(!checkFunds(w,v.qty*v.rate,o&&pmode(o.mode)==w?o.qty*o.rate:0))return}
+ {const o=id?S.pu.find(p=>p.id==id):null,pm=$('#bpm').value;if(pm!='Cash'||(o&&o.mode))v.mode=pm;if(st!='Purchased'||(o&&o.status))v.status=st;const w=pmode(pm);if(st=='Purchased'&&!checkFunds(w,v.qty*v.rate,o&&puOn(o)&&pmode(o.mode)==w?o.qty*o.rate:0))return}
  if(id){const {error}=await db.from('purchases').update(v).eq('id',id);if(error)return fail(error);
   Object.assign(S.pu.find(p=>p.id==id),v);R();done('Purchase updated — '+v.material)}
  else if(await ins('purchases',v,'pu')){R();done('Purchase saved — '+v.material)}}
@@ -1806,14 +1817,14 @@ async function saveCo(){
 /* PROFIT & LOSS + BALANCE SHEET */
 function rawVal(asOf){
  const m={};
- S.pu.forEach(p=>{if(dnum(p.date)<=asOf){const x=m[p.material.toLowerCase()]||(m[p.material.toLowerCase()]={q:0,c:0,u:0});x.q+=+p.qty;x.c+=p.qty*p.rate}});
+ S.pu.forEach(p=>{if(puOn(p)&&dnum(p.date)<=asOf){const x=m[p.material.toLowerCase()]||(m[p.material.toLowerCase()]={q:0,c:0,u:0});x.q+=+p.qty;x.c+=p.qty*p.rate}});
  S.cn.forEach(c=>{if(dnum(c.date)<=asOf){const x=m[c.material.toLowerCase()];if(x)x.u+=+c.qty}});
  return sum(Object.values(m).map(x=>x.q?Math.max(0,x.q-x.u)*(x.c/x.q):0))}
 function plData(a,b){
  const A=dnum(a),B=dnum(b),inR=d=>inRange(d,A,B),L=led().filter(o=>inR(o.date));
  const sales=sum(L.map(o=>{const g=gross(o);return g-Math.min(+o.disc||0,g)}));
  const gst=sum(L.map(o=>{const g=gross(o);return tot(o)-(g-Math.min(+o.disc||0,g))}));
- const pur=sum(S.pu.filter(p=>inR(p.date)).map(p=>p.qty*p.rate));
+ const pur=sum(S.pu.filter(p=>puOn(p)&&inR(p.date)).map(p=>p.qty*p.rate));
  const m={};S.ex.filter(e=>inR(e.date)).forEach(e=>{const k=String(e.category||e.description||'Other').trim()||'Other';m[k]=(m[k]||0)+(+e.amount||0)});
  const xc=Object.entries(m).sort((x,y)=>y[1]-x[1]),dis=sum(S.cp.filter(p=>p.st=='Settled'&&inR(p.date)).map(p=>p.dis||0));
  const dep=Math.round(asRange(a,b));if(dep>0)xc.push(['Depreciation',dep]);
@@ -1846,7 +1857,7 @@ const payOpts=cur=>{const o=['Cash',...BA().map(a=>a.name)];if(!BA().length)o.pu
 function moneyBook(which){
  const r=[],tag=k=>which=='all'&&BA().length>1?' — '+srcName(k):'';
  S.cp.filter(p=>p.st=='Settled'&&inB(pmode(p.mode),which)).forEach(p=>r.push({d:p.date,t:'Received from '+p.cust+(p.inv?' · '+p.inv:'')+' ('+(p.mode||'Cash')+')'+tag(pmode(p.mode)),in:+p.amt||0,out:0,id:'cp'+p.id}));
- S.pu.filter(p=>inB(pmode(p.mode),which)).forEach(p=>r.push({d:p.date,t:'Purchase — '+p.material+(p.supplier?' · '+p.supplier:'')+tag(pmode(p.mode)),in:0,out:(+p.qty||0)*(+p.rate||0),id:'pu'+p.id}));
+ S.pu.filter(p=>puOn(p)&&inB(pmode(p.mode),which)).forEach(p=>r.push({d:p.date,t:'Purchase — '+p.material+(p.supplier?' · '+p.supplier:'')+tag(pmode(p.mode)),in:0,out:(+p.qty||0)*(+p.rate||0),id:'pu'+p.id}));
  S.ex.filter(e=>inB(pmode(e.mode),which)).forEach(e=>r.push({d:e.date,t:'Expense'+(e.category?' — '+e.category:'')+(e.description?' — '+e.description:'')+tag(pmode(e.mode)),in:0,out:+e.amount||0,id:'ex'+e.id}));
  S.as.filter(a=>inB(pmode(a.mode),which)).forEach(a=>r.push({d:a.date,t:'Asset bought — '+a.name+tag(pmode(a.mode)),in:0,out:+a.cost||0,id:'as'+a.id}));
  (S.dp||[]).forEach(p=>{const bk=pmode(p.account||'Bank');
@@ -1864,14 +1875,14 @@ function checkFunds(w,amt,old){
 const prDoc=(title,html)=>{$('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">${title} · printed ${today()}</div>${html}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false};
 const vchRows=a=>`<table>${a.map(x=>`<tr><td style="width:38%"><b>${x[0]}</b></td><td>${esc(x[1])}</td></tr>`).join('')}</table><div style="display:flex;justify-content:space-between;margin-top:46px;font-size:12px"><span>Prepared by</span><span>Approved by</span><span>Receiver's signature</span></div>`;
 function buyPrint(){
- const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date));
- prDoc('Purchase register'+(k?' · search “'+esc(qb)+'”':''),`<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td></tr>`).join('')||empty(6,'No purchases')}<tr><td colspan="5"><b>Total</b></td><td class="n"><b>${fm(Math.round(sum(r.map(p=>p.qty*p.rate))))}</b></td></tr></table>`)}
+ const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date)&&(!qbs||puSt(p)==qbs));
+ prDoc('Purchase register'+(k?' · search “'+esc(qb)+'”':''),`<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th>Status</th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td>${puSt(p)}</td></tr>`).join('')||empty(7,'No purchases')}<tr><td colspan="5"><b>Total purchased</b></td><td class="n"><b>${fm(Math.round(sum(r.filter(puOn).map(p=>p.qty*p.rate))))}</b></td><td></td></tr></table>`)}
 function expPrint(){
  const k=qe.toLowerCase(),r=S.ex.filter(e=>hit(k,e.category,e.description,e.mode,e.date));
  prDoc('Expense register'+(k?' · search “'+esc(qe)+'”':''),`<table><tr><th>Date</th><th>Description</th><th>Mode</th><th class="n">Amount</th></tr>${r.map(e=>`<tr><td>${dm(e.date)||esc(e.date)}</td><td>${esc(e.description||'')}</td><td>${esc(e.mode||'')}</td><td class="n">${fm(e.amount)}</td></tr>`).join('')||empty(4,'No expenses')}<tr><td colspan="3"><b>Total</b></td><td class="n"><b>${fm(Math.round(sum(r.map(e=>+e.amount))))}</b></td></tr></table>`)}
 function vchPrint(t,id){
  if(t=='b'){const p=S.pu.find(x=>x.id==id);if(!p)return;
-  prDoc('Purchase voucher',vchRows([['Date',dm(p.date)||p.date],['Supplier',p.supplier||'—'],['Material',p.material],['Quantity',(+p.qty).toLocaleString('en-IN',{maximumFractionDigits:3})+' '+(p.unit||'')],['Rate',fm(p.rate)],['Amount',fm(Math.round(p.qty*p.rate*100)/100)],['Paid from',p.mode||'Cash'],['Notes',p.notes||'']]))}
+  prDoc('Purchase voucher',vchRows([['Date',dm(p.date)||p.date],['Supplier',p.supplier||'—'],['Material',p.material],['Quantity',(+p.qty).toLocaleString('en-IN',{maximumFractionDigits:3})+' '+(p.unit||'')],['Rate',fm(p.rate)],['Amount',fm(Math.round(p.qty*p.rate*100)/100)],['Paid from',p.mode||'Cash'],['Status',puSt(p)],['Notes',p.notes||'']]))}
  else{const e=S.ex.find(x=>x.id==id);if(!e)return;
   prDoc('Expense voucher',vchRows([['Date',dm(e.date)||e.date],['Description',e.description||''],['Payment mode',e.mode||'Cash'],['Amount',fm(e.amount)]]))}}
 function bsData(){
@@ -1915,12 +1926,33 @@ function Vbs(){
 let bsel='all';
 function bookKp(w,which){const cb=cashBank(),v=which=='cash'?cb.cash:which=='all'?cb.bank:((cb.list.find(x=>x.key==which)||{}).bal||0);return `<div class="kp">${kp(which=='cash'?'Cash in hand':which=='all'?'Bank & UPI balance':esc(srcName(which))+' balance',fm(Math.round(v)),v<0?'bad':'ok')}${kp('Total in (shown)',fm(Math.round(sum(w.r.map(x=>x.in)))),'ok')}${kp('Total out (shown)',fm(Math.round(sum(w.r.map(x=>x.out)))),'bad')}${kp('Entries',w.r.length)}</div>`}
 function baDetail(k){const a=BA().find(x=>bkey(x)==k);if(!a)return '';const f=(l,v)=>`<div><div class="k">${l}</div><div><b>${v?esc(v):'—'}</b></div></div>`;return `<div class="kp" style="margin-top:10px">${f('Account number',a.account_no)}${f('IFSC code',a.ifsc)}${f('Branch',a.branch)}</div>`}
-function bankTabs(){const l=BA();return `<div class="card"><div class="chips"><button class="${bsel=='all'?'on':''}" onclick="bsel='all';R()">All accounts</button>${l.map(a=>`<button class="${bsel==bkey(a)?'on':''}" onclick="bsel='${bkey(a)}';R()">${esc(a.name)}</button>`).join('')}</div><div style="margin-top:8px"><button class="btn o" onclick="newBA()">+ Add bank account</button>${bsel!='all'?` <button class="btn o" onclick="editBA('${bsel}')">✎ Edit details</button> <button class="btn d" onclick="delBA('${bsel}')">Delete this account</button>`:''}</div>${bsel!='all'?baDetail(bsel):''}${l.length?'':'<div class="m" style="margin-top:6px">Add your bank accounts to keep a separate book for each. Until then, everything is in one Bank &amp; UPI book.</div>'}</div>`}
+function bankTabs(){
+ const l=BA(),bal=k=>{const r=moneyBook(k);return sum(r.map(x=>+x.in||0))-sum(r.map(x=>+x.out||0))},
+ ln=t=>t?`<span class="m">${esc(t)}</span>`:'',
+ balL=k=>`<span class="m">Balance <b>${fm(Math.round(bal(k)))}</b></span>`,
+ all=`<div class="cm-row${bsel=='all'?' cur':''}"><div class="cm-av">🏦</div><div class="cm-nm"><b>All accounts</b>${bsel=='all'?'<span class="cm-bd">Viewing</span>':'<span class="m">Combined book</span>'}${l.length?balL('all'):''}</div><div class="cm-ac">${bsel=='all'?'':`<button class="btn o" type="button" onclick="bsel='all';R()">Open</button>`}</div></div>`,
+ row=a=>{const k=bkey(a),cur=bsel==k;return `<div class="cm-row${cur?' cur':''}">${a.logo?`<img class="cm-av cm-img" src="${esc(a.logo)}" alt="">`:`<div class="cm-av">${esc((a.name||'?').trim().charAt(0).toUpperCase())}</div>`}<div class="cm-nm"><b>${esc(a.name)}</b>${cur?'<span class="cm-bd">Viewing</span>':''}${ln(a.account_no?'A/c '+a.account_no:'')}${ln(a.ifsc?'IFSC '+a.ifsc:'')}${ln(a.branch)}${balL(k)}</div><div class="cm-ac">${cur?'':`<button class="btn o" type="button" onclick="bsel='${k}';R()">Open</button>`}<button class="btn o" type="button" onclick="editBA('${k}')">Edit</button>${cur?`<button class="btn o cm-dn" type="button" onclick="delBA('${k}')">Delete</button>`:''}</div></div>`};
+ return `<div class="card cmp"><div class="cm-hd"><div class="cm-ic">🏦</div><div class="cm-tt"><b>Bank accounts</b><div class="m">${l.length?'Each account keeps its own book. Open one to see its entries.':'Add your bank accounts to keep a separate book for each. Until then, everything is in one Bank &amp; UPI book.'}</div></div><button class="btn" type="button" onclick="newBA()">+ Add bank account</button></div><div class="cm-list">${all}${l.map(row).join('')}<button type="button" class="cm-new" onclick="newBA()"><span>+</span>Add bank account</button></div></div>`}
+const BL={v:''};
+const baPrev=()=>{const e=$('#baav');if(!e)return;const n=(($('#bkn')||{}).value||'').trim();e.className='cmo-av'+(BL.v?' has':'');e.innerHTML=BL.v?`<img src="${esc(BL.v)}" alt="">`:(n?esc(n.charAt(0).toUpperCase()):'🏦')};
+function baLogo(inp){
+ const f=inp.files&&inp.files[0];if(!f)return;
+ if(!/^image\//.test(f.type)){inp.value='';return alert('Please choose an image file')}
+ const fr=new FileReader();
+ fr.onload=()=>{const im=new Image();
+  im.onload=()=>{const z=256,k=Math.min(1,z/Math.max(im.width,im.height)),w=Math.max(1,Math.round(im.width*k)),h=Math.max(1,Math.round(im.height*k)),cv=document.createElement('canvas');
+   cv.width=w;cv.height=h;cv.getContext('2d').drawImage(im,0,0,w,h);
+   let d=cv.toDataURL('image/png');
+   if(d.length>260000){const c2=document.createElement('canvas');c2.width=w;c2.height=h;const x=c2.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);d=c2.toDataURL('image/jpeg',0.85)}
+   BL.v=d;baPrev()};
+  im.onerror=()=>alert('Could not read that image');im.src=fr.result};
+ fr.readAsDataURL(f)}
 const newBA=()=>baForm(null);
 const editBA=k=>{const a=BA().find(x=>bkey(x)==k);if(a)baForm(a)};
 function baForm(a){
  if(!canDo('bankbook',a?'edit':'add'))return deny((a?'edit':'add')+' bank accounts');
- openM(a?'Edit bank account':'Add bank account',()=>`<div class="cg"><div style="grid-column:span 4"><div class="k rq">Account name</div><input id="bkn" value="${esc(a?a.name:'')}" placeholder="e.g. SBI Current Account" maxlength="60"></div><div style="grid-column:span 2"><div class="k">Account number</div><input id="bkno" inputmode="numeric" value="${esc(a?a.account_no||'':'')}" placeholder="Account number" maxlength="25"></div><div style="grid-column:span 2"><div class="k">IFSC code</div><input id="bkif" value="${esc(a?a.ifsc||'':'')}" placeholder="e.g. SBIN0001234" maxlength="11" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Branch</div><input id="bkbr" value="${esc(a?a.branch||'':'')}" placeholder="Branch name"></div></div>${a?'<div class="m" style="margin-top:8px">If you change the name, all earlier entries of this account are renamed too.</div>':''}<div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveBA(${a?a.id:'null'})">Submit</button></div>`,0,1)}
+ BL.v=a&&a.logo||'';
+ openM(a?'Edit bank account':'Add bank account',()=>`<div class="cg"><div style="grid-column:span 4"><div class="cmo" style="padding:10px"><div class="cmo-av${BL.v?' has':''}" id="baav">${BL.v?`<img src="${esc(BL.v)}" alt="">`:(a&&a.name?esc(a.name.trim().charAt(0).toUpperCase()):'🏦')}</div><div style="flex:1;min-width:0"><div class="k">Bank logo</div><div class="cmo-up"><input type="file" accept="image/*" id="bkl" onchange="baLogo(this)"><button class="btn o" type="button" onclick="BL.v='';$('#bkl').value='';baPrev()">Remove logo</button></div></div></div></div><div style="grid-column:span 4"><div class="k rq">Account name</div><input id="bkn" value="${esc(a?a.name:'')}" placeholder="e.g. SBI Current Account" maxlength="60" oninput="baPrev()"></div><div style="grid-column:span 2"><div class="k">Account number</div><input id="bkno" inputmode="numeric" value="${esc(a?a.account_no||'':'')}" placeholder="Account number" maxlength="25"></div><div style="grid-column:span 2"><div class="k">IFSC code</div><input id="bkif" value="${esc(a?a.ifsc||'':'')}" placeholder="e.g. SBIN0001234" maxlength="11" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Branch</div><input id="bkbr" value="${esc(a?a.branch||'':'')}" placeholder="Branch name"></div></div>${a?'<div class="m" style="margin-top:8px">If you change the name, all earlier entries of this account are renamed too.</div>':''}<div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveBA(${a?a.id:'null'})">Submit</button></div>`,0,1)}
 async function saveBA(id){
  const n=$('#bkn').value.trim(),no=$('#bkno').value.trim(),ifsc=$('#bkif').value.trim().toUpperCase(),br=$('#bkbr').value.trim();
  if(!n)return alert('Enter the account name');
@@ -1928,7 +1960,7 @@ async function saveBA(id){
  if(BA().some(a=>a.id!=id&&String(a.name).trim().toLowerCase()==n.toLowerCase()))return alert('This account already exists');
  if(ifsc&&!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc))return alert('IFSC code should be 11 characters, like SBIN0001234');
  if(id){
-  const a=S.ba.find(x=>x.id==id),old=a.name,row={name:n,account_no:no,ifsc,branch:br};
+  const a=S.ba.find(x=>x.id==id),old=a.name,row={name:n,account_no:no,ifsc,branch:br};if(BL.v||a.logo)row.logo=BL.v||null;
   const {error}=await db.from('bank_accounts').update(row).eq('id',id);if(error)return fail(error);
   Object.assign(a,row);
   if(old!=n){
@@ -1939,7 +1971,7 @@ async function saveBA(id){
     arr.forEach(x=>{if(is(x[col]))x[col]=n})}}
   R();done()}
  else{
-  const row={name:n};if(no)row.account_no=no;if(ifsc)row.ifsc=ifsc;if(br)row.branch=br;
+  const row={name:n};if(no)row.account_no=no;if(ifsc)row.ifsc=ifsc;if(br)row.branch=br;if(BL.v)row.logo=BL.v;
   const d=await ins('bank_accounts',row,'ba');
   if(d){bsel=bkey(d);R();done()}}}
 const bankInfo=k=>{const a=BA().find(x=>bkey(x)==k);return a?[a.account_no?'A/c '+a.account_no:'',a.ifsc?'IFSC '+a.ifsc:'',a.branch?'Branch '+a.branch:''].filter(Boolean).join(' · '):''};
@@ -1990,6 +2022,7 @@ function lsPick(){const r=lsRng(),v=$('#lsst').value,g=stGroups(r.a,r.b);return 
 function lsOpts(){const r=lsRng(),g=stGroups(r.a,r.b);return `<option value="*">All staff — one page each (${g.reduce((n,x)=>n+x.list.length,0)} invoices)</option>`+g.map(x=>`<option value="${esc(x.by)}">${esc(x.by)} — ${x.list.length} invoice${x.list.length>1?'s':''} · ${fm(sum(x.list.map(tot)))}</option>`).join('')}
 function lsDates(){const sel=$('#lsst'),prev=sel.value;sel.innerHTML=lsOpts();if([...sel.options].some(o=>o.value==prev))sel.value=prev;lsInfo()}
 function lsOpen(){
+ if(isMob())return;
  if(!svOn('loadslip'))return alert('The loading slip service is disabled in Settings');
  const g=stGroups();if(!g.length)return alert('There are no Confirmed invoices to load right now');
  openM('Staff loading slip',()=>`<div class="m" style="margin-bottom:8px">Uses every <b>Confirmed</b> invoice in the dates below, grouped by staff. Leave the dates blank to include all. No need to tick anything.</div><div class="fl"><div><div class="k">Date from</div><input type="date" id="lsdf" onchange="lsDates()"></div><div><div class="k">Date to</div><input type="date" id="lsdt" onchange="lsDates()"></div></div><div class="k rq">Staff</div><select id="lsst" onchange="lsInfo()">${lsOpts()}</select><div class="m" id="lsinfo"></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn o" type="button" onclick="lsInv()">🖨 Print invoices</button><button class="btn cs" type="button" onclick="lsPrint()">🚚 Loading slip</button></div>`,0,1);lsInfo()}
@@ -2105,7 +2138,7 @@ async function pwaInstall(){if(!PWA)return;PWA.prompt();try{await PWA.userChoice
  const mk=z=>{const c=document.createElement('canvas');c.width=c.height=z;const x=c.getContext('2d');x.fillStyle='#12392c';x.fillRect(0,0,z,z);x.font=Math.round(z*.56)+'px serif';x.textAlign='center';x.textBaseline='middle';x.fillText('🌿',z/2,z*.54);return c.toDataURL('image/png')};
  const add=(rel,href)=>{const l=document.createElement('link');l.rel=rel;l.href=href;document.head.appendChild(l)};
  const a=mk(180),b=mk(192),c=mk(512);add('apple-touch-icon',a);add('icon',b);
- const m={name:'Ayurgra Office',short_name:'Ayurgra',display:'standalone',orientation:'portrait',background_color:'#12392c',theme_color:'#12392c',start_url:location.href.split('#')[0],icons:[{src:b,sizes:'192x192',type:'image/png',purpose:'any maskable'},{src:c,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+ const m={name:'AyurGra Office',short_name:'AyurGra',display:'standalone',orientation:'portrait',background_color:'#12392c',theme_color:'#12392c',start_url:location.href.split('#')[0],icons:[{src:b,sizes:'192x192',type:'image/png',purpose:'any maskable'},{src:c,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
  add('manifest',URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'})))}catch(e){}})();
 /* BOOT */
 (async function boot(){
@@ -2118,4 +2151,30 @@ async function pwaInstall(){if(!PWA)return;PWA.prompt();try{await PWA.userChoice
  if(!db){$('#lgo').disabled=true;$('#dot').className='dot no';return lerr('supabase-js did not load — this page needs an internet connection.')}
  ping();
 })();
+</script><script>
+/* MOBILE ICON-ONLY BUTTONS: on desktop the labels stay; on mobile (<820px) only the icon shows, label kept as tooltip */
+(function(){
+ const MAP=[[/^back/,'←'],[/^(\+|add )/,'＋'],[/close|cancel/,'✕'],[/submit|^save|^ok$/,'✔'],[/^delete|^remove/,'🗑'],[/^edit/,'✏️'],[/print/,'🖨'],[/ledger/,'📒'],[/^(view|open|access)/,'👁'],[/change status/,'🔄'],[/^settle/,'💰'],[/^import/,'⬆'],[/retry|reload|refresh/,'🔄'],[/^logout/,'🚪'],[/^invoice/,'🧾'],[/^enable all/,'✅'],[/^disable all/,'🚫'],[/^clear/,'↺'],[/^show more/,'⋯']];
+ const ASC=/^[\x00-\x7F]/;
+ function one(b){
+  if(b.dataset.mi||b.closest('#lg,#nav,.chips'))return;
+  if([...b.childNodes].some(n=>n.nodeType!=3))return;
+  const t=b.textContent.trim();if(!t)return;
+  b.dataset.mi='1';
+  if(!ASC.test(t)){
+   if(t.length<=2)return;
+   const sp=t.indexOf(' ');if(sp<0)return;
+   const sym=t.slice(0,sp),rest=t.slice(sp+1);
+   b.title=b.title||rest;b.setAttribute('aria-label',rest);
+   b.textContent=sym;const l=document.createElement('span');l.className='bl';l.textContent=' '+rest;b.appendChild(l);return}
+  const lt=t.toLowerCase(),m=MAP.find(r=>r[0].test(lt));if(!m)return;
+  b.title=b.title||t;b.setAttribute('aria-label',t);
+  b.textContent='';
+  const i=document.createElement('span');i.className='bi';i.textContent=m[1];
+  const l=document.createElement('span');l.className='bl';l.textContent=t;
+  b.append(i,l)}
+ let q=0;
+ const run=()=>{q=0;document.querySelectorAll('button.btn:not([data-mi])').forEach(one)};
+ new MutationObserver(()=>{if(!q)q=requestAnimationFrame(run)}).observe(document.documentElement,{childList:true,subtree:true});
+ run()})();
 </script></body></html>
