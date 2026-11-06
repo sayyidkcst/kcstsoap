@@ -462,9 +462,10 @@ const rng=(a,b)=>{const A=dnum(a),B=dnum(b);return d=>inRange(d,A,B)};
 const rlab=(a,b)=>a||b?` between ${dm(a)||'the start'} and ${dm(b)||'today'}`:'';
 const err=e=>e&&e.message?e.message:'unexpected error';
 const myCat=()=>(ME&&ME.cat)||'Owner';
+const isCust=()=>myCat()=='Customer',CUST_SVC=['orders','ledger'];
 const isStaff=()=>myCat()=='Staff',canSettle=()=>myCat()=='Admin'||myCat()=='Owner',isOwner=()=>myCat()=='Owner';
 const STAFF_TABS=['orders','cust','staff'],STAFF_SVC=[...STAFF_TABS,'loadslip','hlog'];
-const svMap=u=>{const s=u&&u.services;if(s&&typeof s==='object'&&Object.keys(s).length)return s;const stf=(u?(u.category||u.cat):myCat())=='Staff',m={};SVC.forEach(x=>m[x[0]]=x[0]=='nobal'?false:stf?STAFF_SVC.includes(x[0]):true);return m};
+const svMap=u=>{if((u?(u.category||u.cat):myCat())=='Customer'){const m={};SVC.forEach(x=>m[x[0]]=CUST_SVC.includes(x[0]));return m}const s=u&&u.services;if(s&&typeof s==='object'&&Object.keys(s).length)return s;const stf=(u?(u.category||u.cat):myCat())=='Staff',m={};SVC.forEach(x=>m[x[0]]=x[0]=='nobal'?false:stf?STAFF_SVC.includes(x[0]):true);return m};
 const svEn=(m,k)=>k=='nobal'?m[k]===true:m[k]!==false;
 const svOn=k=>svEn(svMap(ME),k);
 const tabOk=t=>T.some(x=>x[0]==t)&&(t=='settings'?isOwner():(t=='cust'||t=='prod'||t=='cal')&&!canDo(t,'view')?false:svOn(t));
@@ -638,6 +639,12 @@ async function ping(){
  if(error){$('#dot').className='dot no';$('#net').textContent='not connected — '+error.message.slice(0,70)}
  else{$('#dot').className='dot ok';$('#net').textContent='connected to Ayurgra cloud'}
 }
+function scopeCust(d){
+ if(!isCust())return d;
+ const me=String(ME.phone||'').replace(/\D/g,'').slice(-10),nm=String(ME.name||'').trim().toLowerCase();
+ const mine=d.c.find(c=>String(c.phone||'').replace(/\D/g,'').slice(-10)==me)||d.c.find(c=>String(c.name||'').trim().toLowerCase()==nm),n=mine?mine.name:'';
+ ME.custName=n;try{sessionStorage.setItem('ay.me',JSON.stringify(ME))}catch(e){}
+ return {...d,o:d.o.filter(o=>o.shop==n),c:mine?[mine]:[],st:[],s:[],cp:d.cp.filter(p=>p.cust==n),sr:(d.sr||[]).filter(r=>r.shop==n),pu:[],cn:[],pn:[],rt:[],ex:[],as:[],dp:[],ba:[],hi:[]}}
 function applyData(d){
  S={o:d.o.map(rO),c:byName(d.c.map(rC)),st:byName(d.st.map(rSt)),prod:d.pr.map(rPd),s:d.s.map(rS),cp:d.cp.map(rPay)};
  try{const l=JSON.parse(localStorage.getItem('ay.co')||'null');if(l)Object.assign(CO,l)}catch(e){}
@@ -665,7 +672,7 @@ async function sync(){
   if(ac){ME.name=ac.name||ME.name;ME.cat=ac.category||ME.cat;ME.img=ac.image||'';ME.company_id=ac.company_id||null;ME.services=ac.services&&typeof ac.services==='object'?ac.services:{};try{sessionStorage.setItem('ay.me',JSON.stringify(ME))}catch(e){}}
   const accChanged=JSON.stringify({c:ME.cat,s:ME.services||{}})!==accBefore;
   const ex2=[pu,cn,pn,rt,ex,as,sr,dp,ba,hi,accs];
-  const d={o:o.data,c:c.data,st:st.data,pr:pr.data,s:s.data,cp:cp.data,co:co&&co.data||null,miss:ex2.filter(x=>x.data===null).map(x=>x.t),pu:pu.data||[],cn:cn.data||[],pn:pn.data||[],rt:rt.data||[],ex:ex.data||[],as:as.data||[],sr:sr.data||[],dp:dp.data||[],ba:ba.data||[],hi:hi.data||[]};
+  const d=scopeCust({o:o.data,c:c.data,st:st.data,pr:pr.data,s:s.data,cp:cp.data,co:co&&co.data||null,miss:ex2.filter(x=>x.data===null).map(x=>x.t),pu:pu.data||[],cn:cn.data||[],pn:pn.data||[],rt:rt.data||[],ex:ex.data||[],as:as.data||[],sr:sr.data||[],dp:dp.data||[],ba:ba.data||[],hi:hi.data||[]});
   const raw1=JSON.stringify({me:ME&&ME.phone,d});
   if(hit&&raw1===raw0&&!accChanged){if(tab=='history')hiLazy();return}
   applyData(d);
@@ -701,11 +708,11 @@ function dlg(o){return new Promise(res=>{
  d.onclick=e=>{if(e.target==d)fin(false)};$('#dyes').focus()})}
 const cfm=(msg,ok)=>dlg({t:'ask',title:'Please confirm',msg,ok:ok||'Yes, continue',cancel:'Cancel'});
 window.alert=m=>{dlg({t:'warn',title:'Please check',msg:String(m)})};
-const newOrder=()=>openM('New invoice',form,1);
+const newOrder=()=>openM(isCust()?'New order':'New invoice',form,1);
 const newColl=()=>{if(!canDo('collect','add'))return deny('add collections');if(!canSettle())return alert('Only Admin or Owner can handle settlements');openM('Add Collection',()=>collFields(null,'cp'),1,1);setTimeout(()=>collBal('cp'),0)};
 const newCust=()=>{if(noStaff())return;if(!canDo('cust','add'))return deny('add customers');openM('New customer',custForm,1,1)};
 const newStaff=()=>{if(noStaff())return;if(!canDo('staff','add'))return deny('add staff');openM('Add staff',()=>staffForm())};
-function custForm(){CIMG='';CLOC=null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="cn" placeholder="e.g. Vaidya Herbal Store"></div><div><div class="k">Phone</div><input id="cph" inputmode="numeric" maxlength="15" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="cgst" maxlength="15" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="ca" placeholder="Shop address, city, state"></div><div style="grid-column:span 4"><div class="k">Credit days limit</div><input id="ccd" type="number" min="0" step="1" placeholder="0 = no limit (e.g. 30)"><div class="m">New invoices are stopped once an unpaid invoice is older than this many days.</div></div><div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Leave GST blank for a B2C shop. A valid 15-character GSTIN marks the customer B2B and splits tax as CGST / SGST on the invoice.</div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="addC()">Submit</button></div>`}
+function custForm(){CIMG='';CLOC=null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="cn" placeholder="e.g. Vaidya Herbal Store"></div><div><div class="k">Mobile number (customer login)</div><input id="cph" inputmode="numeric" maxlength="15" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="cgst" maxlength="15" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="ca" placeholder="Shop address, city, state"></div><div style="grid-column:span 4"><div class="k">Credit days limit</div><input id="ccd" type="number" min="0" step="1" placeholder="0 = no limit (e.g. 30)"><div class="m">New invoices are stopped once an unpaid invoice is older than this many days.</div></div><div style="grid-column:span 4" class="cmo"><div style="flex:1;min-width:0"><div class="k">🔑 Customer login</div><div class="m" style="margin:0 0 6px">Login = the <b>Mobile number</b> above + the password below. The customer can then view their ledger and place orders (they arrive as Pending).</div><input type="password" id="cpw" autocomplete="new-password" placeholder="Password (at least 4 characters)"></div></div><div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Leave GST blank for a B2C shop. A valid 15-character GSTIN marks the customer B2B and splits tax as CGST / SGST on the invoice.</div></div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="addC()">Submit</button></div>`}
 let SACC=null;
 function staffForm(x,acc){
  const s=x||{name:'',phone:'',area:'',designation:'',join:''};PH.s=s.image||'';SACC=acc||null;
@@ -735,7 +742,7 @@ const dr=(a,b,ca,cb,cl)=>`<div class="dr"><div><div class="k">Date from</div><in
 const clr=(a,b)=>`${a}='';${b}='';R()`;
 /* ORDERS */
 function Vo(){
- return `<div class="kp">${kp('Orders',S.o.length)}${kp('Sales',fm(sum(live().map(tot))))}${kp('Pending orders',S.o.filter(o=>o.st=='Pending').length,'')}${kp('Awaiting approval',fm(sum(ST().map(epend))),'bad')}</div>`
+ return `<div class="kp">${kp('Orders',S.o.length)}${kp('Sales',fm(sum(live().map(tot))))}${kp('Pending orders',S.o.filter(o=>o.st=='Pending').length,'')}${isCust()?'':kp('Awaiting approval',fm(sum(ST().map(epend))),'bad')}</div>`
  +`<div class="chips">${['All','Pending','Confirmed','Delivered','Cancelled'].map(s=>`<button class="${s==f?'on':''}" onclick="f='${s}';OLIM=40;R()">${s}</button>`).join('')}</div>`
  +dr(odf,odt,'odf','odt',clr('odf','odt'))
  +`<input placeholder="🔍 Search shop, order no, executive" value="${esc(q)}" oninput="q=this.value;OLIM=40;ru()"><div id="sb">${sbar()}</div><div id="ol">${ol()}</div>`}
@@ -771,8 +778,8 @@ function oc(o){
  <div class="act"><span class="tag ${o.st}">${o.st}</span> ${btag(S.c.find(x=>x.name==o.shop))}<br>${canDo('orders','edit')?`<select onchange="stt(${o.id},this.value)">${['Pending','Confirmed','Delivered','Cancelled'].map(s=>`<option ${s==o.st?'selected':''}>${s}</option>`)}</select>`:''}${canDo('orders','edit')?`<button class="btn o" onclick="editO(${o.id})">Edit</button>`:''}<button class="btn o" onclick="inv(${o.id})">Invoice</button>${canDo('sret','add')&&o.st!='Cancelled'?`<button class="btn o" onclick="srNew(${o.id})">${rt?'↩ Return ✓':'↩ Return'}</button>`:''}${canDo('orders','del')?`<button class="btn d" onclick="del(${o.id})">Delete</button>`:''}</div></div></div></div>`}
 function form(e){
  const nxt=e?e.no:'AY-'+String(S.o.reduce((m,o)=>Math.max(m,o.id),0)+1).padStart(4,'0');DG=e?(+e.taxp||0):0;
- return `<div class="ivh"><div><div class="k">Invoice no.</div><div class="ivno">${nxt}</div></div><div class="ivhcol"><div class="k">Invoice date</div><input id="idate" value="${esc(e?e.date:today())}"></div><div class="ivhcol"><div class="k">Status</div><select id="ist" ${isStaff()?'disabled':''}>${(isStaff()?[e?e.st:'Pending']:['Pending','Confirmed','Delivered',...(e?['Cancelled']:[])]).map(x=>`<option ${e&&x==e.st?'selected':''}>${x}</option>`).join('')}</select></div></div>`
- +`<div class="fl"><div><div class="k">Bill to (customer / shop)</div><input id="shop" class="cbi" data-cb="cust" autocomplete="off" onfocus="cbOpen(this,'cust',true)" onclick="if($('#cbx').hidden)cbOpen(this,'cust',true)" onkeydown="cbKey(event)" value="${esc(e?e.shop:'')}" placeholder="Search or pick customer" oninput="oiCust();cbType(this,'cust')"><div class="m" id="custinfo"></div></div><div><div class="k">Order for</div><select id="by">${[...(isStaff()&&!e?[ME.name]:S.st.map(x=>x.name)),...(e&&e.by&&!S.st.some(x=>x.name==e.by)&&!(isStaff()&&!e)?[e.by]:[])].map(n=>`<option ${e&&n==e.by?'selected':''}>${esc(n)}</option>`).join('')}</select></div></div>`
+ return `<div class="ivh"><div><div class="k">Invoice no.</div><div class="ivno">${nxt}</div></div><div class="ivhcol"><div class="k">Invoice date</div><input id="idate" value="${esc(e?e.date:today())}"></div><div class="ivhcol"><div class="k">Status</div><select id="ist" ${isStaff()||isCust()?'disabled':''}>${(isStaff()||isCust()?[e?e.st:'Pending']:['Pending','Confirmed','Delivered',...(e?['Cancelled']:[])]).map(x=>`<option ${e&&x==e.st?'selected':''}>${x}</option>`).join('')}</select></div></div>`
+ +`<div class="fl"><div><div class="k">Bill to (customer / shop)</div><input id="shop" class="cbi" data-cb="cust" ${isCust()?'readonly':''} autocomplete="off" onfocus="cbOpen(this,'cust',true)" onclick="if($('#cbx').hidden)cbOpen(this,'cust',true)" onkeydown="cbKey(event)" value="${esc(e?e.shop:(isCust()?ME.custName||'':''))}" placeholder="Search or pick customer" oninput="oiCust();cbType(this,'cust')"><div class="m" id="custinfo"></div></div><div ${isCust()?'hidden':''}><div class="k">Order for</div><select id="by">${[...(isStaff()&&!e?[ME.name]:S.st.map(x=>x.name)),...(e&&e.by&&!S.st.some(x=>x.name==e.by)&&!(isStaff()&&!e)?[e.by]:[])].map(n=>`<option ${e&&n==e.by?'selected':''}>${esc(n)}</option>`).join('')}</select></div></div>`
  +`<div class="tw"><table class="oit"><thead><tr><th class="c">#</th><th>Item</th><th class="n">Box</th><th class="n">Pcs</th><th class="n">Rate</th><th class="n">GST %</th><th class="n">Amount</th><th class="c"></th></tr></thead><tbody id="oib">${e?e.items.map(i=>oiRow(i)).join(''):oiRow()}</tbody></table></div>`
  +`<button class="btn o" type="button" onclick="oiAdd()">+ Add item</button>`
  +`<div class="m hint">GST % is filled from the product — change it on any line if needed.</div>`
@@ -858,12 +865,12 @@ async function mk(){
  if(!items.length)return alert('Add at least one item with a name and a quantity');
  const need={};items.forEach(i=>{const pr=S.prod.find(x=>x.name.toLowerCase()==i.p.toLowerCase());if(pr)need[pr.name]=(need[pr.name]||0)+i.q});
  const bad=Object.keys(need).map(n=>{const av=made(n)-sold(n);return av<=0?n+': out of stock':need[n]>av?`${n}: only ${nf(av)} in stock, you entered ${nf(need[n])}`:''}).filter(x=>x);
- if(bad.length)return alert('This order cannot be created.\n\n'+bad.join('\n')+'\n\nAdd production in Products & Stock first.');
+  if(bad.length&&!isCust())return alert('This order cannot be created.\n\n'+bad.join('\n')+'\n\nAdd production in Products & Stock first.');
  if(!await creditCheck(shop))return;
  const sub=sum(items.map(i=>i.q*i.pr)),disc=Math.min(+$('#idisc').value||0,sub),taxp=gstAvg(items);
  const {data,error}=await db.from('orders').insert({date,agent:$('#by').value,shop,items,disc,taxp,status:$('#ist').value,due:$('#idue').value.trim(),notes:$('#inote').value.trim()}).select().single();
  if(error)return fail(error);
- S.o.unshift(rO(data));R();done('Invoice '+rO(data).no+' saved for '+data.shop)}
+ S.o.unshift(rO(data));R();done(isCust()?'Order '+rO(data).no+' placed — waiting for approval':'Invoice '+rO(data).no+' saved for '+data.shop)}
 function editO(id){if(!canDo('orders','edit'))return deny('edit orders');const e=S.o.find(x=>x.id==id);if(!e)return;openM('Edit invoice '+e.no,()=>form(e),1);setTimeout(()=>{oiRec();oiCust()},0)}
 async function upO(id){
  if(!canDo('orders','edit'))return deny('edit orders');
@@ -1150,8 +1157,17 @@ async function creditCheck(shop){
 function ucard(c){
  const b=cbal(c.name);
  return `<div class="card"><div class="it"><div class="av">${c.image?`<img src="${esc(c.image)}" alt="">`:esc(c.name[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(c.name)}</b><span class="amt ${b>0?'bad':'ok'}">${fm(b)}</span></div><div class="m">${btag(c)} ${esc(c.phone||'No phone')} · ${esc(c.addr||'No address')}${c.gst?' · GSTIN '+esc(c.gst):''}</div><div class="m">${S.o.filter(o=>o.shop==c.name).length} orders${creditTag(c)}</div>${hasLoc(c)||c.addr?`<button class="btn o" onclick="cMap(${c.id})">📍 Map</button>`:''}${!svOn('ledger')?'':`<button class="btn o" onclick="lt='Customer';le=this.dataset.n;go('ledger')" data-n="${esc(c.name)}">Open ledger</button>${canDo('cust','edit')?`<button class="btn o" onclick="editC(${c.id})">Edit</button>`:''}${canDo('cust','del')?`<button class="btn d" onclick="delC(${c.id})">Delete</button>`:''}`}</div></div></div>`}
-function custEditForm(c){CIMG=c.image||'';CLOC=hasLoc(c)?{lat:+c.lat,lng:+c.lng}:null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="ecn" value="${esc(c.name)}"></div><div><div class="k">Phone</div><input id="ecph" inputmode="numeric" maxlength="15" value="${esc(c.phone||'')}" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="ecg" maxlength="15" value="${esc(c.gst||'')}" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="eca" value="${esc(c.addr||'')}" placeholder="Shop address, city, state"></div><div style="grid-column:span 4"><div class="k">Credit days limit</div><input id="eccd" type="number" min="0" step="1" value="${c.credit||''}" placeholder="0 = no limit (e.g. 30)"><div class="m">New invoices are stopped once an unpaid invoice is older than this many days.</div></div><div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" value="${CLOC?CLOC.lat:''}" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" value="${CLOC?CLOC.lng:''}" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Editing the name also renames it on this customer's invoices and payments.</div></div><div class="cft">${canDo('cust','del')?`<button class="btn d" type="button" style="margin-right:auto" onclick="delC(${c.id})">Delete</button>`:''}<button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="updC(${c.id})">Submit</button></div>`}
-function editC(id){if(noStaff())return;if(!canDo('cust','edit'))return deny('edit customers');const c=S.c.find(x=>x.id==id);if(c)openM('Edit customer',()=>custEditForm(c),1,1)}
+function cLoginBox(acc){
+ return `<div style="grid-column:span 4" class="cmo"><div style="flex:1;min-width:0"><div class="k">🔑 Customer login</div><div class="m" style="margin:0 0 6px">${acc?`<b style="color:#2f9e60">✔ Login active</b> for ${esc(acc.phone)}. The customer signs in with this mobile number and can view their ledger and place orders (they arrive as Pending). Enter a new password to change it.`:'No login yet. Enter a password to let this customer sign in with the <b>Mobile number</b> above, view their ledger and place orders (they arrive as Pending).'}</div><input type="password" id="ecpw" autocomplete="new-password" placeholder="${acc?'New password (leave blank to keep)':'Password (at least 4 characters)'}">${acc?`<button class="btn d" type="button" style="margin-top:8px" onclick="custLoginDel('${esc(acc.phone)}')">Remove login</button>`:''}</div></div>`}
+async function custLoginDel(ph){
+ if(!canDo('users','del'))return deny('remove customer logins');
+ if(!await cfm('Remove this customer login? They will no longer be able to sign in. Their orders and ledger stay.'))return;
+ const r=await db.from('accounts').delete().eq('phone',ph).eq('category','Customer');if(r.error)return fail(r.error);
+ if(US)US=US.filter(u=>!(u.phone==ph&&u.category=='Customer'));closeM();done('Customer login removed')}
+function custEditForm(c,acc){CIMG=c.image||'';CLOC=hasLoc(c)?{lat:+c.lat,lng:+c.lng}:null;return `<div class="cg"><div style="grid-column:span 2"><div class="k rq">Shop / customer name</div><input id="ecn" value="${esc(c.name)}"></div><div><div class="k">Mobile number (customer login)</div><input id="ecph" inputmode="numeric" maxlength="15" value="${esc(c.phone||'')}" placeholder="Mobile number"></div><div><div class="k">GST number</div><input id="ecg" maxlength="15" value="${esc(c.gst||'')}" placeholder="15-character GSTIN" style="text-transform:uppercase"></div><div style="grid-column:span 4"><div class="k">Address</div><input id="eca" value="${esc(c.addr||'')}" placeholder="Shop address, city, state"></div><div style="grid-column:span 4"><div class="k">Credit days limit</div><input id="eccd" type="number" min="0" step="1" value="${c.credit||''}" placeholder="0 = no limit (e.g. 30)"><div class="m">New invoices are stopped once an unpaid invoice is older than this many days.</div></div>${cLoginBox(acc)}<div style="grid-column:span 2"><div class="k">Customer photo</div><div class="pimgw"><div id="cpv">${cprev()}</div><div><input type="file" accept="image/*" id="cimg" onchange="cimgPick(this)"><button class="btn d" type="button" onclick="CIMG='';$('#cpv').innerHTML=cprev();$('#cimg').value=''">Remove image</button></div></div></div><div style="grid-column:span 2"><div class="k">Shop location</div><div class="fl"><div><div class="k">Latitude</div><input id="clat" inputmode="decimal" value="${CLOC?CLOC.lat:''}" placeholder="e.g. 11.2588" oninput="cMapPrev()"></div><div><div class="k">Longitude</div><input id="clng" inputmode="decimal" value="${CLOC?CLOC.lng:''}" placeholder="e.g. 75.7804" oninput="cMapPrev()"></div></div><button class="btn o" type="button" onclick="cGeo()">📍 Use current location</button> <button class="btn o" type="button" onclick="CLOC=null;$('#clat').value='';$('#clng').value='';cMapPrev()">Clear</button><div id="cmap">${cmapPrev()}</div></div><div class="m" style="grid-column:span 4">Editing the name also renames it on this customer's invoices and payments.</div></div><div class="cft">${canDo('cust','del')?`<button class="btn d" type="button" style="margin-right:auto" onclick="delC(${c.id})">Delete</button>`:''}<button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="updC(${c.id})">Submit</button></div>`}
+async function editC(id){if(noStaff())return;if(!canDo('cust','edit'))return deny('edit customers');const c=S.c.find(x=>x.id==id);if(!c)return;
+ const ph=dig10(c.phone);let acc=null;if(ph.length==10){const r=await db.from('accounts').select('id,phone,category').eq('phone',ph).eq('category','Customer').maybeSingle();if(!r.error)acc=r.data}
+ openM('Edit customer',()=>custEditForm(c,acc),1,1)}
 async function updC(id){
  if(!canDo('cust','edit'))return deny('edit customers');
  const c=S.c.find(x=>x.id==id);if(!c)return closeM();
@@ -1161,6 +1177,7 @@ async function updC(id){
  const old=c.name,phone=$('#ecph').value.trim(),addr=$('#eca').value.trim(),g=$('#ecg').value.trim().toUpperCase();
  if(!gstOk(g))return alert('That GST number does not look right. A GSTIN has 15 characters, for example 32ABCDE1234F1Z5.');
  const extra=cLocRow(c),cd=Math.max(0,Math.floor(+$('#eccd').value||0)),cdr=cd!=(c.credit||0)?{credit_days:cd}:{};
+ const cpw=$('#ecpw').value;if(!await custLoginCheck(phone,cpw))return;
  const {error}=await db.from('customers').update({name:n,phone,addr,...(g||c.gst?{gst:g}:{}),...extra,...cdr}).eq('id',id);
  if(error)return gfail(error);
  if(old!=n){
@@ -1170,7 +1187,9 @@ async function updC(id){
   S.cp.forEach(p=>{if(p.cust==old)p.cust=n});
   if(lt=='Customer'&&le==old)le=n;
  }
- c.name=n;c.phone=phone;c.addr=addr;c.gst=g;c.credit=cd;Object.assign(c,extra);byName(S.c);R();done('Customer updated')}
+ if(cpw)await custLoginSave(n,phone,cpw);
+ else if(old!=n&&dig10(phone).length==10)db.from('accounts').update({name:n}).eq('phone',dig10(phone)).eq('category','Customer').then(()=>{},()=>{});
+ c.name=n;c.phone=phone;c.addr=addr;c.gst=g;c.credit=cd;Object.assign(c,extra);byName(S.c);R();done(cpw?'Customer updated — login saved':'Customer updated')}
 async function delC(id){if(noStaff())return;if(!canDo('cust','del'))return deny('delete customers');
  const c=S.c.find(x=>x.id==id);if(!c)return;
  const n=S.o.filter(o=>o.shop==c.name).length,p=S.cp.filter(x=>x.cust==c.name).length;
@@ -1178,15 +1197,34 @@ async function delC(id){if(noStaff())return;if(!canDo('cust','del'))return deny(
  const {error}=await db.from('customers').delete().eq('id',id);
  if(error)return fail(error);
  S.c=S.c.filter(x=>x.id!=id);if(lt=='Customer'&&le==c.name)le='';R();done(c.name+' deleted')}
+async function custLoginCheck(phoneRaw,pw){
+ if(!pw)return true;
+ if(pw.length<4){alert('Use at least 4 characters for the customer password');return false}
+ const raw=String(phoneRaw||'').replace(/\D/g,'');if(raw.length!=10){alert('Enter the full 10-digit mobile number to create the customer login');return false}
+ if(!canDo('users','add')){deny('create customer logins');return false}
+ return true}
+async function custLoginSave(name,phoneRaw,pw){
+ if(!pw)return;
+ const ph=String(phoneRaw||'').replace(/\D/g,'');
+ const ex=await db.from('accounts').select('id,category').eq('phone',ph).maybeSingle();
+ if(ex.data){
+  if((ex.data.category||'Owner')!='Customer')return alert('Saved, but that mobile number already belongs to a staff or user login, so no customer login was created.');
+  const r=await db.from('accounts').update({name,...await pwRow(ph,pw)}).eq('id',ex.data.id);if(r.error)return uBad(r.error);return}
+ const row={name,phone:ph,category:'Customer',...await pwRow(ph,pw)};if(CMP&&!NOUCO)row.company_id=CMP;
+ const r=await db.from('accounts').insert(row).select('id,phone,name,category').single();if(r.error)return uBad(r.error);
+ if(US){US.push(r.data);US.sort((a,b)=>String(a.name).localeCompare(String(b.name)))}}
 async function addC(){
  if(!canDo('cust','add'))return deny('add customers');
  const n=$('#cn').value.trim();if(!n)return alert('Enter name');
  if(S.c.some(c=>c.name.toLowerCase()==n.toLowerCase()))return alert('Customer already exists');
  const g=$('#cgst').value.trim().toUpperCase();if(!gstOk(g))return alert('That GST number does not look right. A GSTIN has 15 characters, for example 32ABCDE1234F1Z5.');
  const extra=cLocRow(),cd=Math.max(0,Math.floor(+$('#ccd').value||0));
+ const cpw=$('#cpw').value;if(!await custLoginCheck($('#cph').value,cpw))return;
+ if(cpw){const ex=await db.from('accounts').select('id').eq('phone',$('#cph').value.replace(/\D/g,'')).maybeSingle();if(ex.data)return alert('That mobile number already has a login')}
  const {data,error}=await db.from('customers').insert({name:n,phone:$('#cph').value.trim(),addr:$('#ca').value.trim(),...(g?{gst:g}:{}),...extra,...(cd?{credit_days:cd}:{})}).select().single();
  if(error)return gfail(error);
- S.c.push(rC(data));byName(S.c);R();done(n+' added to customers')}
+ await custLoginSave(n,$('#cph').value,cpw);
+ S.c.push(rC(data));byName(S.c);R();done(n+(cpw?' added with customer login':' added to customers'))}
 /* customer photo + shop location */
 let CIMG='',CLOC=null;
 const hasLoc=c=>!!c&&c.lat!=null&&c.lat!==''&&c.lng!=null&&c.lng!=='';
@@ -1395,6 +1433,8 @@ function lr(){
  return {r:all.filter(x=>inRange(x.d,A,B)),open:open}}
 function names(){return lt=='Customer'?S.c.map(c=>c.name):ST()}
 function Vl(){
+ if(isCust()){lt='Customer';le=ME.custName||'';const w=le?lr():{r:[],open:0};
+  return dr(ldf,ldt,'ldf','ldt',clr('ldf','ldt'))+`<div class="card"><div class="k">Your ledger</div><b>${esc(le||'No customer record is linked to this login — ask the shop to check your phone number')}</b>${le?ltable(w.r,w.open):''}${w.r.length?'<button class="btn o" onclick="lp()">Print ledger</button>':''}<div class="m" style="margin-top:8px">Debit = your invoices. Credit = returns and payments received. Pending orders are added once they are confirmed.</div></div>`}
  const list=names();if(!list.includes(le))le=list[0]||'';
  return `<div class="chips">${['Customer','Executive'].map(s=>`<button class="${s==lt?'on':''}" onclick="lt='${s}';le='';lq='';R()">${s} ledger</button>`).join('')}</div>
  ${dr(ldf,ldt,'ldf','ldt',clr('ldf','ldt'))}
@@ -1609,7 +1649,7 @@ const SVC_ACTS={cashbook:'ad',bankbook:'aed',orders:'aed',sret:'aed',collect:'ae
 const ACT_KEY={v:'view',a:'add',e:'edit',d:'del'},ACT_LBL={view:'View',add:'Add',edit:'Edit',del:'Delete'};
 const actsOf=k=>(SVC_ACTS[k]||'').split('').map(c=>ACT_KEY[c]);
 const svActs=k=>{const a=svMap(ME).acts;return a&&a[k]||{}};
-const canDo=(k,a)=>svOn(k)&&svActs(k)[a]!==false;
+const canDo=(k,a)=>isCust()?svOn(k)&&((k=='orders'&&(a=='view'||a=='add'))||(k=='ledger'&&a=='view')):svOn(k)&&svActs(k)[a]!==false;
 const uCan=(u,k,a)=>svEn(svMap(u),k)&&((svMap(u).acts||{})[k]||{})[a]!==false;
 const canNeg=()=>svOn('nobal');
 const deny=what=>alert('You do not have permission to '+what+'. Ask the owner to switch it on in Settings.');
@@ -1828,7 +1868,7 @@ function Vusers(){
  +`<div class="kp">${kp('Users',US.length)}${kp('Owners',n('Owner'))}${kp('Admins',n('Admin'))}${kp('Staff',n('Staff'))}</div>`
  +(US.length?`<div class="glist">${US.map(u=>`<div class="card"><div class="it"><div class="av">${u.image?`<img src="${esc(u.image)}" alt="">`:esc((u.name||u.phone)[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(u.name||u.phone)}</b><span class="tag">${u.category}</span></div><div class="m">${esc(u.phone)}${u.phone==ME.phone?' · you':''}</div>${isOwner()?`<button class="btn o" onclick="goSet('${esc(u.phone)}')">Access</button>`:''}${canDo('users','edit')?`<button class="btn o" onclick="editUser(${u.id})">Edit</button>`:''}${u.phone!=ME.phone&&canDo('users','del')?`<button class="btn d" onclick="delUser(${u.id})">Delete</button>`:''}</div></div></div>`).join('')}</div>`:'<div class="empty">No users yet</div>')}
 const newUser=()=>{if(!canDo('users','add'))return deny('add users');newStaff()};
-const editUser=id=>{if(!canDo('users','edit'))return deny('edit users');const u=(US||[]).find(x=>x.id==id);if(!u)return;const st=S.st.find(v=>dig10(v.phone)==u.phone);if(st&&canDo('staff','edit'))return editS(st.id);openM('Edit user',()=>userForm(u))};
+const editUser=id=>{if(!canDo('users','edit'))return deny('edit users');const u=(US||[]).find(x=>x.id==id);if(!u)return;if(u.category=='Customer')return alert('Customer logins are managed on the Customers page — open the customer and edit it.');const st=S.st.find(v=>dig10(v.phone)==u.phone);if(st&&canDo('staff','edit'))return editS(st.id);openM('Edit user',()=>userForm(u))};
 function userForm(u){PH.u=u&&u.image||'';
  return `<div class="k">Photo</div>${photoBox('u')}<div class="k">Name</div><input id="un" value="${esc(u?u.name:'')}" placeholder="Full name"><div class="k">Mobile number (login)</div><input id="up" inputmode="numeric" maxlength="10" value="${esc(u?u.phone:'')}" placeholder="10-digit mobile" ${u?'disabled':''}><div class="k">${u?'New password (leave blank to keep the old one)':'Password'}</div><input type="password" id="upw" autocomplete="new-password" placeholder="At least 4 characters"><div class="k">Category</div><select id="uc">${CATS.map(c=>`<option ${u&&u.category==c?'selected':''}>${c}</option>`).join('')}</select><div class="m">Owner and Admin can open this Users tab. Staff cannot.</div><button class="btn" onclick="saveUser(${u?u.id:'null'})">${u?'Save changes':'Add user'}</button>`}
 async function saveUser(id){
