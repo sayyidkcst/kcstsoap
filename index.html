@@ -387,6 +387,16 @@ aside{box-shadow:0 -4px 16px #12392c14}
 #inv .sheet.pr tr{break-inside:avoid;page-break-inside:avoid}
 #inv .sheet.pr thead{display:table-header-group}
 @media print{@page{margin:10mm}#inv .sheet.pr{max-width:none;width:100%;padding:0}#inv .sheet.pr table{font-size:11.5px}}
+
+.chm{max-height:50vh;min-height:140px;overflow-y:auto;padding:6px 2px;display:flex;flex-direction:column}
+.cmsg{max-width:80%;padding:8px 12px;border-radius:14px;margin:4px 0;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.cmsg small{display:block;font-size:10.5px;opacity:.7;margin-top:3px}
+.cmsg.me{align-self:flex-end;background:#1f6f4a;color:#fff;border-bottom-right-radius:4px}
+.cmsg.th{align-self:flex-start;background:var(--s);border-bottom-left-radius:4px}
+.chi{display:flex;gap:8px;margin-top:8px}.chi input{flex:1;margin:0}
+.chg{display:grid;grid-template-columns:260px 1fr;gap:12px}@media(max-width:760px){.chg{grid-template-columns:1fr}}
+.chl button{display:block;width:100%;text-align:left;margin:0 0 6px;padding:10px 12px;border-radius:10px;border:1px solid var(--b);background:var(--c);color:inherit;cursor:pointer}.chl button.on{border-color:#1f6f4a;background:var(--s)}
+.chl .cu{display:inline-block;background:#d1495b;color:#fff;border-radius:10px;font-size:11px;padding:1px 7px;margin-left:6px}
 </style></head><body>
 <div id="lg"><div class="lgb" id="lgb">
  <div class="lgtop"></div><div class="lgmark">🌿</div><h2>Ayurgra</h2><p id="lgsub">Office panel · sign in to continue</p>
@@ -399,6 +409,7 @@ aside{box-shadow:0 -4px 16px #12392c14}
   <div id="lge"></div>
   <button class="btn lg" id="lgo" type="submit">Login</button>
  </form>
+ <div class="m" style="text-align:center;margin-top:10px">Need help? Customer care: <a href="tel:+919074415177"><b>90744 15177</b></a> · <a href="https://wa.me/919074415177" target="_blank" rel="noopener">WhatsApp</a></div>
  <div class="lgfoot"><span class="dot" id="dot"></span><span id="net">checking cloud connection…</span></div>
 </div></div>
 <div id="shell" hidden><aside><div class="brand"><b>🌿</b><span>Ayurgra<small>Office panel</small></span></div><div id="nav"></div></aside><div class="ct"><div class="hd" id="hd"></div><main id="app"></main></div></div>
@@ -462,7 +473,7 @@ const rng=(a,b)=>{const A=dnum(a),B=dnum(b);return d=>inRange(d,A,B)};
 const rlab=(a,b)=>a||b?` between ${dm(a)||'the start'} and ${dm(b)||'today'}`:'';
 const err=e=>e&&e.message?e.message:'unexpected error';
 const myCat=()=>(ME&&ME.cat)||'Owner';
-const isCust=()=>myCat()=='Customer',CUST_SVC=['orders','ledger'];
+const isCust=()=>myCat()=='Customer',CUST_SVC=['orders','ledger','chat'];
 const isStaff=()=>myCat()=='Staff',canSettle=()=>myCat()=='Admin'||myCat()=='Owner',isOwner=()=>myCat()=='Owner';
 const STAFF_TABS=['orders','cust','staff'],STAFF_SVC=[...STAFF_TABS,'loadslip','hlog'];
 const svMap=u=>{if((u?(u.category||u.cat):myCat())=='Customer'){const m={};SVC.forEach(x=>m[x[0]]=CUST_SVC.includes(x[0]));return m}const s=u&&u.services;if(s&&typeof s==='object'&&Object.keys(s).length)return s;const stf=(u?(u.category||u.cat):myCat())=='Staff',m={};SVC.forEach(x=>m[x[0]]=x[0]=='nobal'?false:stf?STAFF_SVC.includes(x[0]):true);return m};
@@ -489,9 +500,9 @@ let pfa='',pfb='',RC={y:new Date().getFullYear(),m:new Date().getMonth(),s:'All'
 let CO={name:'Ayurgra Herbal Soap',tag:'Ayurvedic & herbal products',addr:'',phone:'',email:'',gst:'',fssai:'',bank:'',branch:'',acno:'',ifsc:'',qr:''};
 let tab='orders',f='All',q='',qc='',qs='',qk='',lq='',lt='Customer',le='';
 let odf='',odt='',cdf='',cdt='',ldf='',ldt='';
-const T=[['orders','📦','Orders'],['sret','↩️','Sales Returns'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['exp','💸','Expenses'],['assets','🏭','Assets'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['pl','📈','Profit & Loss'],['irep','📊','Item Sales Report'],['bs','🏛️','Balance Sheet'],['cashbook','💵','Cash Book'],['bankbook','🏦','Bank & UPI Book'],['company','🏢','Company'],['history','🕘','History'],['users','🔐','Users'],['settings','⚙️','Settings']];
-const NAVG=[['Sales',['orders','sret','collect','cust','staff','cal','irep']],['Inventory',['prod','buy','exp','assets','raw']],['Books',['ledger','pl','bs','cashbook','bankbook','company']],['System',['history','users','settings']]];
-const H={orders:['Orders','Create and manage orders'],sret:['Sales Returns','Add, edit, cancel or delete returns against invoices'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],exp:['Expenses','Day-to-day business expenses'],assets:['Assets','Machinery, furniture, vehicles and other fixed assets'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],pl:['Profit & Loss Account','Income, costs and net profit'],irep:['Item Sales Report','Product-wise sales, returns and customers'],bs:['Balance Sheet','What the business owns and owes'],cashbook:['Cash Book','Every cash receipt and payment with running balance'],bankbook:['Bank & UPI Book','Every bank, UPI and card receipt and payment with running balance'],company:['Company','Details printed on every invoice'],users:['Users','Logins and their category'],history:['History','Who added, changed or deleted what, and when'],settings:['Settings','Choose which services each user can open']};
+const T=[['orders','📦','Orders'],['chat','💬','Customer Care'],['sret','↩️','Sales Returns'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['exp','💸','Expenses'],['assets','🏭','Assets'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['pl','📈','Profit & Loss'],['irep','📊','Item Sales Report'],['bs','🏛️','Balance Sheet'],['cashbook','💵','Cash Book'],['bankbook','🏦','Bank & UPI Book'],['company','🏢','Company'],['history','🕘','History'],['users','🔐','Users'],['settings','⚙️','Settings']];
+const NAVG=[['Sales',['orders','chat','sret','collect','cust','staff','cal','irep']],['Inventory',['prod','buy','exp','assets','raw']],['Books',['ledger','pl','bs','cashbook','bankbook','company']],['System',['history','users','settings']]];
+const H={orders:['Orders','Create and manage orders'],chat:['Customer Care','Call, WhatsApp or chat with us'],sret:['Sales Returns','Add, edit, cancel or delete returns against invoices'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],exp:['Expenses','Day-to-day business expenses'],assets:['Assets','Machinery, furniture, vehicles and other fixed assets'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],pl:['Profit & Loss Account','Income, costs and net profit'],irep:['Item Sales Report','Product-wise sales, returns and customers'],bs:['Balance Sheet','What the business owns and owes'],cashbook:['Cash Book','Every cash receipt and payment with running balance'],bankbook:['Bank & UPI Book','Every bank, UPI and card receipt and payment with running balance'],company:['Company','Details printed on every invoice'],users:['Users','Logins and their category'],history:['History','Who added, changed or deleted what, and when'],settings:['Settings','Choose which services each user can open']};
 const ACT={orders:['+ New order','newOrder'],sret:['+ New return','srNew'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],cal:['+ Assign route','newRt'],prod:['+ Add product','newProd'],buy:['+ Add purchase','newBuy'],exp:['+ Add expense','newExp'],assets:['+ Add asset','newAs'],users:['+ Add user','newUser'],raw:['+ Add consumption','newCn'],cashbook:['+ Deposit','newDep'],bankbook:['+ Deposit','newDep']};
 
 /* LOGIN */
@@ -644,8 +655,11 @@ function scopeCust(d){
  const me=String(ME.phone||'').replace(/\D/g,'').slice(-10),nm=String(ME.name||'').trim().toLowerCase();
  const mine=d.c.find(c=>String(c.phone||'').replace(/\D/g,'').slice(-10)==me)||d.c.find(c=>String(c.name||'').trim().toLowerCase()==nm),n=mine?mine.name:'';
  ME.custName=n;try{sessionStorage.setItem('ay.me',JSON.stringify(ME))}catch(e){}
- return {...d,o:d.o.filter(o=>o.shop==n),c:mine?[mine]:[],st:[],s:[],cp:d.cp.filter(p=>p.cust==n),sr:(d.sr||[]).filter(r=>r.shop==n),pu:[],cn:[],pn:[],rt:[],ex:[],as:[],dp:[],ba:[],hi:[]}}
+ const stk={};(d.pn||[]).forEach(x=>{stk[x.product]=(stk[x.product]||0)+(+x.qty||0)});
+ (d.o||[]).forEach(o=>{if(o.status!='Cancelled')(o.items||[]).forEach(i=>{stk[i.p]=(stk[i.p]||0)-((+i.q||0)-(+i.r||0))})});
+ return {...d,stk,o:d.o.filter(o=>o.shop==n),c:mine?[mine]:[],st:[],s:[],cp:d.cp.filter(p=>p.cust==n),sr:(d.sr||[]).filter(r=>r.shop==n),pu:[],cn:[],pn:[],rt:[],ex:[],as:[],dp:[],ba:[],hi:[]}}
 function applyData(d){
+ STK=d.stk||{};
  S={o:d.o.map(rO),c:byName(d.c.map(rC)),st:byName(d.st.map(rSt)),prod:d.pr.map(rPd),s:d.s.map(rS),cp:d.cp.map(rPay)};
  try{const l=JSON.parse(localStorage.getItem('ay.co')||'null');if(l)Object.assign(CO,l)}catch(e){}
  const x=d.co;if(x)Object.assign(CO,{name:x.name||CO.name,tag:x.tag||'',addr:x.addr||'',phone:x.phone||'',email:x.email||'',gst:x.gst||'',fssai:x.fssai??CO.fssai,bank:x.bank??CO.bank,branch:x.branch??CO.branch,acno:x.acno??CO.acno,ifsc:x.ifsc??CO.ifsc,qr:x.qr??CO.qr});
@@ -735,7 +749,7 @@ function R(){
  {const n=$('#nav'),on=n.querySelector('.on');if(on&&n.scrollWidth>n.clientWidth)n.scrollLeft=on.offsetLeft-(n.clientWidth-on.offsetWidth)/2}
  const a=!canDo(tab,'add')?null:ACT[tab];
  $('#hd').innerHTML=`<div><h1>${H[tab][0]}</h1><p>${H[tab][1]}</p>${coSel()}</div>`+(a?`<div><button class="btn" onclick="${a[1]}()">${a[0]}</button>${tab=='prod'?'<button class="btn" style="margin-left:8px" onclick="newPn()">+ Add production</button>':''}${tab=='orders'&&svOn('loadslip')&&!isMob()?'<button class="btn o" style="margin-left:8px" onclick="lsOpen()">🚚 Staff loading slip</button>':''}</div>`:'');
- $('#app').innerHTML=accBar()+({orders:Vo,sret:Vsr,collect:Vc,cust:Vu,staff:Vs,cal:Vcal,prod:Vp,buy:Vbuy,exp:Vexp,assets:Vas,users:Vusers,history:Vhist,settings:Vset,raw:Vraw,ledger:Vl,pl:Vpl,irep:Virep,bs:Vbs,cashbook:Vcashbook,bankbook:Vbankbook,company:VcoW})[tab]();
+ $('#app').innerHTML=accBar()+({orders:Vo,sret:Vsr,collect:Vc,cust:Vu,staff:Vs,cal:Vcal,prod:Vp,buy:Vbuy,exp:Vexp,assets:Vas,users:Vusers,history:Vhist,settings:Vset,raw:Vraw,ledger:Vl,chat:Vchat,pl:Vpl,irep:Virep,bs:Vbs,cashbook:Vcashbook,bankbook:Vbankbook,company:VcoW})[tab]();
 }
 const kp=(k,v,c)=>`<div class="card"><div class="k">${k}</div><div class="v ${c||''}">${v}</div></div>`;
 const dr=(a,b,ca,cb,cl)=>`<div class="dr"><div><div class="k">Date from</div><input type="date" value="${a}" onchange="${ca}=this.value;R()"></div><div><div class="k">Date to</div><input type="date" value="${b}" onchange="${cb}=this.value;R()"></div>${a||b?`<button class="btn o" type="button" onclick="${cl}">Clear dates</button>`:''}</div>`;
@@ -775,7 +789,7 @@ function ol(){
 function oc(o){
  const rt=sum(o.items.map(i=>i.r*i.pr));
  return `<div class="card ost-${o.st}"><div class="it"><input type="checkbox" class="ck" ${sel.has(o.id)?'checked':''} onchange="tg(${o.id},this.checked)" title="Select for multiple print"><div class="av">${esc(o.shop[0]||'?').toUpperCase()}</div><div class="f1"><div class="top"><b>${esc(o.shop)}</b><span class="amt">${fm(tot(o))}</span></div><div class="m">${o.no} · ${o.date} · ${esc(o.by)}</div><div class="m">${o.items.map(i=>i.q+'× '+i.p).join(', ')}${rt?` · returns ${fm(rt)}`:''}${o.disc?` · discount ${fm(o.disc)}`:''}${' · GST '+(gstRates(o).length?gstRates(o).join('% & ')+'%':'0%')}${o.due?` · due ${o.due}`:''}</div>
- <div class="act"><span class="tag ${o.st}">${o.st}</span> ${btag(S.c.find(x=>x.name==o.shop))}<br>${canDo('orders','edit')?`<select onchange="stt(${o.id},this.value)">${['Pending','Confirmed','Delivered','Cancelled'].map(s=>`<option ${s==o.st?'selected':''}>${s}</option>`)}</select>`:''}${canDo('orders','edit')?`<button class="btn o" onclick="editO(${o.id})">Edit</button>`:''}<button class="btn o" onclick="inv(${o.id})">Invoice</button>${canDo('sret','add')&&o.st!='Cancelled'?`<button class="btn o" onclick="srNew(${o.id})">${rt?'↩ Return ✓':'↩ Return'}</button>`:''}${canDo('orders','del')?`<button class="btn d" onclick="del(${o.id})">Delete</button>`:''}</div></div></div></div>`}
+ <div class="act"><span class="tag ${o.st}">${o.st}</span> ${/^Order placed by customer/.test(o.notes||'')?'<span class="tag" title="Placed by the customer">🛒 Customer order</span> ':''}${btag(S.c.find(x=>x.name==o.shop))}<br>${canDo('orders','edit')?`<select onchange="stt(${o.id},this.value)">${['Pending','Confirmed','Delivered','Cancelled'].map(s=>`<option ${s==o.st?'selected':''}>${s}</option>`)}</select>`:''}${canDo('orders','edit')?`<button class="btn o" onclick="editO(${o.id})">Edit</button>`:''}<button class="btn o" onclick="inv(${o.id})">Invoice</button>${canDo('sret','add')&&o.st!='Cancelled'?`<button class="btn o" onclick="srNew(${o.id})">${rt?'↩ Return ✓':'↩ Return'}</button>`:''}${canDo('orders','del')?`<button class="btn d" onclick="del(${o.id})">Delete</button>`:''}</div></div></div></div>`}
 function form(e){
  const nxt=e?e.no:'AY-'+String(S.o.reduce((m,o)=>Math.max(m,o.id),0)+1).padStart(4,'0');DG=e?(+e.taxp||0):0;
  return `<div class="ivh"><div><div class="k">Invoice no.</div><div class="ivno">${nxt}</div></div><div class="ivhcol"><div class="k">Invoice date</div><input id="idate" value="${esc(e?e.date:today())}"></div><div class="ivhcol"><div class="k">Status</div><select id="ist" ${isStaff()||isCust()?'disabled':''}>${(isStaff()||isCust()?[e?e.st:'Pending']:['Pending','Confirmed','Delivered',...(e?['Cancelled']:[])]).map(x=>`<option ${e&&x==e.st?'selected':''}>${x}</option>`).join('')}</select></div></div>`
@@ -799,7 +813,7 @@ const cbHi=(t,q)=>{t=esc(t);if(!q)return t;const k=esc(q).replace(/[.*+?^${}()|[
 function cbData(kind,q){
  const k=q.toLowerCase().trim();
  if(kind=='cust')return S.c.filter(c=>!k||hit(k,c.name,c.phone,c.addr,c.gst)).slice(0,60).map(c=>({v:c.name,sub:[c.phone,c.addr].filter(x=>x).join(' · ')+(c.gst?' · B2B':'')}));
- return S.prod.filter(p=>!k||hit(k,p.name,p.hsn)).slice(0,60).map(p=>{const st=made(p.name)-sold(p.name);return {v:p.name,sub:fm(p.rate)+' · GST '+(+p.gst||0)+'%'+(p.pcs?' · '+p.pcs+' pcs/box':''),stock:st}})}
+ return S.prod.filter(p=>!k||hit(k,p.name,p.hsn)).slice(0,60).map(p=>{const st=avail(p.name);return {v:p.name,sub:fm(p.rate)+' · GST '+(+p.gst||0)+'%'+(p.pcs?' · '+p.pcs+' pcs/box':''),stock:st}})}
 function cbPlace(){
  const b=$('#cbx'),r=CB.el.getBoundingClientRect(),h=Math.min(260,b.scrollHeight+10),below=innerHeight-r.bottom,up=below<h+8&&r.top>below;
  b.style.left=r.left+'px';b.style.width=Math.max(r.width,260)+'px';
@@ -864,12 +878,13 @@ async function mk(){
  if($('#idue').value.trim()&&!pd($('#idue').value.trim()))return alert('Payment due must be dd/mm/yyyy or left blank');
  if(!items.length)return alert('Add at least one item with a name and a quantity');
  const need={};items.forEach(i=>{const pr=S.prod.find(x=>x.name.toLowerCase()==i.p.toLowerCase());if(pr)need[pr.name]=(need[pr.name]||0)+i.q});
- const bad=Object.keys(need).map(n=>{const av=made(n)-sold(n);return av<=0?n+': out of stock':need[n]>av?`${n}: only ${nf(av)} in stock, you entered ${nf(need[n])}`:''}).filter(x=>x);
-  if(bad.length&&!isCust())return alert('This order cannot be created.\n\n'+bad.join('\n')+'\n\nAdd production in Products & Stock first.');
+ const bad=Object.keys(need).map(n=>{const av=avail(n);return av<=0?n+': out of stock':need[n]>av?`${n}: only ${nf(av)} in stock, you entered ${nf(need[n])}`:''}).filter(x=>x);
+  if(bad.length)return alert('This order cannot be created.\n\n'+bad.join('\n')+'\n\n'+(isCust()?'Please reduce the quantity or contact the shop.':'Add production in Products & Stock first.'));
  if(!await creditCheck(shop))return;
  const sub=sum(items.map(i=>i.q*i.pr)),disc=Math.min(+$('#idisc').value||0,sub),taxp=gstAvg(items);
- const {data,error}=await db.from('orders').insert({date,agent:$('#by').value,shop,items,disc,taxp,status:$('#ist').value,due:$('#idue').value.trim(),notes:$('#inote').value.trim()}).select().single();
+ const {data,error}=await db.from('orders').insert({date,agent:$('#by').value,shop,items,disc,taxp,status:$('#ist').value,due:$('#idue').value.trim(),notes:(isCust()?'Order placed by customer'+($('#inote').value.trim()?' · '+$('#inote').value.trim():''):$('#inote').value.trim())}).select().single();
  if(error)return fail(error);
+ if(isCust())items.forEach(i=>{STK[i.p]=(STK[i.p]||0)-i.q});
  S.o.unshift(rO(data));R();done(isCust()?'Order '+rO(data).no+' placed — waiting for approval':'Invoice '+rO(data).no+' saved for '+data.shop)}
 function editO(id){if(!canDo('orders','edit'))return deny('edit orders');const e=S.o.find(x=>x.id==id);if(!e)return;openM('Edit invoice '+e.no,()=>form(e),1);setTimeout(()=>{oiRec();oiCust()},0)}
 async function upO(id){
@@ -1447,6 +1462,51 @@ function lbox(){
 function lp(){
  const w=lr();
  $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2><div style="color:#555">${lt} ledger · ${esc(le)} · ${today()}${(ldf||ldt)?' · '+rlab(ldf,ldt):''}</div>${ltable(w.r,w.open)}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
+
+/* CUSTOMER CARE: call, WhatsApp and in-app chat */
+const CARE='9074415177',CHATSQL='create table if not exists chat_messages(id bigint generated always as identity primary key,customer text,sender text,name text,body text,read boolean default false,created_at timestamptz default now());\nalter table chat_messages disable row level security;\ngrant all on table chat_messages to anon, authenticated;\nnotify pgrst, \'reload schema\';';
+let CH={rows:null,sel:'',err:''};
+const chSide=()=>isCust()?'Customer':'Shop',chCur=()=>isCust()?(ME.custName||''):CH.sel;
+const chTime=t=>{try{return new Date(t).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}};
+const careBox=who=>`<div class="card"><div class="k">Customer care</div><div style="font-size:22px;font-weight:700;margin:4px 0">📞 +91 ${CARE.slice(0,5)} ${CARE.slice(5)}</div><div class="m">Call or WhatsApp us for orders, payments and any help.</div><div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" onclick="location.href='tel:+91${CARE}'">📞 Call</button><button class="btn o" type="button" onclick="window.open('https://wa.me/91${CARE}?text='+encodeURIComponent('Hello, this is ${esc(who).replace(/'/g,'')}'),'_blank')">💬 WhatsApp</button></div></div>`;
+function Vchat(){
+ if(CH.rows===null)setTimeout(chLoad,0);else setTimeout(chDraw,0);
+ if(isCust())return careBox(ME.custName||ME.name||'a customer')+`<div class="card"><div class="k">Chat with us</div><div id="chm" class="chm"></div><div class="chi"><input id="chi" placeholder="Type your message…" onkeydown="if(event.key=='Enter')chSend()"><button class="btn" type="button" onclick="chSend()">Send</button></div><div class="m" style="margin-top:6px">We reply here as soon as we can. For urgent help, call or WhatsApp above.</div></div>`;
+ return careBox(CO.name||'your shop')+`<div class="chg"><div class="card"><div class="k">Customer chats</div><div id="chl" class="chl"></div><div class="k" style="margin-top:8px">Message another customer</div><select onchange="CH.sel=this.value;chDraw();chRead()"><option value="">Select customer</option>${S.c.map(c=>`<option ${c.name==CH.sel?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div><div class="card"><div class="k" id="cht">Chat</div><div id="chm" class="chm"></div><div class="chi"><input id="chi" placeholder="Type a reply…" onkeydown="if(event.key=='Enter')chSend()"><button class="btn" type="button" onclick="chSend()">Send</button></div></div></div>`}
+async function chLoad(){
+ if(!db||!ME)return;
+ if(isCust()&&!ME.custName){CH.rows=[];return chDraw()}
+ let q=db.from('chat_messages').select('*').order('id',{ascending:false}).limit(isCust()?300:1000);
+ if(isCust())q=q.eq('customer',ME.custName);
+ const {data,error}=await q;
+ if(error){CH.err=error.message||'error';CH.rows=[]}else{CH.err='';CH.rows=data.slice().reverse()}
+ chDraw();chRead()}
+function chDraw(){
+ const m=$('#chm');if(!m||tab!='chat')return;
+ const rows=CH.rows||[],cur=chCur(),side=chSide();
+ if(CH.err){const miss=/chat_messages|relation|does not exist|schema cache/i.test(CH.err);m.innerHTML=`<div class="m">${miss?'Chat needs a one-time setup. Run this once in Supabase &gt; SQL Editor (it also refreshes the API cache), then press Retry:':'Could not load chat:'}</div><div class="m" style="margin:6px 0"><b>Error:</b> ${esc(CH.err)}</div>${miss?`<pre class="sqlb">${esc(CHATSQL)}</pre>`:''}<button class="btn" type="button" onclick="CH.err='';chLoad()">Retry</button>`;return}
+ const l=$('#chl');
+ if(l){const g={};rows.forEach(r=>{(g[r.customer]=g[r.customer]||{last:r,un:0}).last=r;if(r.sender=='Customer'&&!r.read)g[r.customer].un++});
+  const names=Object.keys(g).sort((a,b)=>g[b].last.id-g[a].last.id);
+  l.innerHTML=names.map(n=>`<button type="button" class="${n==CH.sel?'on':''}" onclick="CH.sel=this.dataset.n;chDraw();chRead()" data-n="${esc(n)}"><b>${esc(n)}</b>${g[n].un?`<span class="cu">${g[n].un}</span>`:''}<div class="m" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(g[n].last.body)}</div></button>`).join('')||'<div class="m">No chats yet</div>'}
+ const t=$('#cht');if(t)t.textContent=cur?'Chat with '+cur:'Pick a customer chat';
+ const mine=rows.filter(r=>r.customer==cur),near=m.scrollHeight-m.scrollTop-m.clientHeight<80||!m.dataset.d;
+ m.innerHTML=mine.map(r=>`<div class="cmsg ${r.sender==side?'me':'th'}">${esc(r.body)}<small>${r.sender==side?'You':esc(r.sender=='Customer'?(r.name||r.customer):(r.name||'Customer care'))} · ${chTime(r.created_at)}</small></div>`).join('')||`<div class="m">${cur?'No messages yet — say hello 👋':'Choose a customer on the left to read and reply.'}</div>`;
+ m.dataset.d='1';if(near)m.scrollTop=m.scrollHeight}
+async function chRead(){
+ const cur=chCur(),side=chSide();if(!cur||!CH.rows)return;
+ const ids=CH.rows.filter(r=>r.customer==cur&&r.sender!=side&&!r.read).map(r=>r.id);if(!ids.length)return;
+ const {error}=await db.from('chat_messages').update({read:true}).in('id',ids);
+ if(!error){CH.rows.forEach(r=>{if(ids.includes(r.id))r.read=true});chDraw()}}
+async function chSend(){
+ const t=$('#chi');if(!t)return;const body=t.value.trim();if(!body)return;
+ const cu=chCur();if(!cu)return alert(isCust()?'No customer record is linked to this login — ask the shop to check your phone number.':'Pick a customer first');
+ t.disabled=true;
+ const {data,error}=await db.from('chat_messages').insert({customer:cu,sender:chSide(),name:ME.name||'',body}).select().single();
+ t.disabled=false;
+ if(error){CH.err=error.message||'error';return chDraw()}
+ t.value='';(CH.rows||(CH.rows=[])).push(data);chDraw();t.focus()}
+setInterval(()=>{if(tab=='chat'&&ME&&!document.hidden&&!$('#md').innerHTML.trim().length)chLoad()},8000);
 /* PURCHASE / STOCK / RAW MATERIAL */
 const SQLN=`create table if not exists purchases(id bigint generated always as identity primary key,date text,supplier text,material text,unit text,qty numeric,rate numeric,notes text);
 create table if not exists consumption(id bigint generated always as identity primary key,date text,material text,unit text,qty numeric,rate numeric,notes text);
@@ -1509,6 +1569,8 @@ const gU=/^(g|gm|gms|grm|gram|grams)$/i;
 function kgRow(r){return gU.test(String(r.unit||'').trim())?{...r,unit:'kg',qty:+((+r.qty||0)/1000).toFixed(6),rate:+((+r.rate||0)*1000).toFixed(4)}:r}
 const tod=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const sqlHint=()=>MISS.length?`<div class="card"><b>One-time setup</b><div class="m">Missing tables: ${MISS.join(', ')}. Run this once in Supabase &gt; SQL Editor (give them the same access policy as your other tables), then tap Refresh.</div><pre class="sqlb">${esc(SQLN)}</pre></div>`:'';
+let STK={};
+const avail=n=>isCust()?(+STK[n]||0):made(n)-sold(n);
 const sold=n=>sum(live().map(o=>sum(o.items.filter(i=>i.p==n).map(i=>i.q-i.r))));
 const made=n=>sum(S.pn.filter(x=>x.product==n).map(x=>+x.qty));
 const PST=['Pending','Purchased','Cancelled'],puSt=p=>PST.includes(p.status)?p.status:'Purchased',puOn=p=>puSt(p)=='Purchased';
@@ -1642,7 +1704,7 @@ async function saveAs(id){
  else if(await ins('assets',v,'as')){R();done()}}
 /* SETTINGS: enable / disable services per user (Owner only) */
 const SVC=[
-['orders','📦','Orders','Create, edit and print invoices','Modules'],['sret','↩️','Sales Returns','Add, edit, cancel or delete sales returns','Modules'],['collect','💰','Collection','Approve payments and receive money','Modules'],['cust','👥','Customers','Shops and their outstanding','Modules'],['staff','🧑‍💼','Staff','Executives and their dues','Modules'],['cal','🗓️','Route Calendar','Who covers which route, day by day','Modules'],['prod','🧴','Products & Stock','Catalogue, production and stock','Modules'],['buy','🛒','Purchase','Raw material purchases','Modules'],['exp','💸','Expenses','Day-to-day business expenses','Modules'],['assets','🏭','Assets','Machinery, furniture and vehicles','Modules'],['raw','🧪','Raw Material','Consumption and stock of raw material','Modules'],['ledger','📒','Ledger','Customer and executive statements','Modules'],['pl','📈','Profit & Loss','Profit and loss account','Modules'],['irep','📊','Item Sales Report','Product-wise sales for the sales manager','Modules'],['bs','🏛️','Balance Sheet','Assets and liabilities','Modules'],['cashbook','💵','Cash Book','Cash receipts and payments','Modules'],['bankbook','🏦','Bank & UPI Book','Bank, UPI and card receipts and payments','Modules'],['company','🏢','Company','Details printed on every invoice','Modules'],['history','🕘','History','Who changed what, and when','Modules'],['users','🔐','Users','Logins and their category','Modules'],
+['orders','📦','Orders','Create, edit and print invoices','Modules'],['chat','💬','Customer Care','Chat, call and WhatsApp with customers','Modules'],['sret','↩️','Sales Returns','Add, edit, cancel or delete sales returns','Modules'],['collect','💰','Collection','Approve payments and receive money','Modules'],['cust','👥','Customers','Shops and their outstanding','Modules'],['staff','🧑‍💼','Staff','Executives and their dues','Modules'],['cal','🗓️','Route Calendar','Who covers which route, day by day','Modules'],['prod','🧴','Products & Stock','Catalogue, production and stock','Modules'],['buy','🛒','Purchase','Raw material purchases','Modules'],['exp','💸','Expenses','Day-to-day business expenses','Modules'],['assets','🏭','Assets','Machinery, furniture and vehicles','Modules'],['raw','🧪','Raw Material','Consumption and stock of raw material','Modules'],['ledger','📒','Ledger','Customer and executive statements','Modules'],['pl','📈','Profit & Loss','Profit and loss account','Modules'],['irep','📊','Item Sales Report','Product-wise sales for the sales manager','Modules'],['bs','🏛️','Balance Sheet','Assets and liabilities','Modules'],['cashbook','💵','Cash Book','Cash receipts and payments','Modules'],['bankbook','🏦','Bank & UPI Book','Bank, UPI and card receipts and payments','Modules'],['company','🏢','Company','Details printed on every invoice','Modules'],['history','🕘','History','Who changed what, and when','Modules'],['users','🔐','Users','Logins and their category','Modules'],
 ['loadslip','🚚','Staff loading slip','Loading slip and staff-wise invoice print','Features'],['hlog','📝','History recording','Record every add, change and delete','Features'],['nobal','⚖️','Skip balance check','Deposit, spend or delete in Cash / Bank Book even when the balance is not enough','Features']];
 const SQLSVC="alter table accounts add column if not exists services jsonb default '{}'::jsonb;";
 const SVC_ACTS={cashbook:'ad',bankbook:'aed',orders:'aed',sret:'aed',collect:'aed',cust:'vaed',staff:'aed',cal:'vaed',prod:'vaed',buy:'aed',exp:'aed',assets:'aed',raw:'ad',company:'e',users:'aed'};
