@@ -373,6 +373,20 @@ aside{box-shadow:0 -4px 16px #12392c14}
 /* mobile: icon-only buttons */
 .btn .bi{display:none}
 @media(max-width:819px){.btn .bi{display:inline;font-size:17px;line-height:1}.btn .bl{display:none}.btn[data-mi]{min-width:42px;padding-left:12px;padding-right:12px;text-align:center}td .btn[data-mi]{min-width:34px;padding-left:9px;padding-right:9px}.cft .btn[data-mi]{flex:1}}
+
+.av img,.pth,.pimgw img,.bimg{cursor:zoom-in}
+#lbx{position:fixed;inset:0;z-index:60;background:#000d;display:flex;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
+#lbx img{max-width:96vw;max-height:92vh;object-fit:contain;border-radius:10px;background:#fff;box-shadow:0 10px 40px #0008}
+#lbx button{position:fixed;top:14px;right:14px;width:42px;height:42px;border-radius:50%;border:0;background:#fff;color:#111;font-size:22px;cursor:pointer}
+
+/* printed lists: keep every column inside the page */
+#inv .sheet.pr{max-width:820px;box-sizing:border-box;overflow-x:hidden}
+#inv .sheet.pr table{width:100%;table-layout:auto;font-size:13px}
+#inv .sheet.pr th,#inv .sheet.pr td{white-space:normal;overflow-wrap:anywhere;word-break:break-word;padding:6px 5px;vertical-align:top}
+#inv .sheet.pr td.n,#inv .sheet.pr th.n,#inv .sheet.pr td:first-child{white-space:nowrap;overflow-wrap:normal;word-break:normal}
+#inv .sheet.pr tr{break-inside:avoid;page-break-inside:avoid}
+#inv .sheet.pr thead{display:table-header-group}
+@media print{@page{margin:10mm}#inv .sheet.pr{max-width:none;width:100%;padding:0}#inv .sheet.pr table{font-size:11.5px}}
 </style></head><body>
 <div id="lg"><div class="lgb" id="lgb">
  <div class="lgtop"></div><div class="lgmark">🌿</div><h2>Ayurgra</h2><p id="lgsub">Office panel · sign in to continue</p>
@@ -1441,6 +1455,7 @@ drop policy if exists bank_accounts_open on bank_accounts;
 create policy bank_accounts_open on bank_accounts for all to anon, authenticated using (true) with check (true);
 alter table purchases add column if not exists mode text;
 alter table purchases add column if not exists status text;
+alter table purchases add column if not exists image text;
 alter table deposits add column if not exists account text;
 alter table bank_accounts add column if not exists account_no text;
 alter table bank_accounts add column if not exists ifsc text;
@@ -1448,7 +1463,7 @@ alter table bank_accounts add column if not exists branch text;
 alter table bank_accounts add column if not exists logo text;
 alter table customers add column if not exists credit_days int;`;
 const nf=n=>(+n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
-const qkg=n=>(+n||0).toLocaleString('en-IN',{minimumFractionDigits:3,maximumFractionDigits:3});
+const qkg=n=>(+n||0).toLocaleString('en-IN',{maximumFractionDigits:3});
 const qfmt=(q,u)=>/^(kg|ltr)$/i.test(String(u||'').trim())?qkg(q)+' '+(/^kg$/i.test(String(u).trim())?'kg':'Ltr'):nf(q)+(u?' '+esc(u):'');
 const gU=/^(g|gm|gms|grm|gram|grams)$/i;
 function kgRow(r){return gU.test(String(r.unit||'').trim())?{...r,unit:'kg',qty:+((+r.qty||0)/1000).toFixed(6),rate:+((+r.rate||0)*1000).toFixed(4)}:r}
@@ -1482,10 +1497,23 @@ function Vbuy(){
  return sqlHint()+`<div class="kp">${kp('Total spent (Purchased)',fm(Math.round(sum(S.pu.filter(puOn).map(p=>p.qty*p.rate)))))}${kp('Pending (budget)',fm(Math.round(sum(S.pu.filter(p=>puSt(p)=='Pending').map(p=>p.qty*p.rate)))))}${kp('Cancelled',S.pu.filter(p=>puSt(p)=='Cancelled').length)}${kp('Purchased bills',S.pu.filter(puOn).length)}${kp('Suppliers',new Set(S.pu.map(p=>p.supplier).filter(x=>x)).size)}${kp('Raw materials',mats().length)}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><input style="flex:1;min-width:180px" placeholder="🔍 Search supplier, material or date" value="${esc(qb)}" oninput="qb=this.value;$('#bl').innerHTML=bl()"><select style="width:auto" onchange="qbs=this.value;$('#bl').innerHTML=bl()"><option value="">All status</option>${PST.map(t=>`<option ${qbs==t?'selected':''}>${t}</option>`).join('')}</select></div><div class="card"><button class="btn o" style="margin-bottom:8px" onclick="buyPrint()">🖨 Print list</button><div class="tw" id="bl">${bl()}</div></div>`}
 function bl(){
  const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date)&&(!qbs||puSt(p)==qbs));
- return `<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th>Paid from</th><th>Status</th><th></th></tr>${r.map(p=>`<tr${puSt(p)=='Cancelled'?' style="opacity:.6"':''}><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td>${esc(p.mode||'Cash')}</td><td><span class="tag ${puSt(p)}">${puSt(p)}</span></td><td><button class="btn o" onclick="vchPrint('b',${p.id})">Print</button>${canDo('buy','edit')?`<button class="btn o" onclick="editBuy(${p.id})">Edit</button>`:''}${dbtn('purchases',p.id,'pu')}</td></tr>`).join('')||empty(9,'No purchases yet')}</table>`}
+ return `<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th>Paid from</th><th>Status</th><th>Bill</th><th></th></tr>${r.map(p=>`<tr${puSt(p)=='Cancelled'?' style="opacity:.6"':''}><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td>${esc(p.mode||'Cash')}</td><td><span class="tag ${puSt(p)}">${puSt(p)}</span></td><td>${p.image?`<img class="pth" src="${esc(p.image)}" alt="Bill">`:''}</td><td><button class="btn o" onclick="vchPrint('b',${p.id})">Print</button>${canDo('buy','edit')?`<button class="btn o" onclick="editBuy(${p.id})">Edit</button>`:''}${dbtn('purchases',p.id,'pu')}</td></tr>`).join('')||empty(10,'No purchases yet')}</table>`}
 const newBuy=()=>{if(!canDo('buy','add'))return deny('add purchases');openM('Add purchase',()=>buyForm(),1,1)};
 const editBuy=id=>{if(!canDo('buy','edit'))return deny('edit purchases');const x=S.pu.find(p=>p.id==id);if(x)openM('Edit purchase',()=>buyForm(x),1,1)};
+const BI={v:''};
+const biPrev=()=>BI.v?`<img class="pth big bimg" src="${esc(BI.v)}" alt="">`:`<div class="pth big pph">🧾</div>`;
+function biSet(inp){
+ const f=inp.files&&inp.files[0];if(!f)return;
+ if(!/^image\//.test(f.type)){inp.value='';return alert('Please choose an image file')}
+ const fr=new FileReader();
+ fr.onload=()=>{const im=new Image();
+  im.onload=()=>{const z=1100,k=Math.min(1,z/Math.max(im.width,im.height)),w=Math.max(1,Math.round(im.width*k)),h=Math.max(1,Math.round(im.height*k)),cv=document.createElement('canvas');
+   cv.width=w;cv.height=h;const x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);
+   BI.v=cv.toDataURL('image/jpeg',0.8);$('#bipv').innerHTML=biPrev()};
+  im.onerror=()=>alert('Could not read that image');im.src=fr.result};
+ fr.readAsDataURL(f)}
 function buyForm(x){
+ BI.v=x&&x.image||'';
  const U=[['kg','kg'],['g','g (gram)'],['Pcs','Pcs'],['Ltr','Ltr'],['ml','ml (millilitre)']];
  const rawU=x?String(x.unit||'kg').toLowerCase():'',found=U.find(a=>a[0].toLowerCase()==rawU);
  const cur=found?found[0]:(x?String(x.unit||'kg'):'g'),opts=U.some(a=>a[0]==cur)?U:[...U,[cur,cur]];
@@ -1500,7 +1528,8 @@ function buyForm(x){
  +`<div><div class="k">Amount</div><input id="ba" readonly tabindex="-1" value="${x?fm(Math.round(x.qty*x.rate)):''}" placeholder="auto"></div>`
  +`<div><div class="k rq">Paid from</div><select id="bpm">${payOpts(x&&x.mode)}</select></div>`
   +`<div><div class="k">Notes</div><input id="bn" value="${esc(x?x.notes:'')}" placeholder="Bill no, remarks (optional)"></div>`
- +`<div><div class="k rq">Status</div><select id="bst">${PST.map(t=>`<option ${(x?puSt(x):'Purchased')==t?'selected':''}>${t}</option>`).join('')}</select><div class="m" style="margin:2px 0 0">Only <b>Purchased</b> counts in stock, spent and cash/bank. Pending is budget only.</div></div></div>`
+ +`<div><div class="k rq">Status</div><select id="bst">${PST.map(t=>`<option ${(x?puSt(x):'Purchased')==t?'selected':''}>${t}</option>`).join('')}</select><div class="m" style="margin:2px 0 0">Only <b>Purchased</b> counts in stock, spent and cash/bank. Pending is budget only.</div></div>`
+ +`<div style="grid-column:1/-1"><div class="k">Bill / item image</div><div class="pimgw"><div id="bipv">${biPrev()}</div><div><input type="file" accept="image/*" id="bifile" onchange="biSet(this)"><button class="btn d" type="button" onclick="BI.v='';$('#bipv').innerHTML=biPrev();$('#bifile').value=''">Remove image</button></div></div></div></div>`
  +`<div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="saveBuy(${x?x.id:'null'})">Submit</button></div>`}
 const buQ=()=>{const q=+$('#bq').value||0,u=$('#bu').value;return u=='g'||u=='ml'?+(q/1000).toFixed(6):q};
 let buCaps=false;
@@ -1522,7 +1551,7 @@ async function saveBuy(id){
  const st=$('#bst').value;
  if(!v.date)return alert('Pick the purchase date');if(!v.material)return alert('Enter the raw material');
  if(!(v.qty>0))return alert('Enter a quantity above 0');if(!(v.rate>=0)||$('#br').value==='')return alert('Enter the rate');
- {const o=id?S.pu.find(p=>p.id==id):null,pm=$('#bpm').value;if(pm!='Cash'||(o&&o.mode))v.mode=pm;if(st!='Purchased'||(o&&o.status))v.status=st;const w=pmode(pm);if(st=='Purchased'&&!checkFunds(w,v.qty*v.rate,o&&puOn(o)&&pmode(o.mode)==w?o.qty*o.rate:0))return}
+ {const o=id?S.pu.find(p=>p.id==id):null,pm=$('#bpm').value;if(pm!='Cash'||(o&&o.mode))v.mode=pm;if(st!='Purchased'||(o&&o.status))v.status=st;if(BI.v||(o&&o.image))v.image=BI.v||'';const w=pmode(pm);if(st=='Purchased'&&!checkFunds(w,v.qty*v.rate,o&&puOn(o)&&pmode(o.mode)==w?o.qty*o.rate:0))return}
  if(id){const {error}=await db.from('purchases').update(v).eq('id',id);if(error)return fail(error);
   Object.assign(S.pu.find(p=>p.id==id),v);R();done('Purchase updated — '+v.material)}
  else if(await ins('purchases',v,'pu')){R();done('Purchase saved — '+v.material)}}
@@ -1909,11 +1938,11 @@ function checkFunds(w,amt,old){
  const avail=bookBal(w)+(old||0);
  if(amt>avail+0.005){alert('Not enough '+(w=='cash'?'cash':srcName(w))+' balance. Available '+fm(Math.round(avail*100)/100)+', needed '+fm(Math.round(amt*100)/100)+'. Add money first (collection or deposit) and try again.');return false}
  return true}
-const prDoc=(title,html)=>{$('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">${title} · printed ${today()}</div>${html}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false};
+const prDoc=(title,html)=>{$('#inv').innerHTML=`<div class="sheet pr"><h2 style="margin:0">${esc(CO.name)}</h2>${coLines()}<div style="color:#555;margin:6px 0">${title} · printed ${today()}</div>${html}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false};
 const vchRows=a=>`<table>${a.map(x=>`<tr><td style="width:38%"><b>${x[0]}</b></td><td>${esc(x[1])}</td></tr>`).join('')}</table><div style="display:flex;justify-content:space-between;margin-top:46px;font-size:12px"><span>Prepared by</span><span>Approved by</span><span>Receiver's signature</span></div>`;
 function buyPrint(){
  const k=qb.toLowerCase(),r=S.pu.filter(p=>hit(k,p.supplier,p.material,p.date)&&(!qbs||puSt(p)==qbs));
- prDoc('Purchase register'+(k?' · search “'+esc(qb)+'”':''),`<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th>Status</th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td>${puSt(p)}</td></tr>`).join('')||empty(7,'No purchases')}<tr><td colspan="5"><b>Total purchased</b></td><td class="n"><b>${fm(Math.round(sum(r.filter(puOn).map(p=>p.qty*p.rate))))}</b></td><td></td></tr></table>`)}
+ prDoc('Purchase register'+(k?' · search “'+esc(qb)+'”':''),`<table><tr><th>Date</th><th>Supplier</th><th>Material</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th><th>Status</th></tr>${r.map(p=>`<tr><td>${dm(p.date)||esc(p.date)}</td><td>${esc(p.supplier||'—')}</td><td>${esc(p.material)}</td><td class="n">${qfmt(p.qty,p.unit)}</td><td class="n">${fm(p.rate)}</td><td class="n">${fm(Math.round(p.qty*p.rate))}</td><td>${puSt(p)}</td></tr>`).join('')||empty(7,'No purchases')}<tr><td colspan="5"><b>Total Purchased</b></td><td class="n"><b>${fm(Math.round(sum(r.filter(puOn).map(p=>p.qty*p.rate))))}</b></td><td>Purchased</td></tr><tr><td colspan="5"><b>Total Pending</b></td><td class="n"><b>${fm(Math.round(sum(r.filter(p=>puSt(p)=='Pending').map(p=>p.qty*p.rate))))}</b></td><td>Pending</td></tr></table>`)}
 function expPrint(){
  const k=qe.toLowerCase(),r=S.ex.filter(e=>hit(k,e.category,e.description,e.mode,e.date));
  prDoc('Expense register'+(k?' · search “'+esc(qe)+'”':''),`<table><tr><th>Date</th><th>Description</th><th>Mode</th><th class="n">Amount</th></tr>${r.map(e=>`<tr><td>${dm(e.date)||esc(e.date)}</td><td>${esc(e.description||'')}</td><td>${esc(e.mode||'')}</td><td class="n">${fm(e.amount)}</td></tr>`).join('')||empty(4,'No expenses')}<tr><td colspan="3"><b>Total</b></td><td class="n"><b>${fm(Math.round(sum(r.map(e=>+e.amount))))}</b></td></tr></table>`)}
@@ -2214,4 +2243,19 @@ async function pwaInstall(){if(!PWA)return;PWA.prompt();try{await PWA.userChoice
  const run=()=>{q=0;document.querySelectorAll('button.btn:not([data-mi])').forEach(one)};
  new MutationObserver(()=>{if(!q)q=requestAnimationFrame(run)}).observe(document.documentElement,{childList:true,subtree:true});
  run()})();
+/* CLICK AN IMAGE (customer, purchase bill, user/staff, product) TO VIEW IT FULL SIZE */
+(function(){
+ const close=()=>{const e=document.getElementById('lbx');if(e)e.remove()};
+ document.addEventListener('click',ev=>{
+  const t=ev.target;
+  if(t.closest&&t.closest('#lbx')){close();return}
+  if(!t||t.tagName!='IMG'||!t.src||!t.closest('.av,.pth,.pimgw,.bimg'))return;
+  if(t.parentElement&&t.parentElement.closest('button,a,[onclick]'))return;
+  ev.preventDefault();ev.stopPropagation();
+  close();
+  const d=document.createElement('div');d.id='lbx';
+  d.innerHTML='<img alt=""><button type="button" aria-label="Close">✕</button>';
+  d.querySelector('img').src=t.src;
+  document.body.appendChild(d)},true);
+ document.addEventListener('keydown',e=>{if(e.key=='Escape')close()})})();
 </script></body></html>
