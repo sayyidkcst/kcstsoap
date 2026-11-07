@@ -406,6 +406,7 @@ aside{box-shadow:0 -4px 16px #12392c14}
   <div class="k">Password</div>
   <label class="fld"><span class="fi">🔒</span><input id="pw" type="password" autocomplete="current-password" placeholder="Password"><button type="button" class="eye" id="eye" onclick="peye()">👁</button></label>
   <div id="caps" hidden>⚠ Caps Lock is on</div>
+  <label class="m" style="display:flex;align-items:center;gap:8px;margin:2px 0 10px;cursor:pointer"><input type="checkbox" id="rem" checked style="width:auto;margin:0"> Keep me signed in on this device</label>
   <div id="lge"></div>
   <button class="btn lg" id="lgo" type="submit">Login</button>
  </form>
@@ -473,13 +474,13 @@ const rng=(a,b)=>{const A=dnum(a),B=dnum(b);return d=>inRange(d,A,B)};
 const rlab=(a,b)=>a||b?` between ${dm(a)||'the start'} and ${dm(b)||'today'}`:'';
 const err=e=>e&&e.message?e.message:'unexpected error';
 const myCat=()=>(ME&&ME.cat)||'Owner';
-const isCust=()=>myCat()=='Customer',CUST_SVC=['orders','ledger','chat'];
+const isCust=()=>myCat()=='Customer',CUST_SVC=['orders','ledger','chat','profile'];
 const isStaff=()=>myCat()=='Staff',canSettle=()=>myCat()=='Admin'||myCat()=='Owner',isOwner=()=>myCat()=='Owner';
 const STAFF_TABS=['orders','cust','staff'],STAFF_SVC=[...STAFF_TABS,'loadslip','hlog'];
-const svMap=u=>{if((u?(u.category||u.cat):myCat())=='Customer'){const m={};SVC.forEach(x=>m[x[0]]=CUST_SVC.includes(x[0]));return m}const s=u&&u.services;if(s&&typeof s==='object'&&Object.keys(s).length)return s;const stf=(u?(u.category||u.cat):myCat())=='Staff',m={};SVC.forEach(x=>m[x[0]]=x[0]=='nobal'?false:stf?STAFF_SVC.includes(x[0]):true);return m};
+const svMap=u=>{if((u?(u.category||u.cat):myCat())=='Customer'){const m={};SVC.forEach(x=>m[x[0]]=CUST_SVC.includes(x[0]));T.forEach(x=>{m[x[0]]=CUST_SVC.includes(x[0])});return m}const s=u&&u.services;if(s&&typeof s==='object'&&Object.keys(s).length)return s;const stf=(u?(u.category||u.cat):myCat())=='Staff',m={};SVC.forEach(x=>m[x[0]]=x[0]=='nobal'?false:stf?STAFF_SVC.includes(x[0]):true);return m};
 const svEn=(m,k)=>k=='nobal'?m[k]===true:m[k]!==false;
 const svOn=k=>svEn(svMap(ME),k);
-const tabOk=t=>T.some(x=>x[0]==t)&&(t=='settings'?isOwner():(t=='cust'||t=='prod'||t=='cal')&&!canDo(t,'view')?false:svOn(t));
+const tabOk=t=>T.some(x=>x[0]==t)&&(t=='profile'?isCust():t=='settings'?isOwner():(t=='cust'||t=='prod'||t=='cal')&&!canDo(t,'view')?false:svOn(t));
 const vtabs=()=>T.filter(t=>tabOk(t[0]));
 const noStaff=()=>{if(isStaff()){alert('This is not available for staff');return true}return false};
 async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
@@ -500,9 +501,9 @@ let pfa='',pfb='',RC={y:new Date().getFullYear(),m:new Date().getMonth(),s:'All'
 let CO={name:'Ayurgra Herbal Soap',tag:'Ayurvedic & herbal products',addr:'',phone:'',email:'',gst:'',fssai:'',bank:'',branch:'',acno:'',ifsc:'',qr:''};
 let tab='orders',f='All',q='',qc='',qs='',qk='',lq='',lt='Customer',le='';
 let odf='',odt='',cdf='',cdt='',ldf='',ldt='';
-const T=[['orders','📦','Orders'],['chat','💬','Customer Care'],['sret','↩️','Sales Returns'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['exp','💸','Expenses'],['assets','🏭','Assets'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['pl','📈','Profit & Loss'],['irep','📊','Item Sales Report'],['bs','🏛️','Balance Sheet'],['cashbook','💵','Cash Book'],['bankbook','🏦','Bank & UPI Book'],['company','🏢','Company'],['history','🕘','History'],['users','🔐','Users'],['settings','⚙️','Settings']];
-const NAVG=[['Sales',['orders','chat','sret','collect','cust','staff','cal','irep']],['Inventory',['prod','buy','exp','assets','raw']],['Books',['ledger','pl','bs','cashbook','bankbook','company']],['System',['history','users','settings']]];
-const H={orders:['Orders','Create and manage orders'],chat:['Customer Care','Call, WhatsApp or chat with us'],sret:['Sales Returns','Add, edit, cancel or delete returns against invoices'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],exp:['Expenses','Day-to-day business expenses'],assets:['Assets','Machinery, furniture, vehicles and other fixed assets'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],pl:['Profit & Loss Account','Income, costs and net profit'],irep:['Item Sales Report','Product-wise sales, returns and customers'],bs:['Balance Sheet','What the business owns and owes'],cashbook:['Cash Book','Every cash receipt and payment with running balance'],bankbook:['Bank & UPI Book','Every bank, UPI and card receipt and payment with running balance'],company:['Company','Details printed on every invoice'],users:['Users','Logins and their category'],history:['History','Who added, changed or deleted what, and when'],settings:['Settings','Choose which services each user can open']};
+const T=[['orders','📦','Orders'],['chat','💬','Customer Care'],['profile','👤','My Profile'],['sret','↩️','Sales Returns'],['collect','💰','Collection'],['cust','👥','Customers'],['staff','💼','Staff'],['cal','🗓️','Route Calendar'],['prod','🧴','Products & Stock'],['buy','🛒','Purchase'],['exp','💸','Expenses'],['assets','🏭','Assets'],['raw','🧪','Raw Material'],['ledger','📒','Ledger'],['pl','📈','Profit & Loss'],['irep','📊','Item Sales Report'],['bs','🏛️','Balance Sheet'],['cashbook','💵','Cash Book'],['bankbook','🏦','Bank & UPI Book'],['company','🏢','Company'],['history','🕘','History'],['users','🔐','Users'],['settings','⚙️','Settings']];
+const NAVG=[['Sales',['orders','chat','profile','sret','collect','cust','staff','cal','irep']],['Inventory',['prod','buy','exp','assets','raw']],['Books',['ledger','pl','bs','cashbook','bankbook','company']],['System',['history','users','settings']]];
+const H={orders:['Orders','Create and manage orders'],chat:['Customer Care','Call, WhatsApp or chat with us'],profile:['My Profile','Your account details'],sret:['Sales Returns','Add, edit, cancel or delete returns against invoices'],collect:['Collection','Approve payments and receive money'],cust:['Customers','Your shops and outstanding'],staff:['Staff','Executives and their dues'],cal:['Staff Route Calendar','Who covers which route, day by day'],prod:['Products & Stock','Catalogue, production and available stock'],ledger:['Ledger','Statement with running balance'],exp:['Expenses','Day-to-day business expenses'],assets:['Assets','Machinery, furniture, vehicles and other fixed assets'],buy:['Purchase','Raw material purchases from suppliers'],raw:['Raw Material','Stock and consumption'],pl:['Profit & Loss Account','Income, costs and net profit'],irep:['Item Sales Report','Product-wise sales, returns and customers'],bs:['Balance Sheet','What the business owns and owes'],cashbook:['Cash Book','Every cash receipt and payment with running balance'],bankbook:['Bank & UPI Book','Every bank, UPI and card receipt and payment with running balance'],company:['Company','Details printed on every invoice'],users:['Users','Logins and their category'],history:['History','Who added, changed or deleted what, and when'],settings:['Settings','Choose which services each user can open']};
 const ACT={orders:['+ New order','newOrder'],sret:['+ New return','srNew'],collect:['+ Add collection','newColl'],cust:['+ New customer','newCust'],staff:['+ Add staff','newStaff'],cal:['+ Assign route','newRt'],prod:['+ Add product','newProd'],buy:['+ Add purchase','newBuy'],exp:['+ Add expense','newExp'],assets:['+ Add asset','newAs'],users:['+ Add user','newUser'],raw:['+ Add consumption','newCn'],cashbook:['+ Deposit','newDep'],bankbook:['+ Deposit','newDep']};
 
 /* LOGIN */
@@ -529,6 +530,7 @@ async function doAuth(){
  const ph=$('#ph').value.replace(/\D/g,''),pw=$('#pw').value;
  if(ph.length!=10)return lerr('Enter the full 10-digit mobile number.');
  if(!pw)return lerr('Enter a password.');
+ try{const r=$('#rem').checked;localStorage.setItem('ay.remember',r?'1':'0');if(r)localStorage.setItem('ay.lastph',ph);else{localStorage.removeItem('ay.lastph');localStorage.removeItem('ay.keep');localStorage.removeItem('ay.co.keep')}}catch(e){}
  $('#lgo').disabled=true;$('#lge').innerHTML='<span class="wt" style="display:inline-flex;align-items:center;gap:8px">'+cring(null,20)+'Please wait…</span>';
  try{await signin(ph,pw)}
  catch(e){lerr(err(e));$('#lgo').disabled=false}
@@ -566,7 +568,7 @@ const coCan=c=>!!c&&(isOwner()||c.created_by==ME.phone);
 const coCanDel=c=>coCan(c)&&!ME.company_id;
 const coName=()=>(COS.find(c=>c.id==CMP)||{}).name||'';
 const coSel=()=>{const cur=COS.find(c=>c.id==CMP),lg=cur&&cur.logo?`<img class="co-hl" src="${esc(cur.logo)}" alt="">`:'';return COS.length>1?`<div class="co-hrow">${lg}<select aria-label="Company" onchange="coSwitch(this.value)" style="max-width:240px">${COS.map(c=>`<option value="${c.id}" ${c.id==CMP?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>`:COS.length==1?`<div class="co-hrow">${lg}<b>${esc(coName())}</b></div>`:''};
-function coSwitch(v){if(v=='new')return coAdd();if(v=='ren')return coRen(CMP);if(v=='del')return coDel();sessionStorage.setItem('ay.co',v);location.reload()}
+function coSwitch(v){if(v=='new')return coAdd();if(v=='ren')return coRen(CMP);if(v=='del')return coDel();setCo(v);location.reload()}
 async function initCo(){
  await libReady;if(!db)return;CMP=null;COS=[];COALL=[];COSETUP=false;
  try{
@@ -577,7 +579,7 @@ async function initCo(){
  const a=(ME.services||{}).cos,mine=ME.company_id?COALL:isOwner()||!(Array.isArray(a)&&a.length)?COALL:COALL.filter(c=>a.includes(c.id)||c.created_by==ME.phone);
  if(!mine.length){alert('No company is assigned to you. Ask the owner to give you access.');return out()}
  COS=mine;const sv=+sessionStorage.getItem('ay.co');
- CMP=(mine.find(c=>c.id==sv)||mine[0]).id;sessionStorage.setItem('ay.co',CMP)}
+ CMP=(mine.find(c=>c.id==sv)||mine[0]).id;setCo(CMP)}
 function coCard(){
  if(COSETUP)return `<div class="card cmp"><div class="cm-hd"><div class="cm-ic">🏢</div><div><b>Multi-company setup</b><div class="m">Run this once in Supabase &gt; SQL Editor, then tap Refresh. Your existing data becomes the first company.</div></div></div><pre class="sqlb">${esc(SQLCO)}</pre></div>`;
  const hint=NOUCO?`<div class="cm-warn"><b>One more step</b><div class="m" style="margin:4px 0 8px">To keep users separate per company, run this once in Supabase &gt; SQL Editor, then reopen Settings.</div><pre class="sqlb">${esc(SQLUCO)}</pre></div>`:'',
@@ -629,7 +631,7 @@ async function coDel(){
  await db.from('accounts').delete().eq('company_id',c.id);
  const d=await db.from('companies').delete().eq('id',c.id);if(d.error){R();return alert(err(d.error))}
  await new Promise(r=>setTimeout(r,700));await db.from('history').delete().eq('company_id',c.id);
- const nx=COALL.find(x=>x.id!=c.id);sessionStorage.setItem('ay.co',nx.id);try{localStorage.removeItem('ay.cache'+c.id)}catch(e){}location.reload()}
+ const nx=COALL.find(x=>x.id!=c.id);setCo(nx.id);try{localStorage.removeItem('ay.cache'+c.id)}catch(e){}location.reload()}
 async function coAcc(id){
  if(!isOwner())return;const u=US&&US.find(x=>x.phone==SVU);if(!u||u.category=='Owner')return;
  const map={...svMap(u)};let cur=Array.isArray(map.cos)&&map.cos.length?map.cos.slice():COALL.map(c=>c.id);
@@ -637,13 +639,15 @@ async function coAcc(id){
  if(!cur.length)return alert('Keep at least one company for this user');
  if(cur.length==COALL.length)delete map.cos;else map.cos=cur;
  await svSave(u,map);R()}
+const saveMe=m=>{const j=JSON.stringify(m);sessionStorage.setItem('ay.me',j);try{if(localStorage.getItem('ay.remember')=='1')localStorage.setItem('ay.keep',j)}catch(e){}};
+const setCo=v=>{sessionStorage.setItem('ay.co',v);try{if(localStorage.getItem('ay.remember')=='1')localStorage.setItem('ay.co.keep',v)}catch(e){}};
 async function enter(me){
- ME=me;sessionStorage.setItem('ay.me',JSON.stringify(me));
+ ME=me;saveMe(me);
  $('#lg').hidden=true;$('#shell').hidden=false;
  await initCo();
  await sync();
 }
-function out(){sessionStorage.removeItem('ay.me');try{localStorage.removeItem(CK())}catch(e){}location.reload()}
+function out(){sessionStorage.removeItem('ay.me');try{localStorage.removeItem('ay.keep');localStorage.removeItem('ay.co.keep')}catch(e){}try{localStorage.removeItem(CK())}catch(e){}location.reload()}
 async function ping(){
  if(!db)return;
  const {error}=await db.from('accounts').select('id',{count:'exact',head:true});
@@ -654,9 +658,9 @@ function scopeCust(d){
  if(!isCust())return d;
  const me=String(ME.phone||'').replace(/\D/g,'').slice(-10),nm=String(ME.name||'').trim().toLowerCase();
  const mine=d.c.find(c=>String(c.phone||'').replace(/\D/g,'').slice(-10)==me)||d.c.find(c=>String(c.name||'').trim().toLowerCase()==nm),n=mine?mine.name:'';
- ME.custName=n;try{sessionStorage.setItem('ay.me',JSON.stringify(ME))}catch(e){}
+ ME.custName=n;try{saveMe(ME)}catch(e){}
  const stk={};(d.pn||[]).forEach(x=>{stk[x.product]=(stk[x.product]||0)+(+x.qty||0)});
- (d.o||[]).forEach(o=>{if(o.status!='Cancelled')(o.items||[]).forEach(i=>{stk[i.p]=(stk[i.p]||0)-((+i.q||0)-(+i.r||0))})});
+ (CUSTSO||d.o||[]).forEach(o=>{if(o.status!='Cancelled')(o.items||[]).forEach(i=>{stk[i.p]=(stk[i.p]||0)-((+i.q||0)-(+i.r||0))})});
  return {...d,stk,o:d.o.filter(o=>o.shop==n),c:mine?[mine]:[],st:[],s:[],cp:d.cp.filter(p=>p.cust==n),sr:(d.sr||[]).filter(r=>r.shop==n),pu:[],cn:[],pn:[],rt:[],ex:[],as:[],dp:[],ba:[],hi:[]}}
 function applyData(d){
  STK=d.stk||{};
@@ -672,7 +676,9 @@ async function sync(){
   await libReady;if(!db)throw new Error('supabase-js did not load — this page needs an internet connection.');
   const T=pr=>Promise.resolve(pr);
   const q=(t,o)=>T(db.from(t).select('*').order(o||'id',{ascending:!!o})),opt=t=>q(t).then(r=>({t,data:r.error?null:r.data}));
-  const [o,c,st,pr,s,cp,co,pu,cn,pn,rt,ex,as,sr,dp,ba,hi,accs]=await Promise.all([
+  let o,c,st,pr,s,cp,co,pu,cn,pn,rt,ex,as,sr,dp,ba,hi,accs;
+   if(isCust())[o,c,st,pr,s,cp,co,pu,cn,pn,rt,ex,as,sr,dp,ba,hi,accs]=await custFetch();
+   else [o,c,st,pr,s,cp,co,pu,cn,pn,rt,ex,as,sr,dp,ba,hi,accs]=await Promise.all([
    q('orders'),q('customers','name'),q('staff','name'),
    T(db.from('products').select('*').order('serial',{ascending:true}).order('id',{ascending:true})),
    q('settlements'),q('payments'),
@@ -683,7 +689,7 @@ async function sync(){
   const bad=[o,c,st,pr,s,cp].find(r=>r.error);
   if(bad)throw new Error(bad.error.message+' — is the schema created and reachable?');
   const ac=accs&&accs.data,accBefore=JSON.stringify({c:ME.cat,s:ME.services||{}});
-  if(ac){ME.name=ac.name||ME.name;ME.cat=ac.category||ME.cat;ME.img=ac.image||'';ME.company_id=ac.company_id||null;ME.services=ac.services&&typeof ac.services==='object'?ac.services:{};try{sessionStorage.setItem('ay.me',JSON.stringify(ME))}catch(e){}}
+  if(ac){ME.name=ac.name||ME.name;ME.cat=ac.category||ME.cat;ME.img=ac.image||'';ME.company_id=ac.company_id||null;ME.services=ac.services&&typeof ac.services==='object'?ac.services:{};try{saveMe(ME)}catch(e){}}
   const accChanged=JSON.stringify({c:ME.cat,s:ME.services||{}})!==accBefore;
   const ex2=[pu,cn,pn,rt,ex,as,sr,dp,ba,hi,accs];
   const d=scopeCust({o:o.data,c:c.data,st:st.data,pr:pr.data,s:s.data,cp:cp.data,co:co&&co.data||null,miss:ex2.filter(x=>x.data===null).map(x=>x.t),pu:pu.data||[],cn:cn.data||[],pn:pn.data||[],rt:rt.data||[],ex:ex.data||[],as:as.data||[],sr:sr.data||[],dp:dp.data||[],ba:ba.data||[],hi:hi.data||[]});
@@ -695,8 +701,23 @@ async function sync(){
   if(tab=='history')hiLazy();
  }catch(e){if(!hit)$('#app').innerHTML=accBar()+`<div class="card"><b>Could not load data</b><div class="m" style="margin-top:6px">${esc(err(e))}</div><button class="btn" onclick="sync()">Retry</button></div>`}
 }
-const accBar=()=>`<div class="card ac"><span><span class="av" style="display:inline-grid;vertical-align:middle;width:30px;height:30px;margin-right:8px;font-size:13px">${ME&&ME.img?`<img src="${esc(ME.img)}" alt="">`:esc(((ME&&(ME.name||ME.phone))||'?')[0]).toUpperCase()}</span>Signed in as <b>${esc(ME&&ME.name||ME&&ME.phone||'')}</b></span><span>${pwaBtn()}<button class="btn o" onclick="sync()">⟳ Refresh</button><button class="btn d" onclick="out()">Logout</button></span></div>${iosHint()}`;
+const accBar=()=>`<div class="card ac"><span><span class="av" style="display:inline-grid;vertical-align:middle;width:30px;height:30px;margin-right:8px;font-size:13px">${ME&&ME.img?`<img src="${esc(ME.img)}" alt="">`:esc(((ME&&(ME.name||ME.phone))||'?')[0]).toUpperCase()}</span>Signed in as <b>${esc(ME&&ME.name||ME&&ME.phone||'')}</b></span><span>${pwaBtn()}<button class="btn o" onclick="sync()">⟳ Refresh</button><button class="btn o" onclick="chPw()">🔑 Password</button><button class="btn d" onclick="out()">Logout</button></span></div>${iosHint()}`;
 
+/* CHANGE OWN PASSWORD (customers, staff and owners) */
+function chPw(){
+ openM('Change password',()=>`<div class="cg"><div style="grid-column:1/-1"><div class="k rq">Current password</div><input type="password" id="pw0" autocomplete="current-password"></div><div style="grid-column:1/-1"><div class="k rq">New password</div><input type="password" id="pw1" autocomplete="new-password" placeholder="At least 4 characters"></div><div style="grid-column:1/-1"><div class="k rq">Confirm new password</div><input type="password" id="pw2" autocomplete="new-password" onkeydown="if(event.key=='Enter')savePw()"></div></div><div class="m" style="margin-top:8px">You sign in with your mobile number <b>${esc(ME&&ME.phone||'')}</b> and this password.</div><div class="cft"><button class="btn o" type="button" onclick="closeM()">Close</button><button class="btn cs" type="button" onclick="savePw()">Submit</button></div>`,0,1)}
+async function savePw(){
+ const a=$('#pw0').value,b=$('#pw1').value,c=$('#pw2').value;
+ if(!a)return alert('Enter your current password');
+ if(b.length<4)return alert('Use at least 4 characters for the new password');
+ if(b!==c)return alert('The new password and confirmation do not match');
+ if(b===a)return alert('The new password must be different from the current one');
+ const r=await db.from('accounts').select('id,salt,pw_hash').eq('phone',ME.phone).maybeSingle();
+ if(r.error||!r.data)return alert('Could not find your login. Please log out and sign in again.');
+ if(await sha(r.data.salt+':'+ME.phone+':'+a)!==r.data.pw_hash)return alert('Your current password is wrong');
+ const u=await db.from('accounts').update(await pwRow(ME.phone,b)).eq('id',r.data.id);
+ if(u.error)return fail(u.error);
+ closeM();done('Password changed')}
 /* MODAL */
 let MF=null;
 function openM(t,fn,wide,cm){MF={t,fn,wide,cm};$('#md').className=(wide?'wide':'')+(cm?' cm':'');$('#md').innerHTML=cm?`<div class="mb"><div class="cmh"><h3>${t}</h3><button class="cx" onclick="closeM()" aria-label="Close">✕</button></div><div class="cmbody">${fn()}</div></div>`:`<div class="mb"><div class="mh"><h3>${t}</h3><button class="btn d" onclick="closeM()">✕ Close</button></div>${fn()}</div>`;$('#md').hidden=false}
@@ -749,7 +770,7 @@ function R(){
  {const n=$('#nav'),on=n.querySelector('.on');if(on&&n.scrollWidth>n.clientWidth)n.scrollLeft=on.offsetLeft-(n.clientWidth-on.offsetWidth)/2}
  const a=!canDo(tab,'add')?null:ACT[tab];
  $('#hd').innerHTML=`<div><h1>${H[tab][0]}</h1><p>${H[tab][1]}</p>${coSel()}</div>`+(a?`<div><button class="btn" onclick="${a[1]}()">${a[0]}</button>${tab=='prod'?'<button class="btn" style="margin-left:8px" onclick="newPn()">+ Add production</button>':''}${tab=='orders'&&svOn('loadslip')&&!isMob()?'<button class="btn o" style="margin-left:8px" onclick="lsOpen()">🚚 Staff loading slip</button>':''}</div>`:'');
- $('#app').innerHTML=accBar()+({orders:Vo,sret:Vsr,collect:Vc,cust:Vu,staff:Vs,cal:Vcal,prod:Vp,buy:Vbuy,exp:Vexp,assets:Vas,users:Vusers,history:Vhist,settings:Vset,raw:Vraw,ledger:Vl,chat:Vchat,pl:Vpl,irep:Virep,bs:Vbs,cashbook:Vcashbook,bankbook:Vbankbook,company:VcoW})[tab]();
+ $('#app').innerHTML=accBar()+({orders:Vo,sret:Vsr,collect:Vc,cust:Vu,staff:Vs,cal:Vcal,prod:Vp,buy:Vbuy,exp:Vexp,assets:Vas,users:Vusers,history:Vhist,settings:Vset,raw:Vraw,ledger:Vl,chat:Vchat,profile:Vprofile,pl:Vpl,irep:Virep,bs:Vbs,cashbook:Vcashbook,bankbook:Vbankbook,company:VcoW})[tab]();
 }
 const kp=(k,v,c)=>`<div class="card"><div class="k">${k}</div><div class="v ${c||''}">${v}</div></div>`;
 const dr=(a,b,ca,cb,cl)=>`<div class="dr"><div><div class="k">Date from</div><input type="date" value="${a}" onchange="${ca}=this.value;R()"></div><div><div class="k">Date to</div><input type="date" value="${b}" onchange="${cb}=this.value;R()"></div>${a||b?`<button class="btn o" type="button" onclick="${cl}">Clear dates</button>`:''}</div>`;
@@ -1335,7 +1356,7 @@ async function updS(id){
  if(acc){const row={name:n};if(canDo('users','edit')&&acc.phone!=ME.phone)row.category=cat;if(PH.s||x.image)row.image=PH.s||'';if(pw)Object.assign(row,await pwRow(acc.phone,pw));
   const r=await db.from('accounts').update(row).eq('id',acc.id);if(r.error)uBad(r.error);
   else{const u=US&&US.find(v=>v.id==acc.id);if(u)Object.assign(u,{name:n,category:row.category||u.category,image:PH.s});
-   if(acc.phone==ME.phone){ME.name=n;ME.img=PH.s;sessionStorage.setItem('ay.me',JSON.stringify(ME))}}}
+   if(acc.phone==ME.phone){ME.name=n;ME.img=PH.s;saveMe(ME)}}}
  else if(pw){const ph=phone.replace(/\D/g,''),row={name:n,phone:ph,category:cat,...await pwRow(ph,pw)};if(PH.s)row.image=PH.s;if(CMP&&!NOUCO)row.company_id=CMP;
   const r=await db.from('accounts').insert(row).select('id,phone,name,category').single();if(r.error)uBad(r.error);
   else if(US){US.push({...r.data,image:PH.s});US.sort((p,q)=>String(p.name).localeCompare(String(q.name)))}}
@@ -1464,7 +1485,7 @@ function lp(){
  $('#inv').innerHTML=`<div class="sheet"><h2 style="margin:0">${esc(CO.name)}</h2><div style="color:#555">${lt} ledger · ${esc(le)} · ${today()}${(ldf||ldt)?' · '+rlab(ldf,ldt):''}</div>${ltable(w.r,w.open)}<button class="btn np" onclick="print()">Print</button><button class="btn o np" onclick="$('#inv').hidden=true">Close</button></div>`;$('#inv').hidden=false}
 
 /* CUSTOMER CARE: call, WhatsApp and in-app chat */
-const CARE='9074415177',CHATSQL='create table if not exists chat_messages(id bigint generated always as identity primary key,customer text,sender text,name text,body text,read boolean default false,created_at timestamptz default now());\nalter table chat_messages disable row level security;\ngrant all on table chat_messages to anon, authenticated;\nnotify pgrst, \'reload schema\';';
+const CARE='9074415177',CHATSQL='create table if not exists chat_messages(id bigint generated always as identity primary key,customer text,sender text,name text,body text,read boolean default false,created_at timestamptz default now());\nalter table chat_messages enable row level security;\ndrop policy if exists chat_open on chat_messages;\ncreate policy chat_open on chat_messages for all to anon, authenticated using (true) with check (true);\ngrant all on table chat_messages to anon, authenticated;\nnotify pgrst, \'reload schema\';';
 let CH={rows:null,sel:'',err:''};
 const chSide=()=>isCust()?'Customer':'Shop',chCur=()=>isCust()?(ME.custName||''):CH.sel;
 const chTime=t=>{try{return new Date(t).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}};
@@ -1484,7 +1505,7 @@ async function chLoad(){
 function chDraw(){
  const m=$('#chm');if(!m||tab!='chat')return;
  const rows=CH.rows||[],cur=chCur(),side=chSide();
- if(CH.err){const miss=/chat_messages|relation|does not exist|schema cache/i.test(CH.err);m.innerHTML=`<div class="m">${miss?'Chat needs a one-time setup. Run this once in Supabase &gt; SQL Editor (it also refreshes the API cache), then press Retry:':'Could not load chat:'}</div><div class="m" style="margin:6px 0"><b>Error:</b> ${esc(CH.err)}</div>${miss?`<pre class="sqlb">${esc(CHATSQL)}</pre>`:''}<button class="btn" type="button" onclick="CH.err='';chLoad()">Retry</button>`;return}
+ if(CH.err){const miss=/chat_messages|relation|does not exist|schema cache|row-level security|policy|permission denied/i.test(CH.err);m.innerHTML=`<div class="m">${miss?'Chat needs a one-time setup. Run this once in Supabase &gt; SQL Editor (it also refreshes the API cache), then press Retry:':'Could not load chat:'}</div><div class="m" style="margin:6px 0"><b>Error:</b> ${esc(CH.err)}</div>${miss?`<pre class="sqlb">${esc(CHATSQL)}</pre>`:''}<button class="btn" type="button" onclick="CH.err='';chLoad()">Retry</button>`;return}
  const l=$('#chl');
  if(l){const g={};rows.forEach(r=>{(g[r.customer]=g[r.customer]||{last:r,un:0}).last=r;if(r.sender=='Customer'&&!r.read)g[r.customer].un++});
   const names=Object.keys(g).sort((a,b)=>g[b].last.id-g[a].last.id);
@@ -1507,6 +1528,33 @@ async function chSend(){
  if(error){CH.err=error.message||'error';return chDraw()}
  t.value='';(CH.rows||(CH.rows=[])).push(data);chDraw();t.focus()}
 setInterval(()=>{if(tab=='chat'&&ME&&!document.hidden&&!$('#md').innerHTML.trim().length)chLoad()},8000);
+/* CUSTOMER PROFILE (view only) */
+function Vprofile(){
+ const c=S.c[0];
+ if(!c)return `<div class="card"><div class="m">No customer record is linked to this login — ask the shop to check your phone number.</div></div>`;
+ const row=(k,v)=>v?`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--b)"><div class="m" style="min-width:110px">${k}</div><div style="flex:1;overflow-wrap:anywhere">${v}</div></div>`:'';
+ const n=S.o.length,pd=S.o.filter(o=>o.st=='Pending').length;
+ return `<div class="card"><div class="it"><div class="av" style="width:64px;height:64px;font-size:26px">${c.image?`<img src="${esc(c.image)}" alt="">`:esc((c.name[0]||'?').toUpperCase())}</div><div style="flex:1"><b style="font-size:18px">${esc(c.name)}</b><div class="m">${btag(c)}</div></div></div>${row('Mobile (login)',esc(c.phone))}${row('Address',esc(c.addr))}${row('GST number',esc(c.gst))}${row('Credit days',c.credit?c.credit+' days':'')}${row('Orders',n+(pd?' · '+pd+' pending':''))}<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn o" type="button" onclick="chPw()">🔑 Change password</button></div><div class="m" style="margin-top:8px">To change your details, please contact customer care.</div></div>`+careBox(c.name)}
+let CUSTSO=null;
+async function custFetch(){
+ const dg=t=>String(t||'').replace(/\D/g,'').slice(-10),me=dg(ME.phone),E={data:[]};
+ const accP=db.from('accounts').select('*').eq('phone',ME.phone).maybeSingle().then(r=>({t:'accounts',data:r.error?null:r.data}),()=>({t:'accounts',data:null}));
+ const prP=db.from('products').select('*').order('serial',{ascending:true}).order('id',{ascending:true});
+ const coP=db.from('company').select('*').eq('id',CMP||1).maybeSingle().then(r=>r,()=>({}));
+ const pnP=db.from('production').select('product,qty').then(r=>({t:'production',data:r.error?[]:r.data}),()=>({t:'production',data:[]}));
+ const soP=db.from('orders').select('items,status').then(r=>r.error?[]:r.data,()=>[]);
+ let cr=await db.from('customers').select('*').ilike('phone','%'+me.slice(-4)+'%');
+ let list=cr.error?[]:cr.data||[],mine=list.find(c=>dg(c.phone)==me);
+ if(!mine){const all=await db.from('customers').select('*').order('name',{ascending:true});list=all.error?[]:all.data||[];const nm=String(ME.name||'').trim().toLowerCase();mine=list.find(c=>dg(c.phone)==me)||list.find(c=>String(c.name||'').trim().toLowerCase()==nm)}
+ const n=mine?mine.name:'';
+ const ok=r=>r.then(x=>x.error?E:x,()=>E);
+ const [oR,cpR,srR,accs,pr,co,pn,so]=await Promise.all([
+  n?ok(db.from('orders').select('*').eq('shop',n).order('id',{ascending:false})):E,
+  n?ok(db.from('payments').select('*').eq('cust',n).order('id',{ascending:false})):E,
+  n?ok(db.from('sales_returns').select('*').eq('shop',n)):E,
+  accP,prP,coP,pnP,soP]);
+ CUSTSO=so;
+ return [oR,{data:mine?[mine]:[]},E,pr,E,cpR,co,E,E,pn,E,E,E,{data:srR.data||[]},E,E,{t:'history',data:[]},accs]}
 /* PURCHASE / STOCK / RAW MATERIAL */
 const SQLN=`create table if not exists purchases(id bigint generated always as identity primary key,date text,supplier text,material text,unit text,qty numeric,rate numeric,notes text);
 create table if not exists consumption(id bigint generated always as identity primary key,date text,material text,unit text,qty numeric,rate numeric,notes text);
@@ -1749,7 +1797,7 @@ async function svSave(u,map){
  const {error}=await db.from('accounts').update({services:map}).eq('id',u.id);
  if(error){if(/services|column|schema|does not exist/i.test(err(error)))return alert('The accounts table needs a services column. Run this once in Supabase > SQL Editor:\n\n'+SQLSVC+'\n\nThen switch again.');return fail(error)}
  u.services=map;
- if(u.phone==ME.phone){ME.services=map;try{sessionStorage.setItem('ay.me',JSON.stringify(ME))}catch(e){}}}
+ if(u.phone==ME.phone){ME.services=map;try{saveMe(ME)}catch(e){}}}
 /* HISTORY (who changed what) */
 const HN={orders:'Order',customers:'Customer',staff:'Staff',products:'Product',settlements:'Settlement',payments:'Collection',company:'Company',purchases:'Purchase',consumption:'Raw material use',production:'Production',staff_routes:'Route',expenses:'Expense',assets:'Asset',sales_returns:'Sales return',accounts:'User',app_settings:'Settings'};
 let HNO=false,qh='',fh='All',eh='All';
@@ -1944,7 +1992,7 @@ async function saveUser(id){
  if(pw){const salt=[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,'0')).join('');row.salt=salt;row.pw_hash=await sha(salt+':'+ph+':'+pw)}
  const bad=e=>/image/i.test(err(e))&&!/category/i.test(err(e))?alert('The accounts table needs an image column. Run this once in Supabase > SQL Editor:\n\nalter table accounts add column if not exists image text;\n\nThen save again.'):/category/i.test(err(e))?alert('The accounts table needs a category column. Run this once in Supabase > SQL Editor:\n\nalter table accounts add column if not exists category text;\n\nThen save again.'):fail(e);
  if(u){const {error}=await db.from('accounts').update(row).eq('id',id);if(error)return bad(error);
-  Object.assign(u,{name,category:cat,image:PH.u});if(u.phone==ME.phone){ME.name=name;ME.cat=cat;ME.img=PH.u;sessionStorage.setItem('ay.me',JSON.stringify(ME))}R();done('User updated')}
+  Object.assign(u,{name,category:cat,image:PH.u});if(u.phone==ME.phone){ME.name=name;ME.cat=cat;ME.img=PH.u;saveMe(ME)}R();done('User updated')}
  else{row.phone=ph;if(CMP&&!NOUCO)row.company_id=CMP;const {data,error}=await db.from('accounts').insert(row).select(PH.u?'id,phone,name,category,image':'id,phone,name,category').single();if(error)return bad(error);
   US.push({...data,category:data.category||cat,image:PH.u});US.sort((a,b)=>String(a.name).localeCompare(b.name));R();done(name+' added as '+cat)}}
 async function delUser(id){
@@ -2311,7 +2359,9 @@ async function pwaInstall(){if(!PWA)return;PWA.prompt();try{await PWA.userChoice
 /* BOOT */
 (async function boot(){
  if(!window.crypto||!crypto.subtle){$('#lgo').disabled=true;$('#dot').className='dot no';return lerr('This browser blocks secure hashing. Open the file locally (file://) or over https.')}
- const keep=sessionStorage.getItem('ay.me');
+ let keep=sessionStorage.getItem('ay.me');
+ try{if(!keep&&localStorage.getItem('ay.remember')=='1'){keep=localStorage.getItem('ay.keep');if(keep){sessionStorage.setItem('ay.me',keep);const c=localStorage.getItem('ay.co.keep');if(c)sessionStorage.setItem('ay.co',c)}}
+  $('#rem').checked=localStorage.getItem('ay.remember')!=='0';const lp=localStorage.getItem('ay.lastph');if(lp&&localStorage.getItem('ay.remember')=='1')$('#ph').value=lp}catch(e){}
  if(keep){try{ME=JSON.parse(keep)}catch(e){ME=null}}
  if(ME)return enter(ME);
  $('#ph').focus();
@@ -2342,7 +2392,7 @@ async function pwaInstall(){if(!PWA)return;PWA.prompt();try{await PWA.userChoice
   const l=document.createElement('span');l.className='bl';l.textContent=t;
   b.append(i,l)}
  let q=0;
- const run=()=>{q=0;document.querySelectorAll('button.btn:not([data-mi])').forEach(one)};
+ const run=()=>{q=0;document.querySelectorAll('button.btn:not([data-mi])').forEach(one);document.querySelectorAll('img:not([loading])').forEach(i=>{i.loading='lazy';i.decoding='async'})};
  new MutationObserver(()=>{if(!q)q=requestAnimationFrame(run)}).observe(document.documentElement,{childList:true,subtree:true});
  run()})();
 /* CLICK AN IMAGE (customer, purchase bill, user/staff, product) TO VIEW IT FULL SIZE */
